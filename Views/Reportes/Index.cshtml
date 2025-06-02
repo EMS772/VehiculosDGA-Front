@@ -1,0 +1,243 @@
+﻿@{
+    ViewData["Title"] = "Reportes";
+    ViewData["NavbarTitle"] = "Reportes";
+    ViewData["ActivePage"] = "Reportes";
+}
+
+<div id="reportes-app">
+    <div class="row my-4">
+        <div class="col-lg-12">
+            <h2 class="fw-bold mb-4">Reportes</h2>
+            
+            <!-- Report Filters -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form id="reportFilterForm" @@submit.prevent="generarReporte">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="reportType" class="form-label">Tipo de Reporte</label>
+                                <select class="form-select" id="reportType" v-model="reporteForm.tipo" required>
+                                    <option value="" selected disabled>Seleccione...</option>
+                                    <option value="inventory">Inventario General</option>
+                                    <option value="assignments">Asignaciones Activas</option>
+                                    <option value="maintenance">Vehículos en Taller</option>
+                                    <option value="insurance">Pólizas de Seguro</option>
+                                    <option value="custom">Personalizado</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="reportDateFrom" class="form-label">Desde</label>
+                                <input type="date" class="form-control" id="reportDateFrom" v-model="reporteForm.fechaDesde">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="reportDateTo" class="form-label">Hasta</label>
+                                <input type="date" class="form-control" id="reportDateTo" v-model="reporteForm.fechaHasta">
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-file-alt me-1"></i> Generar
+                                </button>
+                            </div>
+                        </div>
+                        <div v-if="reporteForm.tipo === 'custom'" class="row mt-3">
+                            <div class="col-md-4">
+                                <label for="customField1" class="form-label">Estado</label>
+                                <select class="form-select" id="customField1" v-model="reporteForm.estado">
+                                    <option value="">Todos</option>
+                                    <option value="Disponible">Disponible</option>
+                                    <option value="Asignado">Asignado</option>
+                                    <option value="EnTaller">En Taller</option>
+                                    <option value="NoDisponible">No Disponible</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="customField2" class="form-label">Tipo de Vehículo</label>
+                                <select class="form-select" id="customField2" v-model="reporteForm.tipoVehiculo">
+                                    <option value="">Todos</option>
+                                    <option value="Sedan">Sedán</option>
+                                    <option value="SUV">SUV</option>
+                                    <option value="Pickup">Pickup</option>
+                                    <option value="Camioneta">Camioneta</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="customField3" class="form-label">Formato de Salida</label>
+                                <select class="form-select" id="customField3" v-model="reporteForm.formatoSalida" required>
+                                    <option value="Excel">Excel</option>
+                                    <option value="PDF">PDF</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Report Results -->
+            <div class="card shadow" v-if="mostrarResultados">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Resultados del Reporte</h6>
+                    <div>
+                        <button class="btn btn-sm btn-success me-2" @@click="exportarExcel">
+                            <i class="fas fa-file-excel me-1"></i> Excel
+                        </button>
+                        <button class="btn btn-sm btn-danger" @@click="exportarPDF">
+                            <i class="fas fa-file-pdf me-1"></i> PDF
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="reportResultsTable">
+                            <thead>
+                                <tr>
+                                    <th v-for="columna in columnasReporte" :key="columna">{{ columna }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(fila, index) in datosReporte" :key="index">
+                                    <td v-for="columna in columnasReporte" :key="columna">{{ fila[columna] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const { createApp } = Vue;
+        
+        createApp({
+            data() {
+                return {
+                    reporteForm: {
+                        tipo: '',
+                        fechaDesde: '',
+                        fechaHasta: '',
+                        estado: '',
+                        tipoVehiculo: '',
+                        formatoSalida: 'Excel'
+                    },
+                    mostrarResultados: false,
+                    columnasReporte: [],
+                    datosReporte: []
+                }
+            },
+            methods: {
+                async generarReporte() {
+                    try {
+                        // Validar fechas si se ha seleccionado una
+                        if ((this.reporteForm.fechaDesde && !this.reporteForm.fechaHasta) || 
+                            (!this.reporteForm.fechaDesde && this.reporteForm.fechaHasta)) {
+                            alert('Debe seleccionar ambas fechas o ninguna');
+                            return;
+                        }
+
+                        // Construir la URL base según el tipo de reporte
+                        let url = '';
+                        switch (this.reporteForm.tipo) {
+                            case 'inventory':
+                                url = '/api/Reporte/vehiculos';
+                                break;
+                            case 'assignments':
+                                url = '/api/Reporte/asignaciones';
+                                break;
+                            case 'maintenance':
+                                url = '/api/Reporte/mantenimientos';
+                                break;
+                            case 'insurance':
+                                url = '/api/Reporte/seguros';
+                                break;
+                            case 'custom':
+                                url = '/api/Reporte/General';
+                                break;
+                            default:
+                                alert('Seleccione un tipo de reporte válido');
+                                return;
+                        }
+
+                        // Construir el objeto de parámetros
+                        const params = {
+                            tipoReporte: this.reporteForm.tipo,
+                            fechaDesde: this.reporteForm.fechaDesde || null,
+                            fechaHasta: this.reporteForm.fechaHasta || null,
+                            formatoSalida: this.reporteForm.formatoSalida
+                        };
+
+                        // Agregar parámetros adicionales para reportes personalizados
+                        if (this.reporteForm.tipo === 'custom') {
+                            params.estado = this.reporteForm.estado || null;
+                            params.tipoVehiculo = this.reporteForm.tipoVehiculo || null;
+                        }
+
+                        // Realizar la solicitud para obtener la vista previa
+                        const response = await axios.post('/api/Reporte/previsualizacion', params);
+                        
+                        // Actualizar los resultados
+                        this.columnasReporte = response.data.columnas;
+                        this.datosReporte = response.data.datos;
+                        this.mostrarResultados = true;
+                    } catch (error) {
+                        console.error('Error al generar reporte:', error);
+                        alert('Error al generar reporte');
+                    }
+                },
+                exportarExcel() {
+                    this.exportarReporte('Excel');
+                },
+                exportarPDF() {
+                    this.exportarReporte('PDF');
+                },
+                async exportarReporte(formato) {
+                    try {
+                        // Configurar los parámetros del reporte
+                        const params = {
+                            tipoReporte: this.reporteForm.tipo,
+                            fechaDesde: this.reporteForm.fechaDesde || null,
+                            fechaHasta: this.reporteForm.fechaHasta || null,
+                            formatoSalida: formato
+                        };
+
+                        // Agregar parámetros adicionales para reportes personalizados
+                        if (this.reporteForm.tipo === 'custom') {
+                            params.estado = this.reporteForm.estado || null;
+                            params.tipoVehiculo = this.reporteForm.tipoVehiculo || null;
+                        }
+
+                        // Realizar la solicitud para obtener el archivo
+                        const response = await axios.post('/api/Reporte/descargar', params, {
+                            responseType: 'blob'
+                        });
+
+                        // Crear un blob con la respuesta
+                        const blob = new Blob([response.data], {
+                            type: formato === 'Excel'
+                                ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                                : 'application/pdf'
+                        });
+
+                        // Crear un objeto URL para el blob
+                        const url = window.URL.createObjectURL(blob);
+
+                        // Crear un enlace para descargar el archivo
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `Reporte_${this.reporteForm.tipo}_${new Date().toISOString().slice(0, 10)}.${formato === 'Excel' ? 'xlsx' : 'pdf'}`;
+                        document.body.appendChild(a);
+                        a.click();
+
+                        // Limpiar
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                    } catch (error) {
+                        console.error(`Error al exportar reporte a ${formato}:`, error);
+                        alert(`Error al exportar reporte a ${formato}`);
+                    }
+                }
+            }
+        }).mount('#reportes-app');
+    </script>
+}

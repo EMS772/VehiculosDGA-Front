@@ -1,0 +1,75 @@
+﻿body {
+    background-color: #f8f9fa;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container, .register-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+.login-card, .register-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.login-header, .register-header {
+    background: linear-gradient(135deg, #0a2e5a, #1a4b8c);
+    color: white;
+    padding: 30px 30px;
+    text-align: center;
+}
+
+    .login-header .logo, .register-header .logo {
+        max-height: 80px;
+        margin-bottom: 1px;
+    }
+
+    .login-header h1, .register-header h1 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+
+.login-body, .register-body {
+    padding: 30px;
+}
+
+    .login-body h2, .register-body h2 {
+        color: #0a2e5a;
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 1.5rem;
+    }
+
+.login-footer, .register-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    color: #6c757d;
+}
+
+.btn-primary {
+    background-color: #1a4b8c;
+    border-color: #1a4b8c;
+}
+
+    .btn-primary:hover {
+        background-color: #0a2e5a;
+        border-color: #0a2e5a;
+    }
+
+.form-control:focus {
+    border-color: #1a4b8c;
+    box-shadow: 0 0 0 0.2rem rgba(26, 75, 140, 0.25);
+}
+
+[v-cloak] {
+    display: none;
+}

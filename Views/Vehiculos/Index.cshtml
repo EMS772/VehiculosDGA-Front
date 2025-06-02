@@ -1,0 +1,593 @@
+﻿@{
+    ViewData["Title"] = "Inventario de Vehículos";
+    ViewData["NavbarTitle"] = "Inventario de Vehículos";
+    ViewData["ActivePage"] = "Inventario";
+    Layout = "_Layout";
+}
+
+<div id="vehiculos-app">
+    <div class="row my-4">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">Inventario de Vehículos</h2>
+                <button class="btn btn-primary" v-on:click="mostrarModalCrear">
+                    <i class="fas fa-plus me-1"></i> Agregar Vehículo
+                </button>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form v-on:submit.prevent="filtrarVehiculos">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="filterStatus" class="form-label">Estado</label>
+                                <select class="form-select" v-model="filtros.estado">
+                                    <option value="">Todos</option>
+                                    <option value="1">Disponible</option>
+                                    <option value="2">Asignado</option>
+                                    <option value="3">En Taller</option>
+                                    <option value="4">No Disponible</option>
+                                    <option value="5">De Baja</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="filterType" class="form-label">Tipo</label>
+                                <select class="form-select" v-model="filtros.tipo">
+                                    <option value="">Todos</option>
+                                    <option v-for="tipo in tiposVehiculo" :key="tipo.value" :value="tipo.value">{{ tipo.text }}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="filterBrand" class="form-label">Marca</label>
+                                <input type="text" class="form-control" v-model="filtros.marca" placeholder="Ej: Toyota">
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-filter me-1"></i> Filtrar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Vehicles Table -->
+            <div class="card shadow">
+                <div class="card-body">
+                    <div v-if="cargando" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Cargando vehículos...</p>
+                    </div>
+
+                    <div v-else-if="vehiculos.length === 0" class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> No se encontraron vehículos con los criterios seleccionados.
+                    </div>
+
+                    <div v-else class="table-responsive">
+                        <table class="table table-hover" id="vehiclesTable">
+                            <thead>
+                                <tr>
+                                    <th>Placa Física</th>
+                                    <th>Marca/Modelo</th>
+                                    <th>Tipo</th>
+                                    <th>Año</th>
+                                    <th>Color</th>
+                                    <th>Estado</th>
+                                    <th>Ubicación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="vehiculo in vehiculos" :key="vehiculo.id" v-if="vehiculo">
+                                    <td>{{ obtenerPlacaFisica(vehiculo) }}</td>
+                                    <td>{{ vehiculo.marca || 'Sin marca' }} {{ vehiculo.modelo || 'Sin modelo' }}</td>
+                                    <td>{{ obtenerTextoTipo(vehiculo.tipo) }}</td>
+                                    <td>{{ vehiculo.anio || 'N/A' }}</td>
+                                    <td>{{ vehiculo.color || 'N/A' }}</td>
+                                    <td>
+                                        <span :class="estadoClass(vehiculo.estado)">{{ estadoTexto(vehiculo.estado) }}</span>
+                                    </td>
+                                    <td>{{ obtenerTextoUbicacion(vehiculo.ubicacion) }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary me-1"
+                                                v-on:click="mostrarDetalles(vehiculo)"
+                                                title="Ver Detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary"
+                                                v-on:click="mostrarModalEditar(vehiculo)"
+                                                title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Vehicle Modal -->
+    <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" id="addVehicleModalLabel">{{ editando ? 'Editar' : 'Agregar Nuevo' }} Vehículo</h5>
+                    <button type="button" class="btn-close btn-close-white" v-on:click="cerrarModal('addVehicleModal')" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addVehicleForm" v-on:submit.prevent="guardarVehiculo">
+                        <!-- Información Básica del Vehículo -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-car me-2"></i>Información Básica del Vehículo</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="vehicleBrand" class="form-label">Marca *</label>
+                                        <input type="text" class="form-control" id="vehicleBrand" v-model="vehiculoForm.marca" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="vehicleModel" class="form-label">Modelo *</label>
+                                        <input type="text" class="form-control" id="vehicleModel" v-model="vehiculoForm.modelo" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="vehicleType" class="form-label">Tipo *</label>
+                                        <select class="form-select" id="vehicleType" v-model="vehiculoForm.tipo" required>
+                                            <option value="" selected disabled>Seleccione...</option>
+                                            <option v-for="tipo in tiposVehiculo" :key="tipo.value" :value="tipo.value">{{ tipo.text }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="vehicleYear" class="form-label">Año *</label>
+                                        <input type="number" class="form-control" id="vehicleYear" v-model="vehiculoForm.anio" min="1990" max="2030" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="vehicleColor" class="form-label">Color *</label>
+                                        <input type="text" class="form-control" id="vehicleColor" v-model="vehiculoForm.color" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="vehicleKilometers" class="form-label">Kilometraje *</label>
+                                        <input type="number" class="form-control" id="vehicleKilometers" v-model="vehiculoForm.kilometraje" min="0" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información de Placas y Identificación -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-id-card me-2"></i>Placas e Identificación</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="vehiclePlacaFisica" class="form-label">Placa Física *</label>
+                                        <input type="text" class="form-control" id="vehiclePlacaFisica" v-model="vehiculoForm.placaFisica" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="vehiclePlacaMatricula" class="form-label">Placa Matrícula</label>
+                                        <input type="text" class="form-control" id="vehiclePlacaMatricula" v-model="vehiculoForm.placaMatricula">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="vehiclePlacaValidadaDGII" class="form-label">Placa Validada DGII</label>
+                                        <input type="text" class="form-control" id="vehiclePlacaValidadaDGII" v-model="vehiculoForm.placaValidadaDGII">
+                                        <small class="text-muted">Ingrese la placa según registros de la DGII</small>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="vehicleChassis" class="form-label">Número de Chasis *</label>
+                                        <input type="text" class="form-control" id="vehicleChassis" v-model="vehiculoForm.chasis" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="vehicleChasisValidadoDGII" class="form-label">Chasis Validado DGII</label>
+                                        <input type="text" class="form-control" id="vehicleChasisValidadoDGII" v-model="vehiculoForm.chasisValidadoDGII">
+                                        <small class="text-muted">Ingrese el chasis según registros de la DGII</small>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="vehicleEngine" class="form-label">Número de Motor *</label>
+                                        <input type="text" class="form-control" id="vehicleEngine" v-model="vehiculoForm.numeroMotor" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Estados y Ubicación -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-cog me-2"></i>Estados y Ubicación</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="vehicleStatus" class="form-label">Estado</label>
+                                        <select class="form-select" id="vehicleStatus" v-model="vehiculoForm.estado">
+                                            <option value="1">Disponible</option>
+                                            <option value="2">Asignado</option>
+                                            <option value="3">En Taller</option>
+                                            <option value="4">No Disponible</option>
+                                            <option value="5">De Baja</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="vehicleUbicacion" class="form-label">Ubicación</label>
+                                        <select class="form-select" id="vehicleUbicacion" v-model="vehiculoForm.ubicacion">
+                                            <option value="">Seleccione ubicación...</option>
+                                            <option v-for="ubicacion in ubicacionesVehiculo" :key="ubicacion.value" :value="ubicacion.value">{{ ubicacion.text }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="vehicleEstadoMatricula" class="form-label">Estado Matrícula</label>
+                                        <select class="form-select" id="vehicleEstadoMatricula" v-model="vehiculoForm.estadoMatricula">
+                                            <option value="">Seleccione...</option>
+                                            <option value="Vigente">Vigente</option>
+                                            <option value="Vencida">Vencida</option>
+                                            <option value="En Proceso">En Proceso</option>
+                                            <option value="Suspendida">Suspendida</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información Administrativa -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-building me-2"></i>Información Administrativa</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="vehicleAcquisitionDate" class="form-label">Fecha de Adquisición *</label>
+                                        <input type="date" class="form-control" id="vehicleAcquisitionDate" v-model="vehiculoForm.fechaAdquisicion" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="vehicleNumeroActivoFijo" class="form-label">Número Activo Fijo</label>
+                                        <input type="text" class="form-control" id="vehicleNumeroActivoFijo" v-model="vehiculoForm.numeroActivoFijo">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="vehicleNumeroPaseRapido" class="form-label">Número Pase Rápido</label>
+                                        <input type="text" class="form-control" id="vehicleNumeroPaseRapido" v-model="vehiculoForm.numeroPaseRapido">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="vehicleEstatusJuridico" class="form-label">Estatus Jurídico</label>
+                                        <select class="form-select" id="vehicleEstatusJuridico" v-model="vehiculoForm.estatusJuridico">
+                                            <option value="">Seleccione...</option>
+                                            <option value="Legal">Legal</option>
+                                            <option value="En Proceso">En Proceso</option>
+                                            <option value="Problemas Legales">Problemas Legales</option>
+                                            <option value="Embargado">Embargado</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="vehicleRegistradoContabilidad" v-model="vehiculoForm.registradoContabilidad">
+                                            <label class="form-check-label" for="vehicleRegistradoContabilidad">
+                                                Registrado en Contabilidad
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notas -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-sticky-note me-2"></i>Observaciones</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="vehicleNotes" class="form-label">Notas</label>
+                                    <textarea class="form-control" id="vehicleNotes" v-model="vehiculoForm.notas" rows="3" placeholder="Ingrese observaciones o notas adicionales..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Documentos y Fotos (solo mostrar si es creación o hay documentos seleccionados en edición) -->
+                        <div class="card mb-3" v-if="!editando">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-paperclip me-2"></i>Documentos (Opcional)</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="vehicleDocuments" class="form-label">Documentos del Vehículo</label>
+                                        <input class="form-control" type="file" id="vehicleDocuments" v-on:change="seleccionarDocumentos" accept=".pdf,.jpg,.png,.jpeg,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar" multiple>
+                                        <small class="text-muted">Formatos soportados: PDF, Imágenes (JPG, PNG), Word, Excel, TXT, ZIP, RAR</small>
+                                        <div v-if="documentosSeleccionados.length > 0" class="mt-2">
+                                            <span class="badge bg-info">{{ documentosSeleccionados.length }} documentos seleccionados</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección especial para edición - documentos opcionales -->
+                        <div class="card mb-3" v-if="editando">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-paperclip me-2"></i>Agregar Documentos Adicionales (Opcional)
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>Nota:</strong> Los documentos existentes se mantendrán. Solo seleccione archivos si desea agregar documentos adicionales.
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="vehicleDocuments" class="form-label">Documentos Adicionales</label>
+                                        <input class="form-control" type="file" id="vehicleDocuments" v-on:change="seleccionarDocumentos" accept=".pdf,.jpg,.png,.jpeg,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar" multiple>
+                                        <small class="text-muted">Formatos soportados: PDF, Imágenes (JPG, PNG), Word, Excel, TXT, ZIP, RAR</small>
+                                        <div v-if="documentosSeleccionados.length > 0" class="mt-2">
+                                            <span class="badge bg-info">{{ documentosSeleccionados.length }} documentos adicionales seleccionados</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" v-on:click="cerrarModal('addVehicleModal')">
+                        <i class="fas fa-times me-1"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" v-on:click="guardarVehiculo" :disabled="guardando">
+                        <span v-if="guardando">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Guardando...
+                        </span>
+                        <span v-else>
+                            <i class="fas fa-save me-1"></i> Guardar Vehículo
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vehicle Details Modal -->
+    <div class="modal fade" id="vehicleDetailsModal" tabindex="-1" aria-labelledby="vehicleDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" id="vehicleDetailsModalLabel">
+                        Detalles del Vehículo: {{ vehiculoDetalle.marca }} {{ vehiculoDetalle.modelo }} ({{ obtenerPlacaFisica(vehiculoDetalle) }})
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" v-on:click="cerrarModal('vehicleDetailsModal')" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Pestañas de navegación -->
+                    <ul class="nav nav-tabs mb-3" id="vehicleDetailsTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">
+                                <i class="fas fa-info-circle me-1"></i> Información General
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="technical-tab" data-bs-toggle="tab" data-bs-target="#technical" type="button" role="tab" aria-controls="technical" aria-selected="false">
+                                <i class="fas fa-cogs me-1"></i> Información Técnica
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="administrative-tab" data-bs-toggle="tab" data-bs-target="#administrative" type="button" role="tab" aria-controls="administrative" aria-selected="false">
+                                <i class="fas fa-building me-1"></i> Información Administrativa
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents" type="button" role="tab" aria-controls="documents" aria-selected="false">
+                                <i class="fas fa-file-alt me-1"></i> Documentos
+                                <span class="badge bg-secondary ms-1" v-if="documentos && documentos.length > 0">{{ documentos.length }}</span>
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Contenido de las pestañas -->
+                    <div class="tab-content" id="vehicleDetailsTabsContent">
+                        <!-- Pestaña de Información General -->
+                        <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0"><i class="fas fa-car me-2"></i>Información Básica</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Marca:</strong> <span>{{ vehiculoDetalle.marca || 'N/A' }}</span></p>
+                                            <p><strong>Modelo:</strong> <span>{{ vehiculoDetalle.modelo || 'N/A' }}</span></p>
+                                            <p><strong>Tipo:</strong> <span>{{ obtenerTextoTipo(vehiculoDetalle.tipo) }}</span></p>
+                                            <p><strong>Año:</strong> <span>{{ vehiculoDetalle.anio || 'N/A' }}</span></p>
+                                            <p><strong>Color:</strong> <span>{{ vehiculoDetalle.color || 'N/A' }}</span></p>
+                                            <p><strong>Kilometraje:</strong> <span>{{ vehiculoDetalle.kilometraje || 0 }} km</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Estado y Ubicación</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Estado:</strong> <span :class="estadoClass(vehiculoDetalle.estado)">{{ estadoTexto(vehiculoDetalle.estado) }}</span></p>
+                                            <p><strong>Ubicación:</strong> <span>{{ obtenerTextoUbicacion(vehiculoDetalle.ubicacion) }}</span></p>
+                                            <p><strong>Estado Matrícula:</strong> <span>{{ vehiculoDetalle.estadoMatricula || 'N/A' }}</span></p>
+                                            <p><strong>Fecha de Adquisición:</strong> <span>{{ formatearFecha(vehiculoDetalle.fechaAdquisicion) }}</span></p>
+                                            <p>
+                                                <strong>Registrado en Contabilidad:</strong>
+                                                <span :class="vehiculoDetalle.registradoContabilidad ? 'badge bg-success' : 'badge bg-secondary'">
+                                                    {{ vehiculoDetalle.registradoContabilidad ? 'Sí' : 'No' }}
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3" v-if="vehiculoDetalle.notas">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0"><i class="fas fa-sticky-note me-2"></i>Notas</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>{{ vehiculoDetalle.notas }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pestaña de Información Técnica -->
+                        <div class="tab-pane fade" id="technical" role="tabpanel" aria-labelledby="technical-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0"><i class="fas fa-id-card me-2"></i>Identificación Física</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Placa Física:</strong> <span>{{ vehiculoDetalle.placaFisica || 'N/A' }}</span></p>
+                                            <p><strong>Placa Matrícula:</strong> <span>{{ vehiculoDetalle.placaMatricula || 'N/A' }}</span></p>
+                                            <p><strong>N° Chasis:</strong> <span>{{ vehiculoDetalle.chasis || 'N/A' }}</span></p>
+                                            <p><strong>N° Motor:</strong> <span>{{ vehiculoDetalle.numeroMotor || 'N/A' }}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0"><i class="fas fa-check-circle me-2"></i>Información DGII</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Placa Validada DGII:</strong> <span>{{ vehiculoDetalle.placaValidadaDGII || 'No especificada' }}</span></p>
+                                            <p><strong>Chasis Validado DGII:</strong> <span>{{ vehiculoDetalle.chasisValidadoDGII || 'No especificado' }}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pestaña de Información Administrativa -->
+                        <div class="tab-pane fade" id="administrative" role="tabpanel" aria-labelledby="administrative-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0"><i class="fas fa-building me-2"></i>Información Corporativa</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Número Activo Fijo:</strong> <span>{{ vehiculoDetalle.numeroActivoFijo || 'N/A' }}</span></p>
+                                            <p><strong>Número Pase Rápido:</strong> <span>{{ vehiculoDetalle.numeroPaseRapido || 'N/A' }}</span></p>
+                                            <p><strong>Estatus Jurídico:</strong> <span>{{ vehiculoDetalle.estatusJuridico || 'N/A' }}</span></p>
+                                            <p>
+                                                <strong>Registrado en Contabilidad:</strong>
+                                                <span :class="vehiculoDetalle.registradoContabilidad ? 'badge bg-success' : 'badge bg-secondary'">
+                                                    {{ vehiculoDetalle.registradoContabilidad ? 'Sí' : 'No' }}
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0"><i class="fas fa-calendar me-2"></i>Fechas Importantes</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Fecha de Adquisición:</strong> <span>{{ formatearFecha(vehiculoDetalle.fechaAdquisicion) }}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pestaña de Documentos -->
+                        <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div v-if="cargandoFotos" class="text-center py-4">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Cargando...</span>
+                                        </div>
+                                        <p class="mt-2 text-muted">Cargando documentos...</p>
+                                    </div>
+
+                                    <div v-else-if="!documentos || documentos.length === 0" class="alert alert-info">
+                                        <i class="fas fa-info-circle me-1"></i> No hay documentos disponibles para este vehículo.
+                                    </div>
+
+                                    <div v-else>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6 class="mb-0">Documentos del Vehículo ({{ documentos.length }})</h6>
+                                        </div>
+
+                                        <!-- Lista simple de documentos -->
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Tipo</th>
+                                                        <th>Tamaño</th>
+                                                        <th>Fecha Subida</th>
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="documento in documentos" :key="documento.id">
+                                                        <td>{{ documento.nombre }}</td>
+                                                        <td>
+                                                            <span class="badge bg-primary">{{ obtenerTipoDocumento(documento.nombre) }}</span>
+                                                        </td>
+                                                        <td>{{ formatearTamano(documento.tamano) }}</td>
+                                                        <td>{{ formatearFecha(documento.fechaCreacion) }}</td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-primary me-1"
+                                                                    v-on:click="descargarDocumento(documento.id)"
+                                                                    title="Descargar">
+                                                                <i class="fas fa-download"></i>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-danger"
+                                                                    v-on:click="eliminarDocumento(documento.id)"
+                                                                    title="Eliminar">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" v-on:click="cerrarModal('vehicleDetailsModal')">
+                        <i class="fas fa-times me-1"></i> Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="~/js/vehiculos.js"></script>
+}

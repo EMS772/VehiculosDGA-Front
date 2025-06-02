@@ -1,0 +1,298 @@
+﻿@{
+    ViewData["Title"] = "Gestión de Seguros";
+    ViewData["NavbarTitle"] = "Gestión de Seguros";
+    ViewData["ActivePage"] = "Seguros";
+}
+
+<div id="seguros-app">
+    <div class="row my-4">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">Gestión de Seguros</h2>
+                <button class="btn btn-primary" @@click="mostrarModalCrear">
+                    <i class="fas fa-plus me-1"></i> Nueva Póliza
+                </button>
+            </div>
+
+            <!-- Insurance Table -->
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="insuranceTable">
+                            <thead>
+                                <tr>
+                                    <th>Vehículo</th>
+                                    <th>Compañía</th>
+                                    <th>N° Póliza</th>
+                                    <th>Tipo</th>
+                                    <th>Cobertura</th>
+                                    <th>Vencimiento</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="seguro in seguros" :key="seguro.id">
+                                    <td>{{ seguro.vehiculoInfo }}</td>
+                                    <td>{{ seguro.compania }}</td>
+                                    <td>{{ seguro.numeroPoliza }}</td>
+                                    <td>{{ seguro.tipo }}</td>
+                                    <td>${{ seguro.cobertura.toFixed(2) }}</td>
+                                    <td :class="vencimientoClass(seguro.fechaVencimiento)">{{ formatDate(seguro.fechaVencimiento) }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" 
+                                                @@click="verDetalles(seguro)"
+                                                title="Ver Detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" 
+                                                @@click="mostrarModalEditar(seguro)"
+                                                title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" 
+                                                @@click="verDocumentos(seguro)"
+                                                title="Documentos">
+                                            <i class="fas fa-file-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insurance Modal -->
+    <div class="modal fade" id="insuranceModal" tabindex="-1" aria-labelledby="insuranceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" id="insuranceModalLabel">{{ editando ? 'Editar' : 'Registrar' }} Póliza de Seguro</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="insuranceForm" @@submit.prevent="guardarSeguro">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="insuranceVehicle" class="form-label">Vehículo</label>
+                                <select class="form-select" id="insuranceVehicle" v-model="seguroForm.vehiculoId" required>
+                                    <option value="" selected disabled>Seleccione...</option>
+                                    <option v-for="vehiculo in vehiculos" :key="vehiculo.id" :value="vehiculo.id">
+                                        {{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.placa }})
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="insuranceCompany" class="form-label">Compañía de Seguros</label>
+                                <input type="text" class="form-control" id="insuranceCompany" v-model="seguroForm.compania" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="insurancePolicy" class="form-label">Número de Póliza</label>
+                                <input type="text" class="form-control" id="insurancePolicy" v-model="seguroForm.numeroPoliza" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="insuranceType" class="form-label">Tipo de Póliza</label>
+                                <select class="form-select" id="insuranceType" v-model="seguroForm.tipo" required>
+                                    <option value="" selected disabled>Seleccione...</option>
+                                    <option value="Todo Riesgo">Todo Riesgo</option>
+                                    <option value="Terceros Completo">Terceros Completo</option>
+                                    <option value="Responsabilidad Civil">Responsabilidad Civil</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="insuranceStart" class="form-label">Fecha Inicio</label>
+                                <input type="date" class="form-control" id="insuranceStart" v-model="seguroForm.fechaInicio" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="insuranceEnd" class="form-label">Fecha Vencimiento</label>
+                                <input type="date" class="form-control" id="insuranceEnd" v-model="seguroForm.fechaVencimiento" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="insuranceCoverage" class="form-label">Cobertura ($)</label>
+                                <input type="number" class="form-control" id="insuranceCoverage" v-model="seguroForm.cobertura" min="0" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="insuranceDeductible" class="form-label">Deducible ($)</label>
+                                <input type="number" class="form-control" id="insuranceDeductible" v-model="seguroForm.deducible" min="0" step="0.01" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="insuranceCost" class="form-label">Costo de Póliza ($)</label>
+                                <input type="number" class="form-control" id="insuranceCost" v-model="seguroForm.costo" min="0" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="insuranceDocuments" class="form-label">Constancia de Pago del seguro - (Formato PDF, máximo 5MB)</label>
+                            <input class="form-control" type="file" id="insuranceDocuments" @@change="onFileSelected" accept=".pdf" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" @@click="guardarSeguro">Guardar Póliza</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const { createApp } = Vue;
+        
+        createApp({
+            data() {
+                return {
+                    seguros: [],
+                    vehiculos: [],
+                    seguroForm: {
+                        id: 0,
+                        vehiculoId: '',
+                        compania: '',
+                        numeroPoliza: '',
+                        tipo: '',
+                        fechaInicio: new Date().toISOString().slice(0, 10),
+                        fechaVencimiento: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().slice(0, 10),
+                        cobertura: 0,
+                        deducible: 0,
+                        costo: 0,
+                        documento: null
+                    },
+                    editando: false,
+                    modalSeguro: null
+                }
+            },
+            mounted() {
+                this.cargarSeguros();
+                this.cargarVehiculos();
+                this.modalSeguro = new bootstrap.Modal(document.getElementById('insuranceModal'));
+            },
+            methods: {
+                async cargarSeguros() {
+                    try {
+                        const response = await axios.get('/api/Seguros');
+                        this.seguros = response.data;
+                    } catch (error) {
+                        console.error('Error al cargar seguros:', error);
+                    }
+                },
+                async cargarVehiculos() {
+                    try {
+                        const response = await axios.get('/api/Vehiculos');
+                        this.vehiculos = response.data;
+                    } catch (error) {
+                        console.error('Error al cargar vehículos:', error);
+                    }
+                },
+                mostrarModalCrear() {
+                    this.editando = false;
+                    this.seguroForm = {
+                        id: 0,
+                        vehiculoId: '',
+                        compania: '',
+                        numeroPoliza: '',
+                        tipo: '',
+                        fechaInicio: new Date().toISOString().slice(0, 10),
+                        fechaVencimiento: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().slice(0, 10),
+                        cobertura: 0,
+                        deducible: 0,
+                        costo: 0,
+                        documento: null
+                    };
+                    this.modalSeguro.show();
+                },
+                mostrarModalEditar(seguro) {
+                    this.editando = true;
+                    this.seguroForm = {
+                        id: seguro.id,
+                        vehiculoId: seguro.vehiculoId,
+                        compania: seguro.compania,
+                        numeroPoliza: seguro.numeroPoliza,
+                        tipo: seguro.tipo,
+                        fechaInicio: seguro.fechaInicio ? new Date(seguro.fechaInicio).toISOString().slice(0, 10) : '',
+                        fechaVencimiento: seguro.fechaVencimiento ? new Date(seguro.fechaVencimiento).toISOString().slice(0, 10) : '',
+                        cobertura: seguro.cobertura,
+                        deducible: seguro.deducible,
+                        costo: seguro.costo,
+                        documento: null
+                    };
+                    this.modalSeguro.show();
+                },
+                onFileSelected(event) {
+                    this.seguroForm.documento = event.target.files[0];
+                },
+                async guardarSeguro() {
+                    try {
+                        const formData = new FormData();
+                        formData.append('id', this.seguroForm.id);
+                        formData.append('vehiculoId', this.seguroForm.vehiculoId);
+                        formData.append('compania', this.seguroForm.compania);
+                        formData.append('numeroPoliza', this.seguroForm.numeroPoliza);
+                        formData.append('tipo', this.seguroForm.tipo);
+                        formData.append('fechaInicio', this.seguroForm.fechaInicio);
+                        formData.append('fechaVencimiento', this.seguroForm.fechaVencimiento);
+                        formData.append('cobertura', this.seguroForm.cobertura);
+                        formData.append('deducible', this.seguroForm.deducible);
+                        formData.append('costo', this.seguroForm.costo);
+                        
+                        if (this.seguroForm.documento) {
+                            formData.append('documento', this.seguroForm.documento);
+                        }
+
+                        if (this.editando) {
+                            await axios.put(`/api/Seguros/${this.seguroForm.id}`, formData, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            });
+                        } else {
+                            await axios.post('/api/Seguros', formData, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            });
+                        }
+
+                        await this.cargarSeguros();
+                        this.modalSeguro.hide();
+                        alert(this.editando ? 'Póliza actualizada con éxito' : 'Póliza registrada con éxito');
+                    } catch (error) {
+                        console.error('Error al guardar póliza:', error);
+                        alert('Error al guardar póliza');
+                    }
+                },
+                verDetalles(seguro) {
+                    alert(`Ver detalles de seguro ${seguro.id} (Funcionalidad en desarrollo)`);
+                    // Aquí implementarías la lógica para mostrar los detalles en un modal
+                },
+                verDocumentos(seguro) {
+                    alert(`Ver documentos de seguro ${seguro.id} (Funcionalidad en desarrollo)`);
+                    // Aquí implementarías la lógica para mostrar los documentos
+                },
+                formatDate(dateString) {
+                    if (!dateString) return '-';
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('es-ES');
+                },
+                vencimientoClass(fechaVencimiento) {
+                    if (!fechaVencimiento) return '';
+                    
+                    const hoy = new Date();
+                    const vencimiento = new Date(fechaVencimiento);
+                    const diff = Math.floor((vencimiento - hoy) / (1000 * 60 * 60 * 24));
+                    
+                    if (diff < 0) return 'text-danger fw-bold';
+                    if (diff < 30) return 'text-warning fw-bold';
+                    return '';
+                }
+            }
+        }).mount('#seguros-app');
+    </script>
+}

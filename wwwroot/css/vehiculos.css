@@ -1,0 +1,78 @@
+﻿/* Estilos específicos para la vista de vehículos */
+.timeline {
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 0.5rem;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: var(--light-gray);
+    }
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.timeline-badge {
+    position: absolute;
+    left: -1.5rem;
+    top: 0;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    z-index: 1;
+}
+
+.timeline-content {
+    padding-left: 1rem;
+}
+
+/* Mejoras para las tablas */
+.table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.table th {
+    white-space: nowrap;
+}
+
+/* Estilos para los botones de acción */
+.btn-action {
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* Ajustes para los modales */
+.modal-xl .modal-body {
+    padding: 1.5rem;
+}
+
+/* Estilos para las pestañas */
+.nav-tabs .nav-link {
+    border: none;
+    color: var(--gray-color);
+    font-weight: 500;
+    padding: 0.75rem 1.25rem;
+}
+
+    .nav-tabs .nav-link.active {
+        color: var(--primary-color);
+        border-bottom: 3px solid var(--primary-color);
+        background-color: transparent;
+    }
+
+    .nav-tabs .nav-link:hover:not(.active) {
+        color: var(--dark-color);
+    }

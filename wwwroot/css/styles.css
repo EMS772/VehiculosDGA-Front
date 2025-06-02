@@ -1,0 +1,561 @@
+﻿:root {
+    --primary-color: #0a2e5a; /* Azul marino más moderno */
+    --secondary-color: #1a4b8c; /* Azul más vibrante */
+    --accent-color: #3a9bd9; /* Azul cielo más brillante */
+    --success-color: #6bbd4a; /* Verde más fresco */
+    --light-color: #f5f9fc; /* Azul claro muy suave */
+    --medium-color: #a8b2b8; /* Gris azulado */
+    --dark-color: #2d3748; /* Gris oscuro moderno */
+    --gray-color: #718096; /* Gris medio balanceado */
+    --light-gray: #e2e8f0; /* Gris claro suave */
+    --highlight-color: #ff6b35; /* Naranja para acentos */
+}
+
+body {
+    background-color: var(--light-color);
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    color: var(--dark-color);
+    line-height: 1.6;
+}
+
+#wrapper {
+    display: flex;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Sidebar Modernizado */
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: 280px; /* Un poco más ancho */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(160deg, var(--primary-color), var(--secondary-color));
+    position: fixed;
+    z-index: 1000;
+    margin-left: 0;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+    #sidebar-wrapper .sidebar-heading {
+        padding: 1.25rem 1.5rem;
+        font-size: 1.3rem;
+        background-color: rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(5px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    #sidebar-wrapper .logo {
+        max-width: 200px;
+        filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        transition: transform 0.3s ease;
+    }
+
+        #sidebar-wrapper .logo:hover {
+            transform: scale(1.05);
+        }
+
+    #sidebar-wrapper .list-group {
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    #sidebar-wrapper .list-group-item {
+        border: none;
+        padding: 1rem 1.5rem;
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+        background-color: transparent;
+        color: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+    }
+
+        #sidebar-wrapper .list-group-item i {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        #sidebar-wrapper .list-group-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        #sidebar-wrapper .list-group-item.active {
+            background-color: var(--accent-color);
+            box-shadow: 0 4px 12px rgba(58, 155, 217, 0.3);
+            font-weight: 600;
+        }
+
+/* Contenido Principal */
+#page-content-wrapper {
+    width: 100%;
+    min-width: 0;
+    margin-left: 280px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding-bottom: 2rem;
+}
+
+/* Estado Toggled */
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: -280px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    margin-left: 0;
+}
+
+/* Navbar Modernizado */
+.navbar {
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 0.75rem 1.5rem;
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.9);
+    position: sticky;
+    top: 0;
+    z-index: 900;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: var(--primary-color) !important;
+    font-size: 1.25rem;
+    letter-spacing: -0.5px;
+}
+
+/* Cards Modernas */
+.card {
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.75rem;
+    border-radius: 12px;
+    background-color: white;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid var(--light-gray);
+    font-weight: 600;
+    color: var(--primary-color);
+    padding: 1.25rem 1.5rem;
+    font-size: 1.1rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Bordes de Cards con Efecto Degradado */
+.card.border-left-primary {
+    border-left: 4px solid;
+    border-image: linear-gradient(to bottom, var(--primary-color), var(--accent-color)) 1;
+}
+
+.card.border-left-success {
+    border-left: 4px solid;
+    border-image: linear-gradient(to bottom, var(--success-color), #a0d468) 1;
+}
+
+.card.border-left-warning {
+    border-left: 4px solid;
+    border-image: linear-gradient(to bottom, var(--highlight-color), #ff9a44) 1;
+}
+
+.card.border-left-danger {
+    border-left: 4px solid;
+    border-image: linear-gradient(to bottom, #e74c3c, #ff6b6b) 1;
+}
+
+/* Badges Modernos */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+}
+
+    .badge.bg-primary {
+        background-color: var(--primary-color) !important;
+    }
+
+    .badge.bg-success {
+        background: linear-gradient(135deg, var(--success-color), #5cb85c);
+    }
+
+    .badge.bg-warning {
+        background: linear-gradient(135deg, var(--highlight-color), #f0ad4e);
+        color: white !important;
+    }
+
+    .badge.bg-danger {
+        background: linear-gradient(135deg, #e74c3c, #ff6b6b);
+    }
+
+/* Botones Modernos */
+.btn {
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    box-shadow: 0 4px 12px rgba(10, 46, 90, 0.2);
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--secondary-color), #2a5a9c);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(10, 46, 90, 0.3);
+    }
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    background-color: transparent;
+}
+
+    .btn-outline-primary:hover {
+        background: var(--primary-color);
+        box-shadow: 0 4px 12px rgba(10, 46, 90, 0.2);
+    }
+
+/* Tablas Modernas */
+.table {
+    font-size: 0.9rem;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .table thead th {
+        border-bottom-width: 1px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        color: var(--gray-color);
+        background-color: rgba(245, 249, 252, 0.8);
+        backdrop-filter: blur(5px);
+        position: sticky;
+        top: 0;
+        padding: 1rem;
+    }
+
+.table-hover tbody tr:hover {
+    background-color: rgba(58, 155, 217, 0.08);
+}
+
+.table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--light-gray);
+    vertical-align: middle;
+}
+
+/* Modales Modernos */
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-bottom: none;
+    padding: 1.5rem;
+}
+
+.modal-title {
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--light-gray);
+    padding: 1.25rem 1.5rem;
+}
+
+/* Formularios Modernos */
+.form-control, .form-select {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--light-gray);
+    transition: all 0.3s ease;
+}
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(58, 155, 217, 0.2);
+        transform: translateY(-1px);
+    }
+
+/* Efectos de Hover */
+.hover-shadow:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-3px);
+    transition: all 0.3s ease;
+}
+
+/* Efecto de "Card Lift" */
+.card-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .card-lift:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+    }
+
+/* Responsive */
+@media (max-width: 992px) {
+    #sidebar-wrapper {
+        margin-left: -280px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        margin-left: 0;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        margin-left: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+
+    .card {
+        border-radius: 10px;
+    }
+}
+
+/* Animación sutil para elementos */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content-section {
+    animation: fadeIn 0.5s ease forwards;
+    padding-top: 2rem;
+}
+
+/* Scroll personalizado */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 4px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--secondary-color);
+    }
+
+/* ------------------------- */
+/* Estilos para el Modal de Devolución/Descargo */
+/* ------------------------- */
+
+/* Estructura base del modal */
+#returnVehicleModal .modal-content {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+#returnVehicleModal .modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 1.5rem;
+    border-bottom: none;
+}
+
+#returnVehicleModal .modal-title {
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    font-size: 1.25rem;
+}
+
+#returnVehicleModal .modal-body {
+    padding: 1.5rem;
+}
+
+#returnVehicleModal .modal-footer {
+    border-top: 1px solid var(--light-gray);
+    padding: 1.25rem 1.5rem;
+    background-color: #fff;
+}
+
+/* Campos de formulario específicos */
+#returnVehicleForm .form-control[readonly] {
+    background-color: var(--light-color);
+    border-color: var(--light-gray);
+}
+
+#returnVehicleForm .form-control:not([readonly]):focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.25rem rgba(58, 155, 217, 0.25);
+}
+
+#returnVehicleForm .form-label {
+    font-weight: 500;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Estilo para el campo de estado del vehículo */
+#returnCondition {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
+/* Estilo para el campo de archivos */
+#returnDocuments {
+    padding: 0.5rem;
+    border: 2px dashed var(--light-gray);
+    transition: all 0.3s ease;
+}
+
+    #returnDocuments:hover {
+        border-color: var(--accent-color);
+        background-color: rgba(58, 155, 217, 0.05);
+    }
+
+    #returnDocuments::file-selector-button {
+        padding: 0.375rem 0.75rem;
+        margin-right: 1rem;
+        background-color: var(--light-gray);
+        border: none;
+        border-radius: 4px;
+        color: var(--dark-color);
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+        #returnDocuments::file-selector-button:hover {
+            background-color: var(--medium-color);
+            cursor: pointer;
+        }
+
+/* Texto de ayuda */
+#returnVehicleForm small.text-muted {
+    font-size: 0.75rem;
+    color: var(--gray-color) !important;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+/* Botón de guardar específico para este modal */
+#saveReturnBtn {
+    background: linear-gradient(135deg, var(--success-color), #5cb85c);
+    border: none;
+    box-shadow: 0 4px 12px rgba(107, 189, 74, 0.3);
+    padding: 0.6rem 1.5rem;
+}
+
+    #saveReturnBtn:hover {
+        background: linear-gradient(135deg, #5cb85c, #4ca64c);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(107, 189, 74, 0.4);
+    }
+
+/* Estilos para la sección de documentos */
+.document-upload-section {
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    background-color: rgba(245, 249, 252, 0.5);
+}
+
+    .document-upload-section label {
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+/* ------------------------- */
+/* Estilos responsivos para el modal */
+/* ------------------------- */
+@media (max-width: 768px) {
+    #returnVehicleModal .modal-dialog {
+        margin: 0.5rem;
+    }
+
+    #returnVehicleModal .modal-body {
+        padding: 1rem;
+    }
+
+    #returnVehicleForm .row > div {
+        margin-bottom: 1rem;
+    }
+
+        #returnVehicleForm .row > div:last-child {
+            margin-bottom: 0;
+        }
+}
+
+/* ------------------------- */
+/* Efectos de transición para el modal */
+/* ------------------------- */
+#returnVehicleModal.fade .modal-dialog {
+    transition: transform 0.3s ease-out, opacity 0.3s ease;
+    transform: translate(0, -20px);
+}
+
+#returnVehicleModal.show .modal-dialog {
+    transform: translate(0, 0);
+}
+
+/* ------------------------- */
+/* Estilos para los campos deshabilitados */
+/* ------------------------- */
+#returnVehicleForm .form-control[readonly] {
+    cursor: not-allowed;
+    opacity: 0.9;
+}
+
+    #returnVehicleForm .form-control[readonly]:focus {
+        box-shadow: none;
+        border-color: var(--light-gray);
+    }
