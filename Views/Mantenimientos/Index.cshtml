@@ -1,0 +1,354 @@
+﻿@{
+    ViewData["Title"] = "Mantenimiento de Vehículos";
+    ViewData["NavbarTitle"] = "Mantenimiento de Vehículos";
+    ViewData["ActivePage"] = "Mantenimiento";
+    ViewData["ActiveMenu"] = "Mantenimiento"; // o "Vehiculos", "Colaboradores", etc.
+
+}
+
+<div id="mantenimientos-app">
+    <div class="row my-4">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">Mantenimiento de Vehículos</h2>
+                <button class="btn btn-primary" @@click="mostrarModalCrear">
+                    <i class="fas fa-plus me-1"></i> Registrar Mantenimiento
+                </button>
+            </div>
+
+            <!-- Maintenance Table -->
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="maintenanceTable">
+                            <thead>
+                                <tr>
+                                    <th>Vehículo</th>
+                                    <th>Tipo</th>
+                                    <th>Fecha Ingreso</th>
+                                    <th>Fecha Salida</th>
+                                    <th>Taller</th>
+                                    <th>Costo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="mantenimiento in mantenimientos" :key="mantenimiento.id">
+                                    <td>{{ mantenimiento.vehiculoInfo }}</td>
+                                    <td>{{ mantenimiento.tipo }}</td>
+                                    <td>{{ formatDate(mantenimiento.fechaIngreso) }}</td>
+                                    <td>{{ mantenimiento.fechaFinalizacion ? formatDate(mantenimiento.fechaFinalizacion) : '-' }}</td>
+                                    <td>{{ mantenimiento.taller }}</td>
+                                    <td>${{ mantenimiento.costo.toFixed(2) }}</td>
+                                    <td>
+                                        <span :class="estadoClass(mantenimiento.estado)">{{ mantenimiento.estado }}</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" 
+                                                @@click="verDetalles(mantenimiento)"
+                                                title="Ver Detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button v-if="mantenimiento.estado === 'En Proceso'" 
+                                                class="btn btn-sm btn-outline-success" 
+                                                @@click="mostrarModalFinalizar(mantenimiento)"
+                                                title="Finalizar">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Maintenance Modal -->
+    <div class="modal fade" id="maintenanceModal" tabindex="-1" aria-labelledby="maintenanceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" id="maintenanceModalLabel">Registrar Mantenimiento</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="maintenanceForm" @@submit.prevent="guardarMantenimiento">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="maintenanceVehicle" class="form-label">Vehículo</label>
+                                <select class="form-select" id="maintenanceVehicle" v-model="mantenimientoForm.vehiculoId" required>
+                                    <option value="" selected disabled>Seleccione...</option>
+                                    <option v-for="vehiculo in vehiculos" :key="vehiculo.id" :value="vehiculo.id">
+                                        {{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.placa }})
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="maintenanceType" class="form-label">Tipo de Mantenimiento</label>
+                                <select class="form-select" id="maintenanceType" v-model="mantenimientoForm.tipo" required>
+                                    <option value="" selected disabled>Seleccione...</option>
+                                    <option value="Preventivo">Preventivo</option>
+                                    <option value="Correctivo">Correctivo</option>
+                                    <option value="Reparacion">Reparación</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="maintenanceDateIn" class="form-label">Fecha de Ingreso</label>
+                                <input type="date" class="form-control" id="maintenanceDateIn" v-model="mantenimientoForm.fechaIngreso" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="maintenanceDateOut" class="form-label">Fecha Estimada de Salida</label>
+                                <input type="date" class="form-control" id="maintenanceDateOut" v-model="mantenimientoForm.fechaEstimadaSalida">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="maintenanceWorkshop" class="form-label">Taller</label>
+                                <select class="form-select" id="maintenanceWorkshop" v-model="mantenimientoForm.taller" required>
+                                    <option value="" selected disabled>Seleccione...</option>
+                                    <option value="Taller DGA">Taller DGA</option>
+                                    <option value="Taller Autorizado">Taller Autorizado</option>
+                                    <option value="Concesionario">Concesionario</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="maintenanceCost" class="form-label">Costo Estimado ($)</label>
+                                <input type="number" class="form-control" id="maintenanceCost" v-model="mantenimientoForm.costo" min="0" step="0.01">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="maintenanceDescription" class="form-label">Descripción del Trabajo</label>
+                            <textarea class="form-control" id="maintenanceDescription" v-model="mantenimientoForm.descripcion" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="maintenanceDocuments" class="form-label">Diagnóstico Técnico (emitido por el taller) - (Formato PDF, máximo 5MB)</label>
+                            <input class="form-control" type="file" id="maintenanceDocuments" @@change="onFileSelected" accept=".pdf">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" @@click="guardarMantenimiento">Guardar Mantenimiento</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Finalize Maintenance Modal -->
+    <div class="modal fade" id="finalizeMaintenanceModal" tabindex="-1" aria-labelledby="finalizeMaintenanceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" id="finalizeMaintenanceModalLabel">Finalizar Mantenimiento</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="finalizeMaintenanceForm" @@submit.prevent="finalizarMantenimiento">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Vehículo</label>
+                                <input type="text" class="form-control" :value="finalizarForm.vehiculoInfo" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tipo de Mantenimiento</label>
+                                <input type="text" class="form-control" :value="finalizarForm.tipo" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="finalizeDate" class="form-label">Fecha de Finalización</label>
+                                <input type="date" class="form-control" id="finalizeDate" v-model="finalizarForm.fechaFinalizacion" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="finalizeCost" class="form-label">Costo Final ($)</label>
+                                <input type="number" class="form-control" id="finalizeCost" v-model="finalizarForm.costoFinal" min="0" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="finalizeDescription" class="form-label">Descripción Final del Trabajo</label>
+                            <textarea class="form-control" id="finalizeDescription" v-model="finalizarForm.descripcionFinal" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="finalizeDocuments" class="form-label">Documentos de Finalización (Factura/Comprobante) - (Formato PDF, máximo 5MB)</label>
+                            <input class="form-control" type="file" id="finalizeDocuments" @@change="onFinalizeFileSelected" accept=".pdf,.jpg,.png" multiple>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" @@click ="finalizarMantenimiento">Finalizar Mantenimiento</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    mantenimientos: [],
+                    vehiculos: [],
+                    mantenimientoForm: {
+                        id: 0,
+                        vehiculoId: '',
+                        tipo: '',
+                        fechaIngreso: new Date().toISOString().slice(0, 10),
+                        fechaEstimadaSalida: '',
+                        taller: '',
+                        costo: 0,
+                        descripcion: '',
+                        diagnostico: null
+                    },
+                    finalizarForm: {
+                        id: 0,
+                        vehiculoInfo: '',
+                        tipo: '',
+                        fechaFinalizacion: new Date().toISOString().slice(0, 10),
+                        costoFinal: 0,
+                        descripcionFinal: '',
+                        documentos: []
+                    },
+                    modalMantenimiento: null,
+                    modalFinalizar: null
+                }
+            },
+            mounted() {
+                this.cargarMantenimientos();
+                this.cargarVehiculos();
+                this.modalMantenimiento = new bootstrap.Modal(document.getElementById('maintenanceModal'));
+                this.modalFinalizar = new bootstrap.Modal(document.getElementById('finalizeMaintenanceModal'));
+            },
+            methods: {
+                async cargarMantenimientos() {
+                    try {
+                        const response = await axios.get('/api/Mantenimientos');
+                        this.mantenimientos = response.data;
+                    } catch (error) {
+                        console.error('Error al cargar mantenimientos:', error);
+                    }
+                },
+                async cargarVehiculos() {
+                    try {
+                        const response = await axios.get('/api/Vehiculos');
+                        this.vehiculos = response.data;
+                    } catch (error) {
+                        console.error('Error al cargar vehículos:', error);
+                    }
+                },
+                mostrarModalCrear() {
+                    this.mantenimientoForm = {
+                        id: 0,
+                        vehiculoId: '',
+                        tipo: '',
+                        fechaIngreso: new Date().toISOString().slice(0, 10),
+                        fechaEstimadaSalida: '',
+                        taller: '',
+                        costo: 0,
+                        descripcion: '',
+                        diagnostico: null
+                    };
+                    this.modalMantenimiento.show();
+                },
+                mostrarModalFinalizar(mantenimiento) {
+                    this.finalizarForm = {
+                        id: mantenimiento.id,
+                        vehiculoInfo: mantenimiento.vehiculoInfo,
+                        tipo: mantenimiento.tipo,
+                        fechaFinalizacion: new Date().toISOString().slice(0, 10),
+                        costoFinal: mantenimiento.costo,
+                        descripcionFinal: mantenimiento.descripcion,
+                        documentos: []
+                    };
+                    this.modalFinalizar.show();
+                },
+                onFileSelected(event) {
+                    this.mantenimientoForm.diagnostico = event.target.files[0];
+                },
+                onFinalizeFileSelected(event) {
+                    this.finalizarForm.documentos = event.target.files;
+                },
+                async guardarMantenimiento() {
+                    try {
+                        const formData = new FormData();
+                        formData.append('vehiculoId', this.mantenimientoForm.vehiculoId);
+                        formData.append('tipo', this.mantenimientoForm.tipo);
+                        formData.append('fechaIngreso', this.mantenimientoForm.fechaIngreso);
+                        formData.append('fechaEstimadaSalida', this.mantenimientoForm.fechaEstimadaSalida);
+                        formData.append('taller', this.mantenimientoForm.taller);
+                        formData.append('costo', this.mantenimientoForm.costo);
+                        formData.append('descripcion', this.mantenimientoForm.descripcion);
+                        if (this.mantenimientoForm.diagnostico) {
+                            formData.append('diagnostico', this.mantenimientoForm.diagnostico);
+                        }
+
+                        await axios.post('/api/Mantenimientos', formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        });
+
+                        await this.cargarMantenimientos();
+                        this.modalMantenimiento.hide();
+                        alert('Mantenimiento registrado con éxito');
+                    } catch (error) {
+                        console.error('Error al registrar mantenimiento:', error);
+                        alert('Error al registrar mantenimiento');
+                    }
+                },
+                async finalizarMantenimiento() {
+                    try {
+                        const formData = new FormData();
+                        formData.append('id', this.finalizarForm.id);
+                        formData.append('fechaFinalizacion', this.finalizarForm.fechaFinalizacion);
+                        formData.append('costoFinal', this.finalizarForm.costoFinal);
+                        formData.append('descripcionFinal', this.finalizarForm.descripcionFinal);
+
+                        if (this.finalizarForm.documentos.length > 0) {
+                            for (let i = 0; i < this.finalizarForm.documentos.length; i++) {
+                                formData.append('documentos', this.finalizarForm.documentos[i]);
+                            }
+                        }
+
+                        await axios.put(`/api/Mantenimientos/${this.finalizarForm.id}/finalizar`, formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        });
+
+                        await this.cargarMantenimientos();
+                        this.modalFinalizar.hide();
+                        alert('Mantenimiento finalizado con éxito');
+                    } catch (error) {
+                        console.error('Error al finalizar mantenimiento:', error);
+                        alert('Error al finalizar mantenimiento');
+                    }
+                },
+                verDetalles(mantenimiento) {
+                    alert(`Ver detalles de mantenimiento ${mantenimiento.id} (Funcionalidad en desarrollo)`);
+                    // Aquí implementarías la lógica para mostrar los detalles en un modal
+                },
+                formatDate(dateString) {
+                    if (!dateString) return '-';
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('es-ES');
+                },
+                estadoClass(estado) {
+                    const classes = {
+                        'En Proceso': 'badge bg-warning',
+                        'Completado': 'badge bg-success'
+                    };
+                    return classes[estado] || 'badge bg-secondary';
+                }
+            }
+        }).mount('#mantenimientos-app');
+    </script>
+}
