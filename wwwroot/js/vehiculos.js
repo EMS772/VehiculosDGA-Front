@@ -1,8 +1,8 @@
-﻿// ============================================
+﻿    // ============================================
 // CONFIGURACIÓN DE AXIOS Y API
 // ============================================
 
-const API_BASE_URL = 'https://localhost:7037';
+const API_BASE_URL = 'https://localhost:44339';
 
 const apiClient = axios.create({
     baseURL: API_BASE_URL,

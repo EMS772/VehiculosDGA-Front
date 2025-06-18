@@ -1,11 +1,19 @@
-﻿// Configuración de Axios para la API
+﻿// TEST: Si ves esta alerta, significa que este archivo SÍ se está cargando
+alert('ARCHIVO login.js CARGADO - Puerto configurado: 44339');
+
+// Configuración de Axios para la API
 const apiClient = axios.create({
-    baseURL: 'https://localhost:7037', // Reemplaza PUERTO_DE_TU_API con el puerto real
+    baseURL: 'https://localhost:44339', // TU PUERTO CORRECTO
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json'
     }
 });
+
+// TEST: Verificar en consola
+console.log('=== VERIFICACIÓN DE CONFIGURACIÓN ===');
+console.log('BaseURL configurada:', apiClient.defaults.baseURL);
+console.log('Si ves 44339 arriba, la configuración es correcta');
 
 // Instancia de Vue para el login
 new Vue({
@@ -33,50 +41,56 @@ new Vue({
                     return;
                 }
 
-                console.log('Intentando login con URL:', 'https://localhost:7037/api/Auth/Login');
-                console.log('Datos a enviar:', {
-                    email: this.credentials.email,
-                    password: '***' // No mostrar la contraseña real
-                });
+                // FORZAR URL COMPLETA - IGNORAR CONFIGURACIÓN DE AXIOS
+                const fullUrl = 'https://localhost:44339/api/Auth/Login';
 
-                // Llamada a la API de login
-                const response = await apiClient.post('/api/Auth/Login', {
-                    email: this.credentials.email,
-                    password: this.credentials.password
+                console.log('=== INTENTANDO LOGIN ===');
+                console.log('URL FORZADA:', fullUrl);
+
+                // USAR AXIOS DIRECTAMENTE SIN LA INSTANCIA apiClient
+                const response = await axios({
+                    method: 'post',
+                    url: fullUrl,
+                    data: {
+                        email: this.credentials.email,
+                        password: this.credentials.password
+                    },
+                    timeout: 10000,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 });
 
                 // Login exitoso
                 if (response.data) {
                     this.success = 'Inicio de sesión exitoso. Redirigiendo...';
 
-                    // Guardar token si viene en la respuesta
                     if (response.data.token) {
                         localStorage.setItem('authToken', response.data.token);
                     }
 
-                    // Guardar datos del usuario si vienen en la respuesta
                     if (response.data.user) {
                         localStorage.setItem('userData', JSON.stringify(response.data.user));
                     }
 
-                    // Recordar email si está marcado
                     if (this.rememberMe) {
                         localStorage.setItem('rememberedEmail', this.credentials.email);
                     } else {
                         localStorage.removeItem('rememberedEmail');
                     }
 
-                    // Redirigir al Index del controlador Home
                     setTimeout(() => {
                         window.location.href = '/Home/Index';
                     }, 1000);
                 }
 
             } catch (error) {
-                console.error('Error en login:', error);
+                console.error('=== ERROR DETALLADO ===');
+                console.error('Error completo:', error);
+                console.error('URL que falló:', error.config?.url || 'URL no disponible');
+                console.error('Status:', error.response?.status || 'No status');
 
                 if (error.response) {
-                    // Error de respuesta del servidor
                     switch (error.response.status) {
                         case 400:
                             this.error = 'Datos de inicio de sesión inválidos';
@@ -91,7 +105,7 @@ new Vue({
                             this.error = 'Error inesperado. Intente nuevamente';
                     }
                 } else if (error.request) {
-                    this.error = 'Error de conexión. Verifique su conexión a internet';
+                    this.error = 'Error de conexión. Verificar que API esté en puerto 44339';
                 } else {
                     this.error = 'Error inesperado. Intente nuevamente';
                 }
@@ -100,7 +114,6 @@ new Vue({
             }
         },
 
-        // Cargar email recordado si existe
         loadRememberedEmail() {
             const rememberedEmail = localStorage.getItem('rememberedEmail');
             if (rememberedEmail) {
@@ -110,8 +123,8 @@ new Vue({
         }
     },
 
-    // Ejecutar al cargar el componente
     mounted() {
+        console.log('=== VUE MONTADO ===');
         this.loadRememberedEmail();
     }
 });

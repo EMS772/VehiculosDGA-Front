@@ -29,7 +29,7 @@ new Vue({
             }
 
             // Configuración Axios para la API
-            axios.post('https://localhost:7037/api/Auth/register', {
+            axios.post('https://localhost:44339/api/Auth/register', {
                 email: this.user.email,
                 password: this.user.password,
                 confirmPassword: this.user.confirmPassword,
