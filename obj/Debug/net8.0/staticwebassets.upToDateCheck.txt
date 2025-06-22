@@ -1,12 +1,17 @@
 wwwroot\css\auth.css
+wwwroot\css\seguros-bulma.css
 wwwroot\css\site.css
 wwwroot\css\styles.css
 wwwroot\css\vehiculos.css
 wwwroot\favicon.ico
 wwwroot\js\app.js
+wwwroot\js\Asignaciones.js
+wwwroot\js\auth-manager.js
+wwwroot\js\Colaboradores.js
 wwwroot\js\Dahsboard.js
 wwwroot\js\login.js
 wwwroot\js\register.js
+wwwroot\js\seguros.js
 wwwroot\js\vehiculos.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map

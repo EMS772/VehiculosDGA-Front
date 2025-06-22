@@ -1,19 +1,16 @@
 ﻿// ============================================
-// CONFIGURACIÓN DE AXIOS Y API
+// CONFIGURACIÓN DE AXIOS Y BASE URL
 // ============================================
-
 const API_BASE_URL = 'https://localhost:7037';
 
 const apiClient = axios.create({
     baseURL: API_BASE_URL,
-    timeout: 30000,
-    headers: {
-        'Content-Type': 'application/json'
-    }
+    timeout: 30000
 });
 
-// Interceptor para agregar token a las peticiones
+// Interceptor de petición: agregar token
 apiClient.interceptors.request.use(config => {
+    console.log('[Axios] Request –', config.method, config.url);
     const token = localStorage.getItem('authToken');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -21,10 +18,14 @@ apiClient.interceptors.request.use(config => {
     return config;
 });
 
-// Interceptor para manejar errores de autenticación
+// Interceptor de respuesta: manejo 401
 apiClient.interceptors.response.use(
-    response => response,
+    response => {
+        console.log('[Axios] Response –', response.status, response.config.url);
+        return response;
+    },
     error => {
+        console.warn('[Axios] Response Error –', error.response?.status, error.config?.url);
         if (error.response?.status === 401) {
             localStorage.removeItem('authToken');
             localStorage.removeItem('userData');
@@ -35,78 +36,50 @@ apiClient.interceptors.response.use(
 );
 
 // ============================================
-// GESTOR DE MODALES SIMPLIFICADO
+// GESTOR DE MODALES
 // ============================================
-
 class SimpleModalManager {
     static activeModals = new Set();
 
-    // Mostrar modal
-    static show(modalId, options = {}) {
-        console.log(`Mostrando modal: ${modalId}`);
-
+    static show(modalId) {
+        console.log(`[ModalManager] show("${modalId}")`);
         const modalElement = document.getElementById(modalId);
         if (!modalElement) {
-            console.error(`Modal ${modalId} no encontrado`);
+            console.error(`[ModalManager] Modal "${modalId}" no encontrado`);
             return;
         }
-
-        // Limpiar estado previo
         this.hideAll();
-
-        // Crear overlay si no existe
         this.createOverlay();
 
-        // Mostrar modal
         modalElement.style.display = 'flex';
         modalElement.classList.add('show');
 
-        // Mostrar overlay
         const overlay = document.getElementById('modal-overlay');
-        if (overlay) {
-            overlay.classList.add('show');
-        }
+        if (overlay) overlay.classList.add('show');
 
-        // Prevenir scroll del body
-        document.body.style.overflow = 'hidden';
-
-        // Registrar modal activo
         this.activeModals.add(modalId);
-
-        // Agregar event listeners para cerrar
         this.addCloseListeners(modalId);
-
-        console.log(`Modal ${modalId} mostrado correctamente`);
     }
 
-    // Ocultar modal específico
     static hide(modalId) {
-        console.log(`Ocultando modal: ${modalId}`);
-
+        console.log(`[ModalManager] hide("${modalId}")`);
         const modalElement = document.getElementById(modalId);
         if (!modalElement) {
-            console.warn(`Modal ${modalId} no encontrado`);
+            console.warn(`[ModalManager] Modal "${modalId}" no encontrado`);
             return;
         }
-
-        // Animar salida
         modalElement.classList.remove('show');
-
         setTimeout(() => {
             modalElement.style.display = 'none';
             this.activeModals.delete(modalId);
-
-            // Si no hay más modales activos, limpiar
             if (this.activeModals.size === 0) {
                 this.cleanup();
             }
         }, 300);
-
-        console.log(`Modal ${modalId} ocultado`);
     }
 
-    // Ocultar todos los modales
     static hideAll() {
+        console.log('[ModalManager] hideAll()');
         document.querySelectorAll('.modal.show').forEach(modal => {
             modal.classList.remove('show');
             modal.style.display = 'none';
@@ -115,8 +88,8 @@ class SimpleModalManager {
         this.cleanup();
     }
 
-    // Crear overlay personalizado
     static createOverlay() {
+        console.log('[ModalManager] createOverlay()');
         let overlay = document.getElementById('modal-overlay');
         if (!overlay) {
             overlay = document.createElement('div');
@@ -127,11 +100,8 @@ class SimpleModalManager {
         }
     }
 
-    // Agregar listeners para cerrar modal
     static addCloseListeners(modalId) {
         const modalElement = document.getElementById(modalId);
-
-        // Botones de cierre
         const closeButtons = modalElement.querySelectorAll('[data-bs-dismiss="modal"], .btn-close');
         closeButtons.forEach(btn => {
             btn.onclick = (e) => {
@@ -139,8 +109,6 @@ class SimpleModalManager {
                 this.hide(modalId);
             };
         });
-
-        // Escape key
         const escapeHandler = (e) => {
             if (e.key === 'Escape') {
                 this.hide(modalId);
@@ -150,66 +118,76 @@ class SimpleModalManager {
         document.addEventListener('keydown', escapeHandler);
     }
 
-    // Limpiar estado global
     static cleanup() {
-        // Restaurar scroll del body
-        document.body.style.overflow = '';
-
-        // Ocultar overlay
+        console.log('[ModalManager] cleanup()');
         const overlay = document.getElementById('modal-overlay');
-        if (overlay) {
-            overlay.classList.remove('show');
-        }
-
-        // Limpiar cualquier backdrop de Bootstrap
-        document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
-            backdrop.remove();
-        });
-
-        // Limpiar clases del body
-        document.body.classList.remove('modal-open');
-        document.body.style.paddingRight = '';
-
-        console.log('Cleanup de modales completado');
+        if (overlay) overlay.classList.remove('show');
+        document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
     }
 }
 
 // ============================================
-// APLICACIÓN VUE DE VEHÍCULOS
+// INICIALIZACIÓN AUTOMÁTICA
 // ============================================
-
-// Esperar a que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('DOM cargado, inicializando aplicación de vehículos...');
+    console.log('[Vue] DOMContentLoaded - Inicializando aplicación de vehículos...');
 
-    // Instancia de Vue para el módulo de vehículos (GLOBAL para acceso desde modales)
+    // Verificar que las dependencias estén cargadas
+    if (typeof Vue === 'undefined') {
+        console.error('[Vue] Vue.js no está cargado. Verifica que esté incluido en el HTML.');
+        return;
+    }
+
+    if (typeof axios === 'undefined') {
+        console.error('[Vue] Axios no está cargado. Verifica que esté incluido en el HTML.');
+        return;
+    }
+
+    // Buscar automáticamente el contenedor principal
+    let targetElement = document.querySelector('.row.my-4'); // El contenedor principal de tu HTML
+
+    if (!targetElement) {
+        // Si no encuentra el contenedor específico, busca el body o main
+        targetElement = document.querySelector('main') || document.querySelector('.container') || document.body;
+    }
+
+    // Si aún no encuentra nada, crear un contenedor
+    if (!targetElement) {
+        targetElement = document.createElement('div');
+        document.body.appendChild(targetElement);
+    }
+
+    // Asignar ID dinámicamente para Vue
+    if (!targetElement.id) {
+        targetElement.id = 'vehiculos-app-container';
+    }
+
+    console.log('[Vue] Montando en elemento:', targetElement);
+
+    // ============================================
+    // APLICACIÓN VUE
+    // ============================================
     window.vehiculosApp = new Vue({
-        el: '#vehiculos-app',
+        el: '#' + targetElement.id,
 
-        // ============================================
-        // DATOS REACTIVOS
-        // ============================================
         data: {
-            // Datos principales
             vehiculos: [],
             vehiculoDetalle: {},
             documentos: [],
 
-            // Estados de carga
             cargando: false,
-            cargandoFotos: false, // Renombrar después a cargandoDocumentos
+            cargandoFotos: false,
             guardando: false,
             subiendoDocumento: false,
             editando: false,
+            verificandoSeguro: {},
 
-            // Filtros
             filtros: {
                 estado: '',
                 tipo: '',
                 marca: ''
             },
 
-            // Formulario de vehículo
             vehiculoForm: {
                 id: null,
                 marca: '',
@@ -235,16 +213,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 estadoMatricula: ''
             },
 
-            // Subida de documentos
             documentoUpload: {
                 archivo: null,
                 descripcion: ''
             },
 
-            // Archivos seleccionados
             documentosSeleccionados: [],
 
-            // Catálogos
             tiposVehiculo: [
                 { value: '1', text: 'Sedán' },
                 { value: '2', text: 'SUV' },
@@ -270,439 +245,493 @@ document.addEventListener('DOMContentLoaded', function () {
             ]
         },
 
-        // ============================================
-        // MÉTODOS
-        // ============================================
         methods: {
-            // ========== GESTIÓN DE MODALES ==========
+            // ------------------------------
+            // MODALES
+            // ------------------------------
+            mostrarDetalles: function (vehiculo) {
+                var self = this;
+                this.cargarDetallesParaEdicion(vehiculo).then(function () {
+                    SimpleModalManager.show('vehicleDetailsModal');
+                });
+            },
 
-            mostrarModalCrear() {
-                console.log('=== MOSTRAR MODAL CREAR ===');
+            mostrarModalCrear: function () {
                 this.editando = false;
                 this.limpiarFormulario();
                 SimpleModalManager.show('addVehicleModal');
             },
 
-            mostrarModalEditar(vehiculo) {
-                console.log('=== MOSTRAR MODAL EDITAR ===');
-                console.log('Editando vehículo:', vehiculo);
+            mostrarModalEditar: function (vehiculo) {
+                var self = this;
                 this.editando = true;
-
-                // Mapear correctamente los campos del vehículo según el DTO completo
-                this.vehiculoForm = {
-                    id: vehiculo.id,
-                    marca: vehiculo.marca || '',
-                    modelo: vehiculo.modelo || '',
-                    tipo: vehiculo.tipo ? vehiculo.tipo.toString() : '',
-                    anio: vehiculo.anio || new Date().getFullYear(),
-                    color: vehiculo.color || '',
-                    placaFisica: vehiculo.placaFisica || '',
-                    placaMatricula: vehiculo.placaMatricula || '',
-                    placaValidadaDGII: vehiculo.placaValidadaDGII || '',
-                    chasisValidadoDGII: vehiculo.chasisValidadoDGII || '',
-                    chasis: vehiculo.chasis || '',
-                    numeroMotor: vehiculo.numeroMotor || '',
-                    estado: vehiculo.estado || 1,
-                    notas: vehiculo.notas || '',
-                    kilometraje: vehiculo.kilometraje || 0,
-                    fechaAdquisicion: vehiculo.fechaAdquisicion ? vehiculo.fechaAdquisicion.split('T')[0] : '',
-                    numeroActivoFijo: vehiculo.numeroActivoFijo || '',
-                    registradoContabilidad: vehiculo.registradoContabilidad || false,
-                    estatusJuridico: vehiculo.estatusJuridico || '',
-                    ubicacion: vehiculo.ubicacion || '',
-                    numeroPaseRapido: vehiculo.numeroPaseRapido || '',
-                    estadoMatricula: vehiculo.estadoMatricula || ''
-                };
-
-                // Limpiar archivos seleccionados
-                this.documentosSeleccionados = [];
-
-                SimpleModalManager.show('addVehicleModal');
+                this.cargarDetallesParaEdicion(vehiculo).then(function () {
+                    var v = self.vehiculoDetalle;
+                    self.vehiculoForm = {
+                        id: v.id,
+                        marca: v.marca || '',
+                        modelo: v.modelo || '',
+                        tipo: v.tipo != null ? String(v.tipo) : '',
+                        anio: v.anio || new Date().getFullYear(),
+                        color: v.color || '',
+                        placaFisica: v.placaFisica || '',
+                        placaMatricula: v.placaMatricula || '',
+                        placaValidadaDGII: v.placaValidadaDGII || '',
+                        chasisValidadoDGII: v.chasisValidadoDGII || '',
+                        chasis: v.chasis || '',
+                        numeroMotor: v.numeroMotor || '',
+                        estado: v.estado || 1,
+                        notas: v.notas || '',
+                        kilometraje: v.kilometraje || 0,
+                        fechaAdquisicion: v.fechaAdquisicion ? v.fechaAdquisicion.split('T')[0] : '',
+                        numeroActivoFijo: v.numeroActivoFijo || '',
+                        registradoContabilidad: v.registradoContabilidad || false,
+                        estatusJuridico: v.estatusJuridico || '',
+                        ubicacion: v.ubicacion != null ? String(v.ubicacion) : '',
+                        numeroPaseRapido: v.numeroPaseRapido || '',
+                        estadoMatricula: v.estadoMatricula || ''
+                    };
+                    self.documentosSeleccionados = [];
+                    SimpleModalManager.show('addVehicleModal');
+                });
             },
 
-            async mostrarDetalles(vehiculo) {
-                console.log('=== MOSTRAR DETALLES ===');
-                console.log('Mostrando detalles de vehículo:', vehiculo);
-                try {
-                    // Cargar detalles completos del vehículo
-                    const response = await apiClient.get(`/api/Vehiculos/${vehiculo.id}`);
-                    this.vehiculoDetalle = response.data;
-                    console.log('Detalles cargados:', this.vehiculoDetalle);
-
-                    // Cargar documentos del vehículo
-                    await this.cargarDocumentosVehiculo(vehiculo.id);
-
-                    SimpleModalManager.show('vehicleDetailsModal');
-
-                } catch (error) {
-                    console.error('Error al cargar detalles del vehículo:', error);
-                    this.mostrarError('Error al cargar los detalles del vehículo');
-                }
+            cargarDetallesParaEdicion: function (vehiculo) {
+                var self = this;
+                return apiClient.get('/api/Vehiculos/' + vehiculo.id)
+                    .then(function (response) {
+                        self.vehiculoDetalle = response.data;
+                        return self.cargarDocumentosVehiculo(vehiculo.id);
+                    })
+                    .catch(function (error) {
+                        console.error('[Vue] cargarDetallesParaEdicion – error:', error);
+                        self.vehiculoDetalle = vehiculo;
+                    });
             },
 
-            cerrarModal(modalId) {
-                console.log('=== CERRAR MODAL ===', modalId);
+            cerrarModal: function (modalId) {
                 SimpleModalManager.hide(modalId);
             },
 
-            // ========== GESTIÓN DE VEHÍCULOS ==========
+            // ------------------------------
+            // SEGURO
+            // ------------------------------
+            verificarSeguroVehiculo: function (vehiculoId) {
+                var self = this;
+                this.$set(this.verificandoSeguro, vehiculoId, true);
 
-            async cargarVehiculos() {
-                this.cargando = true;
-                try {
-                    console.log('Cargando vehículos desde:', `${API_BASE_URL}/api/Vehiculos`);
-
-                    const response = await apiClient.get('/api/Vehiculos');
-                    this.vehiculos = response.data;
-
-                    console.log('Vehículos cargados:', this.vehiculos.length);
-
-                    // Debug para ver la estructura de los datos
-                    if (this.vehiculos.length > 0) {
-                        console.log('Primer vehículo:', this.vehiculos[0]);
-                    }
-                } catch (error) {
-                    console.error('Error al cargar vehículos:', error);
-                    this.mostrarError('Error al cargar los vehículos');
-                } finally {
-                    this.cargando = false;
-                }
+                return apiClient.get('/api/Vehiculos/' + vehiculoId + '/seguro')
+                    .then(function (response) {
+                        var seguroInfo = response.data;
+                        self.mostrarInfoSeguro(seguroInfo);
+                        return seguroInfo;
+                    })
+                    .catch(function (error) {
+                        console.error('[Vue] verificarSeguroVehiculo – error:', error);
+                        self.mostrarError('Error al verificar el seguro del vehículo');
+                        return null;
+                    })
+                    .finally(function () {
+                        self.$set(self.verificandoSeguro, vehiculoId, false);
+                    });
             },
 
-            async filtrarVehiculos() {
-                this.cargando = true;
-                try {
-                    let url = '/api/Vehiculos';
+            mostrarInfoSeguro: function (seguroInfo) {
+                var titulo = 'Estado del Seguro - ' + seguroInfo.placaFisica;
+                var mensaje = '';
+                var tipo = 'info';
 
-                    // Si hay filtros específicos, usar endpoints especializados
-                    if (this.filtros.estado && !this.filtros.tipo && !this.filtros.marca) {
-                        url = `/api/Vehiculos/estado/${this.filtros.estado}`;
-                    } else if (this.filtros.tipo || this.filtros.marca) {
-                        // Usar endpoint de búsqueda para filtros complejos
-                        const searchParams = {
-                            estado: this.filtros.estado ? parseInt(this.filtros.estado) : null,
-                            tipo: this.filtros.tipo ? parseInt(this.filtros.tipo) : null,
-                            marca: this.filtros.marca || null
-                        };
+                if (seguroInfo.tieneSeguro) {
+                    if (seguroInfo.seguroVigente) {
+                        tipo = 'success';
+                        mensaje = '✅ SEGURO VIGENTE\n\n' +
+                            'Aseguradora: ' + seguroInfo.detalleSeguro.aseguradora + '\n' +
+                            'Póliza: ' + seguroInfo.detalleSeguro.numeroPoliza + '\n' +
+                            'Vigencia: ' + this.formatearFecha(seguroInfo.detalleSeguro.fechaInicio) + ' - ' + this.formatearFecha(seguroInfo.detalleSeguro.fechaVencimiento) + '\n';
 
-                        const response = await apiClient.post('/api/Vehiculos/buscar', searchParams);
-                        this.vehiculos = response.data;
-                        return;
+                        if (seguroInfo.detalleSeguro.diasParaVencimiento <= 30) {
+                            mensaje += '\n⚠️ ATENCIÓN: Vence en ' + seguroInfo.detalleSeguro.diasParaVencimiento + ' días';
+                            tipo = 'warning';
+                        }
+                    } else {
+                        tipo = 'error';
+                        mensaje = '❌ SEGURO VENCIDO\n\n' +
+                            'Aseguradora: ' + seguroInfo.detalleSeguro.aseguradora + '\n' +
+                            'Póliza: ' + seguroInfo.detalleSeguro.numeroPoliza + '\n' +
+                            'Venció: ' + this.formatearFecha(seguroInfo.detalleSeguro.fechaVencimiento) + '\n' +
+                            'Días vencido: ' + Math.abs(seguroInfo.detalleSeguro.diasParaVencimiento);
                     }
-
-                    const response = await apiClient.get(url);
-                    this.vehiculos = response.data;
-
-                } catch (error) {
-                    console.error('Error al filtrar vehículos:', error);
-                    this.mostrarError('Error al filtrar los vehículos');
-                } finally {
-                    this.cargando = false;
+                } else {
+                    tipo = 'error';
+                    mensaje = '❌ SIN SEGURO\n\nEste vehículo no tiene póliza de seguro asignada.';
                 }
+
+                this.mostrarNotificacionSeguro(titulo, mensaje, tipo);
             },
 
-            async guardarVehiculo() {
-                this.guardando = true;
-                try {
-                    // Preparar FormData para envío de archivos
-                    const formData = new FormData();
+            mostrarNotificacionSeguro: function (titulo, mensaje, tipo) {
+                if (!tipo) tipo = 'info';
+                var modalId = 'modal-seguro-info';
+                var modal = document.getElementById(modalId);
 
-                    // Mapear los campos según el DTO del backend
-                    const vehiculoData = {
-                        marca: this.vehiculoForm.marca,
-                        modelo: this.vehiculoForm.modelo,
-                        tipo: parseInt(this.vehiculoForm.tipo),
-                        anio: parseInt(this.vehiculoForm.anio),
-                        color: this.vehiculoForm.color,
-                        placaFisica: this.vehiculoForm.placaFisica,
-                        placaMatricula: this.vehiculoForm.placaMatricula || null,
-                        placaValidadaDGII: this.vehiculoForm.placaValidadaDGII || null,
-                        chasisValidadoDGII: this.vehiculoForm.chasisValidadoDGII || null,
-                        chasis: this.vehiculoForm.chasis,
-                        numeroMotor: this.vehiculoForm.numeroMotor,
-                        estado: parseInt(this.vehiculoForm.estado),
-                        notas: this.vehiculoForm.notas || null,
-                        kilometraje: parseInt(this.vehiculoForm.kilometraje) || 0,
-                        fechaAdquisicion: this.vehiculoForm.fechaAdquisicion,
-                        numeroActivoFijo: this.vehiculoForm.numeroActivoFijo || null,
-                        registradoContabilidad: this.vehiculoForm.registradoContabilidad || false,
-                        estatusJuridico: this.vehiculoForm.estatusJuridico || null,
-                        ubicacion: this.vehiculoForm.ubicacion ? parseInt(this.vehiculoForm.ubicacion) : null,
-                        numeroPaseRapido: this.vehiculoForm.numeroPaseRapido || null,
-                        estadoMatricula: this.vehiculoForm.estadoMatricula || null
+                if (!modal) {
+                    modal = document.createElement('div');
+                    modal.id = modalId;
+                    modal.className = 'modal fade';
+                    modal.innerHTML =
+                        '<div class="modal-dialog modal-dialog-centered">' +
+                        '<div class="modal-content">' +
+                        '<div class="modal-header ' + this.obtenerClaseHeader(tipo) + '">' +
+                        '<h5 class="modal-title">' + titulo + '</h5>' +
+                        '<button type="button" class="btn-close btn-close-white" onclick="SimpleModalManager.hide(\'' + modalId + '\')"></button>' +
+                        '</div>' +
+                        '<div class="modal-body">' +
+                        '<div class="alert ' + this.obtenerClaseAlerta(tipo) + ' mb-0">' +
+                        '<pre style="margin:0; white-space:pre-wrap; font-family:inherit;">' + mensaje + '</pre>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="modal-footer">' +
+                        '<button type="button" class="btn btn-secondary" onclick="SimpleModalManager.hide(\'' + modalId + '\')">' +
+                        '<i class="fas fa-times me-1"></i> Cerrar' +
+                        '</button>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+                    document.body.appendChild(modal);
+                } else {
+                    modal.querySelector('.modal-title').textContent = titulo;
+                    modal.querySelector('.modal-header').className = 'modal-header ' + this.obtenerClaseHeader(tipo);
+                    modal.querySelector('.alert').className = 'alert ' + this.obtenerClaseAlerta(tipo) + ' mb-0';
+                    modal.querySelector('pre').textContent = mensaje;
+                }
+                SimpleModalManager.show(modalId);
+            },
+
+            obtenerClaseHeader: function (tipo) {
+                var clases = {
+                    success: 'bg-success text-white',
+                    error: 'bg-danger text-white',
+                    warning: 'bg-warning text-dark',
+                    info: 'bg-primary text-white'
+                };
+                return clases[tipo] || clases.info;
+            },
+
+            obtenerClaseAlerta: function (tipo) {
+                var clases = {
+                    success: 'alert-success',
+                    error: 'alert-danger',
+                    warning: 'alert-warning',
+                    info: 'alert-info'
+                };
+                return clases[tipo] || clases.info;
+            },
+
+            tieneSeguroVigente: function (vehiculoId) {
+                console.log('[Vue] tieneSeguroVigente() – verificando ID:', vehiculoId);
+                return apiClient.get('/api/Vehiculos/' + vehiculoId + '/seguro')
+                    .then(function (response) {
+                        console.log('[Vue] tieneSeguroVigente() – respuesta:', response.data);
+                        return response.data ? response.data.seguroVigente : false;
+                    })
+                    .catch(function (e) {
+                        console.error('[Vue] tieneSeguroVigente() – error:', e);
+                        return false;
+                    });
+            },
+
+            // ------------------------------
+            // GESTIÓN DE VEHÍCULOS
+            // ------------------------------
+            cargarVehiculos: function () {
+                var self = this;
+                this.cargando = true;
+
+                return apiClient.get('/api/Vehiculos')
+                    .then(function (response) {
+                        self.vehiculos = response.data;
+                        console.log('[Vue] Vehículos cargados:', self.vehiculos.length);
+                    })
+                    .catch(function (error) {
+                        console.error('[Vue] cargarVehiculos() – error:', error);
+                        self.mostrarError('Error al cargar los vehículos');
+                    })
+                    .finally(function () {
+                        self.cargando = false;
+                    });
+            },
+
+            filtrarVehiculos: function () {
+                var self = this;
+                this.cargando = true;
+
+                var url = '/api/Vehiculos';
+                var promise;
+
+                if (this.filtros.estado && !this.filtros.tipo && !this.filtros.marca) {
+                    url = '/api/Vehiculos/estado/' + this.filtros.estado;
+                    promise = apiClient.get(url);
+                } else if (this.filtros.tipo || this.filtros.marca) {
+                    var searchParams = {
+                        estado: this.filtros.estado ? parseInt(this.filtros.estado) : null,
+                        tipo: this.filtros.tipo ? parseInt(this.filtros.tipo) : null,
+                        marca: this.filtros.marca || null
                     };
+                    promise = apiClient.post('/api/Vehiculos/buscar', searchParams);
+                } else {
+                    promise = apiClient.get(url);
+                }
 
-                    if (this.editando && this.vehiculoForm.id) {
-                        // Para edición, usar JSON en lugar de FormData si no hay documentos nuevos
-                        if (!this.documentosSeleccionados || this.documentosSeleccionados.length === 0) {
-                            vehiculoData.id = this.vehiculoForm.id;
-                            console.log(`Actualizando vehículo ID: ${this.vehiculoForm.id} sin documentos`);
+                return promise
+                    .then(function (response) {
+                        self.vehiculos = response.data;
+                    })
+                    .catch(function (error) {
+                        console.error('[Vue] filtrarVehiculos() – error:', error);
+                        self.mostrarError('Error al filtrar los vehículos');
+                    })
+                    .finally(function () {
+                        self.cargando = false;
+                    });
+            },
 
-                            const response = await apiClient.put(`/api/Vehiculos/${this.vehiculoForm.id}`, vehiculoData, {
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            });
-                        } else {
-                            // Si hay documentos nuevos, usar FormData
-                            Object.keys(vehiculoData).forEach(key => {
-                                if (vehiculoData[key] !== null && vehiculoData[key] !== '' && vehiculoData[key] !== undefined) {
-                                    formData.append(key, vehiculoData[key]);
-                                }
-                            });
-                            formData.append('id', this.vehiculoForm.id);
+            guardarVehiculo: function () {
+                var self = this;
+                this.guardando = true;
 
-                            this.documentosSeleccionados.forEach((doc) => {
-                                formData.append('documentos', doc);
-                            });
+                try {
+                    // Preparamos FormData
+                    var formData = new FormData();
+                    if (this.editando) {
+                        formData.append('Id', this.vehiculoForm.id.toString());
+                    }
+                    formData.append('Marca', (this.vehiculoForm.marca || '').trim());
+                    formData.append('Modelo', (this.vehiculoForm.modelo || '').trim());
+                    formData.append('Tipo', (this.vehiculoForm.tipo || '').toString());
+                    formData.append('Anio', (parseInt(this.vehiculoForm.anio) || new Date().getFullYear()).toString());
+                    formData.append('Color', (this.vehiculoForm.color || '').trim());
+                    formData.append('PlacaFisica', (this.vehiculoForm.placaFisica || '').trim());
+                    formData.append('Chasis', (this.vehiculoForm.chasis || '').trim());
+                    formData.append('NumeroMotor', (this.vehiculoForm.numeroMotor || '').trim());
+                    formData.append('Estado', parseInt(this.vehiculoForm.estado).toString());
+                    formData.append('Kilometraje', (parseInt(this.vehiculoForm.kilometraje) || 0).toString());
+                    formData.append('FechaAdquisicion', this.vehiculoForm.fechaAdquisicion || new Date().toISOString().split('T')[0]);
+                    formData.append('RegistradoContabilidad', Boolean(this.vehiculoForm.registradoContabilidad).toString());
 
-                            console.log(`Actualizando vehículo ID: ${this.vehiculoForm.id} con documentos`);
-                            const response = await apiClient.put(`/api/Vehiculos/${this.vehiculoForm.id}`, formData, {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data'
-                                }
-                            });
-                        }
-                    } else {
-                        // Para creación, siempre usar FormData
-                        Object.keys(vehiculoData).forEach(key => {
-                            if (vehiculoData[key] !== null && vehiculoData[key] !== '' && vehiculoData[key] !== undefined) {
-                                formData.append(key, vehiculoData[key]);
-                            }
-                        });
-
-                        // Agregar documentos si hay seleccionados
-                        if (this.documentosSeleccionados && this.documentosSeleccionados.length > 0) {
-                            this.documentosSeleccionados.forEach((doc) => {
-                                formData.append('documentos', doc);
-                            });
-                        }
-
-                        console.log('Creando nuevo vehículo');
-                        const response = await apiClient.post('/api/Vehiculos', formData, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            }
-                        });
+                    // Campos opcionales
+                    if (this.vehiculoForm.placaMatricula && this.vehiculoForm.placaMatricula.trim() !== '') {
+                        formData.append('PlacaMatricula', this.vehiculoForm.placaMatricula.trim());
+                    }
+                    if (this.vehiculoForm.placaValidadaDGII && this.vehiculoForm.placaValidadaDGII.trim() !== '') {
+                        formData.append('PlacaValidadaDGII', this.vehiculoForm.placaValidadaDGII.trim());
+                    }
+                    if (this.vehiculoForm.chasisValidadoDGII && this.vehiculoForm.chasisValidadoDGII.trim() !== '') {
+                        formData.append('ChasisValidadoDGII', this.vehiculoForm.chasisValidadoDGII.trim());
+                    }
+                    if (this.vehiculoForm.notas && this.vehiculoForm.notas.trim() !== '') {
+                        formData.append('Notas', this.vehiculoForm.notas.trim());
+                    }
+                    if (this.vehiculoForm.numeroActivoFijo && this.vehiculoForm.numeroActivoFijo.trim() !== '') {
+                        formData.append('NumeroActivoFijo', this.vehiculoForm.numeroActivoFijo.trim());
+                    }
+                    if (this.vehiculoForm.estatusJuridico && this.vehiculoForm.estatusJuridico.trim() !== '') {
+                        formData.append('EstatusJuridico', this.vehiculoForm.estatusJuridico.trim());
+                    }
+                    if (this.vehiculoForm.numeroPaseRapido && this.vehiculoForm.numeroPaseRapido.trim() !== '') {
+                        formData.append('NumeroPaseRapido', this.vehiculoForm.numeroPaseRapido.trim());
+                    }
+                    if (this.vehiculoForm.estadoMatricula && this.vehiculoForm.estadoMatricula.trim() !== '') {
+                        formData.append('EstadoMatricula', this.vehiculoForm.estadoMatricula.trim());
+                    }
+                    if (this.vehiculoForm.ubicacion && this.vehiculoForm.ubicacion !== '' && this.vehiculoForm.ubicacion !== null) {
+                        formData.append('Ubicacion', parseInt(this.vehiculoForm.ubicacion).toString());
                     }
 
-                    this.mostrarExito(this.editando ? 'Vehículo actualizado exitosamente' : 'Vehículo creado exitosamente');
+                    // Documentos seleccionados
+                    if (this.documentosSeleccionados && this.documentosSeleccionados.length > 0) {
+                        for (var i = 0; i < this.documentosSeleccionados.length; i++) {
+                            formData.append('Documentos', this.documentosSeleccionados[i]);
+                        }
+                    }
 
-                    // Cerrar modal
-                    this.cerrarModal('addVehicleModal');
+                    var promise;
+                    if (this.editando) {
+                        promise = apiClient.put('/api/Vehiculos/' + this.vehiculoForm.id, formData);
+                    } else {
+                        promise = apiClient.post('/api/Vehiculos', formData);
+                    }
 
-                    // Recargar lista de vehículos
-                    await this.cargarVehiculos();
+                    return promise
+                        .then(function (response) {
+                            if (self.editando) {
+                                self.mostrarExito("Vehículo actualizado exitosamente");
+                            } else {
+                                self.mostrarExito("Vehículo creado exitosamente");
+                            }
+                            self.cerrarModal("addVehicleModal");
+                            return self.cargarVehiculos();
+                        })
+                        .catch(function (error) {
+                            console.error('[Vue] guardarVehiculo() – error:', error);
+                            if (error.response && error.response.status === 400 && error.response.data.errors) {
+                                var mensajes = [];
+                                Object.keys(error.response.data.errors).forEach(function (campo) {
+                                    error.response.data.errors[campo].forEach(function (err) {
+                                        mensajes.push(campo + ': ' + err);
+                                    });
+                                });
+                                self.mostrarError('Errores de validación:\n' + mensajes.join('\n'));
+                            } else if (error.response && error.response.status === 500) {
+                                self.mostrarError("Error interno del servidor. Revisar logs.");
+                            } else {
+                                self.mostrarError("Error al guardar el vehículo. Intente nuevamente.");
+                            }
+                        })
+                        .finally(function () {
+                            self.guardando = false;
+                        });
 
                 } catch (error) {
-                    console.error('Error al guardar vehículo:', error);
-                    console.error('Respuesta del servidor:', error.response?.data);
-
-                    if (error.response?.data) {
-                        // Si el servidor devuelve errores de validación
-                        if (typeof error.response.data === 'object' && error.response.data.errors) {
-                            const errores = Object.values(error.response.data.errors).flat().join(', ');
-                            this.mostrarError(`Errores de validación: ${errores}`);
-                        } else if (typeof error.response.data === 'string') {
-                            this.mostrarError(`Error: ${error.response.data}`);
-                        } else {
-                            this.mostrarError('Error de validación en el servidor');
-                        }
-                    } else {
-                        this.mostrarError('Error al guardar el vehículo');
-                    }
-                } finally {
+                    console.error('[Vue] guardarVehiculo() – error en try/catch:', error);
+                    this.mostrarError("Error al guardar el vehículo. Intente nuevamente.");
                     this.guardando = false;
                 }
             },
 
-            async eliminarVehiculo(vehiculoId) {
+            // ------------------------------
+            // ELIMINACIÓN CON CHEQUEO DE SEGURO
+            // ------------------------------
+            eliminarVehiculoSiSinSeguro: function (vehiculo) {
+                var self = this;
+                console.log('[Vue] eliminarVehiculoSiSinSeguro() – ID=' + vehiculo.id);
+
+                this.tieneSeguroVigente(vehiculo.id)
+                    .then(function (tieneSeguro) {
+                        if (tieneSeguro) {
+                            self.mostrarError('No se puede eliminar este vehículo porque tiene un seguro vigente.');
+                            return;
+                        }
+                        // Si no tiene seguro, procedemos a eliminar
+                        return self.eliminarVehiculo(vehiculo.id);
+                    })
+                    .catch(function (err) {
+                        console.error('[Vue] eliminarVehiculoSiSinSeguro() – error:', err);
+                        self.mostrarError('Error al verificar el seguro. Intente nuevamente.');
+                    });
+            },
+
+            eliminarVehiculo: function (vehiculoId) {
+                var self = this;
                 if (!confirm('¿Está seguro de que desea eliminar este vehículo?')) {
                     return;
                 }
 
-                try {
-                    await apiClient.delete(`/api/Vehiculos/${vehiculoId}`);
-                    this.mostrarExito('Vehículo eliminado exitosamente');
-                    await this.cargarVehiculos();
-                } catch (error) {
-                    console.error('Error al eliminar vehículo:', error);
-                    this.mostrarError('Error al eliminar el vehículo');
-                }
+                return apiClient.delete('/api/Vehiculos/' + vehiculoId)
+                    .then(function () {
+                        self.mostrarExito('Vehículo eliminado exitosamente');
+                        return self.cargarVehiculos();
+                    })
+                    .catch(function (error) {
+                        console.error('[Vue] eliminarVehiculo() – error:', error);
+                        self.mostrarError('Error al eliminar el vehículo');
+                    });
             },
 
-            // ========== GESTIÓN DE DOCUMENTOS ==========
-
-            async cargarDocumentosVehiculo(vehiculoId) {
+            // ------------------------------
+            // DOCUMENTOS
+            // ------------------------------
+            cargarDocumentosVehiculo: function (vehiculoId) {
+                var self = this;
                 this.cargandoFotos = true;
-                try {
-                    console.log(`Cargando documentos para vehículo ID: ${vehiculoId}`);
 
-                    const response = await apiClient.get(`/api/Vehiculos/${vehiculoId}/documentos`);
-                    this.documentos = response.data;
-
-                    console.log('Documentos cargados:', this.documentos);
-
-                } catch (error) {
-                    console.error('Error al cargar documentos:', error);
-                    this.documentos = [];
-                } finally {
-                    this.cargandoFotos = false;
-                }
-            },
-
-            async descargarDocumento(documentoId) {
-                try {
-                    // Primero obtener información del documento
-                    const infoResponse = await apiClient.get(`/api/Documentos/${documentoId}`);
-                    const documentoInfo = infoResponse.data;
-
-                    // Luego descargar el contenido
-                    const response = await apiClient.get(`/api/Documentos/${documentoId}/Contenido`, {
-                        responseType: 'blob'
+                return apiClient.get('/api/Vehiculos/' + vehiculoId + '/documentos')
+                    .then(function (response) {
+                        self.documentos = response.data;
+                    })
+                    .catch(function (error) {
+                        console.error('[Vue] cargarDocumentosVehiculo() – error:', error);
+                        self.documentos = [];
+                    })
+                    .finally(function () {
+                        self.cargandoFotos = false;
                     });
-
-                    // Crear URL para descarga
-                    const url = window.URL.createObjectURL(new Blob([response.data]));
-                    const link = document.createElement('a');
-                    link.href = url;
-
-                    // Usar el nombre original del archivo con su extensión
-                    let filename = documentoInfo.nombre || 'documento';
-
-                    // Si no tiene extensión, intentar obtenerla del Content-Type
-                    if (!filename.includes('.')) {
-                        const contentType = response.headers['content-type'];
-                        const extension = this.obtenerExtensionPorContentType(contentType);
-                        if (extension) {
-                            filename += `.${extension}`;
-                        }
-                    }
-
-                    link.setAttribute('download', filename);
-                    document.body.appendChild(link);
-                    link.click();
-                    link.remove();
-                    window.URL.revokeObjectURL(url);
-
-                    this.mostrarExito(`Documento "${filename}" descargado exitosamente`);
-                } catch (error) {
-                    console.error('Error al descargar documento:', error);
-                    this.mostrarError('Error al descargar el documento');
-                }
             },
 
-            async eliminarDocumento(documentoId) {
-                if (!confirm('¿Está seguro de que desea eliminar este documento?')) {
-                    return;
-                }
+            descargarDocumento: function (documentoId) {
+                var self = this;
 
-                try {
-                    await apiClient.delete(`/api/Documentos/${documentoId}`);
-                    this.mostrarExito('Documento eliminado exitosamente');
+                apiClient.get('/api/Documentos/' + documentoId)
+                    .then(function (infoResponse) {
+                        return apiClient.get('/api/Documentos/' + documentoId + '/Contenido', { responseType: 'blob' })
+                            .then(function (response) {
+                                var url = window.URL.createObjectURL(new Blob([response.data]));
+                                var link = document.createElement('a');
+                                link.href = url;
 
-                    // Recargar documentos
-                    await this.cargarDocumentosVehiculo(this.vehiculoDetalle.id);
-                } catch (error) {
-                    console.error('Error al eliminar documento:', error);
-                    this.mostrarError('Error al eliminar el documento');
-                }
-            },
+                                var filename = infoResponse.data.nombre || 'documento';
+                                if (filename.indexOf('.') === -1) {
+                                    var contentType = response.headers['content-type'];
+                                    var extension = self.obtenerExtensionPorContentType(contentType);
+                                    if (extension) filename += '.' + extension;
+                                }
 
-            mostrarModalSubirDocumento() {
-                this.documentoUpload = {
-                    archivo: null,
-                    descripcion: ''
-                };
+                                link.setAttribute('download', filename);
+                                document.body.appendChild(link);
+                                link.click();
+                                link.remove();
+                                window.URL.revokeObjectURL(url);
 
-                // Limpiar input de archivo
-                const inputFile = document.getElementById('documentFile');
-                if (inputFile) {
-                    inputFile.value = '';
-                }
-
-                SimpleModalManager.show('uploadDocumentModal');
-            },
-
-            seleccionarArchivoDocumento(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    this.documentoUpload.archivo = file;
-                }
-            },
-
-            async subirDocumento() {
-                if (!this.documentoUpload.archivo) {
-                    this.mostrarError('Debe seleccionar un archivo');
-                    return;
-                }
-
-                this.subiendoDocumento = true;
-                try {
-                    const formData = new FormData();
-                    formData.append('archivo', this.documentoUpload.archivo);
-                    formData.append('descripcion', this.documentoUpload.descripcion || '');
-                    formData.append('vehiculoId', this.vehiculoDetalle.id);
-
-                    await apiClient.post(`/api/Vehiculos/${this.vehiculoDetalle.id}/documentos`, formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
+                                self.mostrarExito('Documento "' + filename + '" descargado exitosamente');
+                            });
+                    })
+                    .catch(function (error) {
+                        console.error('[Vue] descargarDocumento() – error:', error);
+                        self.mostrarError('Error al descargar el documento');
                     });
-
-                    this.mostrarExito('Documento subido exitosamente');
-                    this.cerrarModal('uploadDocumentModal');
-
-                    // Recargar documentos
-                    await this.cargarDocumentosVehiculo(this.vehiculoDetalle.id);
-                } catch (error) {
-                    console.error('Error al subir documento:', error);
-                    this.mostrarError('Error al subir el documento');
-                } finally {
-                    this.subiendoDocumento = false;
-                }
             },
 
-            // ========== FUNCIONES DE ARCHIVOS ==========
+            eliminarDocumento: function (documentoId) {
+                var self = this;
+                if (!confirm('¿Está seguro de que desea eliminar este documento?')) return;
 
-            seleccionarDocumentos(event) {
+                apiClient.delete('/api/Documentos/' + documentoId)
+                    .then(function () {
+                        self.mostrarExito('Documento eliminado exitosamente');
+                        return self.cargarDocumentosVehiculo(self.vehiculoDetalle.id);
+                    })
+                    .catch(function (error) {
+                        console.error('[Vue] eliminarDocumento() – error:', error);
+                        self.mostrarError('Error al eliminar el documento');
+                    });
+            },
+
+            seleccionarDocumentos: function (event) {
                 this.documentosSeleccionados = Array.from(event.target.files);
-                console.log('Documentos seleccionados:', this.documentosSeleccionados.length);
             },
 
-            // ========== UTILIDADES DE DOCUMENTOS ==========
-
-            obtenerExtension(filename) {
+            // ------------------------------
+            // UTILIDADES DE DOCUMENTOS
+            // ------------------------------
+            obtenerExtension: function (filename) {
                 if (!filename) return '';
-                const parts = filename.split('.');
+                var parts = filename.split('.');
                 return parts.length > 1 ? parts.pop().toUpperCase() : '';
             },
 
-            obtenerTipoDocumento(filename) {
-                const extension = this.obtenerExtension(filename).toLowerCase();
-
-                const tipos = {
-                    'pdf': 'PDF',
-                    'doc': 'Word',
-                    'docx': 'Word',
-                    'xls': 'Excel',
-                    'xlsx': 'Excel',
-                    'ppt': 'PowerPoint',
-                    'pptx': 'PowerPoint',
-                    'jpg': 'Imagen',
-                    'jpeg': 'Imagen',
-                    'png': 'Imagen',
-                    'gif': 'Imagen',
-                    'txt': 'Texto',
-                    'zip': 'Archivo',
-                    'rar': 'Archivo'
+            obtenerTipoDocumento: function (filename) {
+                var ext = this.obtenerExtension(filename).toLowerCase();
+                var tipos = {
+                    pdf: 'PDF', doc: 'Word', docx: 'Word',
+                    xls: 'Excel', xlsx: 'Excel',
+                    ppt: 'PowerPoint', pptx: 'PowerPoint',
+                    jpg: 'Imagen', jpeg: 'Imagen', png: 'Imagen', gif: 'Imagen',
+                    txt: 'Texto', zip: 'Archivo', rar: 'Archivo'
                 };
-
-                return tipos[extension] || 'Documento';
+                return tipos[ext] || 'Documento';
             },
 
-            obtenerExtensionPorContentType(contentType) {
-                const mimeTypes = {
+            obtenerExtensionPorContentType: function (contentType) {
+                var mime = {
                     'application/pdf': 'pdf',
                     'application/msword': 'doc',
                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
@@ -717,22 +746,21 @@ document.addEventListener('DOMContentLoaded', function () {
                     'application/zip': 'zip',
                     'application/x-rar-compressed': 'rar'
                 };
-                return mimeTypes[contentType] || null;
+                return mime[contentType] || null;
             },
 
-            formatearTamano(bytes) {
+            formatearTamano: function (bytes) {
                 if (!bytes) return 'N/A';
-
-                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                var sizes = ['Bytes', 'KB', 'MB', 'GB'];
                 if (bytes === 0) return '0 Bytes';
-
-                const i = Math.floor(Math.log(bytes) / Math.log(1024));
-                return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
+                var i = Math.floor(Math.log(bytes) / Math.log(1024));
+                return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + ' ' + sizes[i];
             },
 
-            // ========== UTILIDADES GENERALES ==========
-
-            limpiarFormulario() {
+            // ------------------------------
+            // UTILIDADES GENERALES
+            // ------------------------------
+            limpiarFormulario: function () {
                 this.vehiculoForm = {
                     id: null,
                     marca: '',
@@ -758,186 +786,166 @@ document.addEventListener('DOMContentLoaded', function () {
                     estadoMatricula: ''
                 };
                 this.documentosSeleccionados = [];
+                this.vehiculoDetalle = {};
+                this.documentos = [];
 
-                // Limpiar inputs de archivos
-                const inputDocs = document.getElementById('vehicleDocuments');
-                if (inputDocs) inputDocs.value = '';
+                var inputDocsCreate = document.getElementById('vehicleDocumentsCreate');
+                if (inputDocsCreate) inputDocsCreate.value = '';
+                var inputDocsEdit = document.getElementById('vehicleDocumentsEdit');
+                if (inputDocsEdit) inputDocsEdit.value = '';
             },
 
-            obtenerPlacaFisica(vehiculo) {
+            obtenerPlacaFisica: function (vehiculo) {
                 if (!vehiculo) return 'N/A';
                 return vehiculo.placaFisica || vehiculo.placa || 'Sin placa física';
             },
 
-            obtenerTextoTipo(tipoId) {
-                if (!tipoId && tipoId !== 0) {
-                    return 'Sin especificar';
-                }
-                const tipo = this.tiposVehiculo.find(t => t.value === tipoId.toString());
-                return tipo ? tipo.text : `Tipo ${tipoId}`;
+            obtenerTextoTipo: function (tipoId) {
+                if (!tipoId && tipoId !== 0) return 'Sin especificar';
+                var tipo = this.tiposVehiculo.find(function (t) {
+                    return t.value === tipoId.toString();
+                });
+                return tipo ? tipo.text : 'Tipo ' + tipoId;
             },
 
-            obtenerTextoUbicacion(ubicacionId) {
-                if (!ubicacionId && ubicacionId !== 0) {
-                    return 'Sin especificar';
-                }
-                const ubicacion = this.ubicacionesVehiculo.find(u => u.value === ubicacionId.toString());
-                return ubicacion ? ubicacion.text : `Ubicación ${ubicacionId}`;
+            obtenerTextoUbicacion: function (ubicacionId) {
+                if (!ubicacionId && ubicacionId !== 0) return 'Sin especificar';
+                var ubi = this.ubicacionesVehiculo.find(function (u) {
+                    return u.value === ubicacionId.toString();
+                });
+                return ubi ? ubi.text : 'Ubicación ' + ubicacionId;
             },
 
-            estadoClass(estado) {
+            estadoClass: function (estado) {
                 if (!estado && estado !== 0) return 'badge bg-secondary';
-
-                const estados = {
-                    1: 'badge bg-success',      // Disponible
-                    2: 'badge bg-warning text-dark',      // Asignado
-                    3: 'badge bg-info',         // En Taller
-                    4: 'badge bg-secondary',    // No Disponible
-                    5: 'badge bg-danger'        // De Baja
+                var clases = {
+                    1: 'badge bg-success',    // Disponible
+                    2: 'badge bg-warning text-dark', // Asignado
+                    3: 'badge bg-info',       // En Taller
+                    4: 'badge bg-secondary',  // No Disponible
+                    5: 'badge bg-danger'      // De Baja
                 };
-                return estados[estado] || 'badge bg-secondary';
+                return clases[estado] || 'badge bg-secondary';
             },
 
-            estadoTexto(estado) {
+            estadoTexto: function (estado) {
                 if (!estado && estado !== 0) return 'Sin estado';
-
-                const estados = {
+                var textos = {
                     1: 'Disponible',
                     2: 'Asignado',
                     3: 'En Taller',
                     4: 'No Disponible',
                     5: 'De Baja'
                 };
-                return estados[estado] || `Estado ${estado}`;
+                return textos[estado] || 'Estado ' + estado;
             },
 
-            formatearFecha(fecha) {
+            formatearFecha: function (fecha) {
                 if (!fecha) return 'No especificada';
-                return new Date(fecha).toLocaleDateString('es-DO');
+                try {
+                    return new Date(fecha).toLocaleDateString('es-DO');
+                } catch (error) {
+                    return 'Fecha inválida';
+                }
             },
 
-            // ========== SISTEMA DE NOTIFICACIONES ==========
-
-            mostrarError(mensaje) {
+            // ------------------------------
+            // NOTIFICACIONES FLOTANTES
+            // ------------------------------
+            mostrarError: function (mensaje) {
                 this.mostrarNotificacion(mensaje, 'error');
             },
 
-            mostrarExito(mensaje) {
+            mostrarExito: function (mensaje) {
                 this.mostrarNotificacion(mensaje, 'success');
             },
 
-            mostrarNotificacion(mensaje, tipo = 'info') {
-                // Crear contenedor de notificaciones si no existe
-                let container = document.getElementById('notification-container');
+            mostrarNotificacion: function (mensaje, tipo) {
+                if (!tipo) tipo = 'info';
+
+                var container = document.getElementById('notification-container');
                 if (!container) {
                     container = document.createElement('div');
                     container.id = 'notification-container';
-                    container.style.cssText = `
-                        position: fixed;
-                        top: 20px;
-                        right: 20px;
-                        z-index: 9999;
-                        max-width: 400px;
-                    `;
+                    container.style.cssText =
+                        'position: fixed;' +
+                        'top: 20px;' +
+                        'right: 20px;' +
+                        'z-index: 9999;' +
+                        'max-width: 400px;';
                     document.body.appendChild(container);
                 }
 
-                // Crear notificación
-                const notification = document.createElement('div');
-                const iconos = {
-                    success: '✓',
-                    error: '✗',
-                    info: 'ℹ'
-                };
-                const colores = {
-                    success: '#6bbd4a',
-                    error: '#e74c3c',
-                    info: '#3a9bd9'
-                };
+                var notification = document.createElement('div');
+                var iconos = { success: '✓', error: '✗', info: 'ℹ' };
+                var colores = { success: '#6bbd4a', error: '#e74c3c', info: '#3a9bd9' };
 
-                notification.style.cssText = `
-                    background: white;
-                    border-left: 4px solid ${colores[tipo]};
-                    border-radius: 8px;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                    padding: 1rem;
-                    margin-bottom: 0.5rem;
-                    display: flex;
-                    align-items: center;
-                    transform: translateX(100%);
-                    transition: transform 0.3s ease;
-                `;
+                notification.style.cssText =
+                    'background: white;' +
+                    'border-left: 4px solid ' + colores[tipo] + ';' +
+                    'border-radius: 8px;' +
+                    'box-shadow: 0 4px 12px rgba(0,0,0,0.1);' +
+                    'padding: 1rem;' +
+                    'margin-bottom: 0.5rem;' +
+                    'display: flex;' +
+                    'align-items: center;' +
+                    'transform: translateX(100%);' +
+                    'transition: transform 0.3s ease;';
 
-                notification.innerHTML = `
-                    <span style="color: ${colores[tipo]}; font-weight: bold; margin-right: 10px; font-size: 1.2rem;">
-                        ${iconos[tipo]}
-                    </span>
-                    <span style="color: #2d3748;">${mensaje}</span>
-                `;
+                notification.innerHTML =
+                    '<span style="color: ' + colores[tipo] + '; font-weight: bold; margin-right: 10px; font-size: 1.2rem;">' +
+                    iconos[tipo] +
+                    '</span>' +
+                    '<span style="color: #2d3748;">' + mensaje + '</span>';
 
                 container.appendChild(notification);
 
-                // Animar entrada
-                setTimeout(() => {
+                // Mostrar
+                setTimeout(function () {
                     notification.style.transform = 'translateX(0)';
                 }, 100);
 
-                // Auto-eliminar después de 4 segundos
-                setTimeout(() => {
+                // Desaparecer
+                setTimeout(function () {
                     notification.style.transform = 'translateX(100%)';
-                    setTimeout(() => {
+                    setTimeout(function () {
                         if (notification.parentNode) {
                             notification.parentNode.removeChild(notification);
                         }
                     }, 300);
                 }, 4000);
 
-                // Permitir cerrar al hacer clic
-                notification.addEventListener('click', () => {
+                notification.addEventListener('click', function () {
                     notification.style.transform = 'translateX(100%)';
-                    setTimeout(() => {
+                    setTimeout(function () {
                         if (notification.parentNode) {
                             notification.parentNode.removeChild(notification);
                         }
                     }, 300);
                 });
             }
-        }, // ========== FIN DE METHODS ==========
+        },
 
-        // ============================================
-        // CICLO DE VIDA DEL COMPONENTE
-        // ============================================
-
-        async mounted() {
-            console.log('Vue mounted - Iniciando aplicación de vehículos...');
-
-            // Verificar autenticación
-            const token = localStorage.getItem('authToken');
+        mounted: function () {
+            var self = this;
+            var token = localStorage.getItem('authToken');
             if (!token) {
-                console.log('No hay token, redirigiendo al login...');
                 window.location.href = '/Account/Login';
                 return;
             }
 
-            console.log('Token encontrado, cargando vehículos...');
-
-            // Cargar vehículos iniciales
-            await this.cargarVehiculos();
-
-            console.log('App inicializada correctamente');
+            console.log('[Vue] Aplicación montada, cargando vehículos...');
+            this.cargarVehiculos().then(function () {
+                console.log('[Vue] Vehículos cargados exitosamente');
+            });
         },
 
-        beforeDestroy() {
-            // Limpiar modales al salir
+        beforeDestroy: function () {
             SimpleModalManager.hideAll();
-
-            // Limpiar contenedor de notificaciones
-            const container = document.getElementById('notification-container');
-            if (container) {
-                container.remove();
-            }
+            var container = document.getElementById('notification-container');
+            if (container) container.remove();
         }
-    }); // ========== FIN DE VUE INSTANCE ==========
+    });
 
-    console.log('Aplicación Vue de vehículos inicializada correctamente');
-}); // ========== FIN DE DOMContentLoaded ==========
+    console.log('[Vue] Aplicación de vehículos inicializada exitosamente.');
+});

@@ -5735,11 +5735,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Julio Cesar\\Source\\Repos\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj",
+      "projectUniqueName": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj",
       "projectName": "VehiculosDGA.Web",
-      "projectPath": "C:\\Users\\Julio Cesar\\Source\\Repos\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj",
+      "projectPath": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj",
       "packagesPath": "C:\\Users\\Julio Cesar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Julio Cesar\\Source\\Repos\\VehiculosDGA.Web\\obj\\",
+      "outputPath": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -2,141 +2,782 @@
     ViewData["Title"] = "Gestión de Seguros";
     ViewData["NavbarTitle"] = "Gestión de Seguros";
     ViewData["ActivePage"] = "Seguros";
+    ViewData["ActiveMenu"] = "Seguros"; // o "Vehiculos", "Colaboradores", etc.
+    Layout = "_Layout";
 }
 
 <div id="seguros-app">
-    <div class="row my-4">
-        <div class="col-lg-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold">Gestión de Seguros</h2>
-                <button class="btn btn-primary" @@click="mostrarModalCrear">
-                    <i class="fas fa-plus me-1"></i> Nueva Póliza
-                </button>
+    <div class="container-fluid content-section">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="fw-bold">Gestión de Seguros</h4>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Seguros</li>
+                    </ol>
+                </nav>
             </div>
+        </div>
 
-            <!-- Insurance Table -->
-            <div class="card shadow">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="insuranceTable">
-                            <thead>
-                                <tr>
-                                    <th>Vehículo</th>
-                                    <th>Compañía</th>
-                                    <th>N° Póliza</th>
-                                    <th>Tipo</th>
-                                    <th>Cobertura</th>
-                                    <th>Vencimiento</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="seguro in seguros" :key="seguro.id">
-                                    <td>{{ seguro.vehiculoInfo }}</td>
-                                    <td>{{ seguro.compania }}</td>
-                                    <td>{{ seguro.numeroPoliza }}</td>
-                                    <td>{{ seguro.tipo }}</td>
-                                    <td>${{ seguro.cobertura.toFixed(2) }}</td>
-                                    <td :class="vencimientoClass(seguro.fechaVencimiento)">{{ formatDate(seguro.fechaVencimiento) }}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary" 
-                                                @@click="verDetalles(seguro)"
-                                                title="Ver Detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-secondary" 
-                                                @@click="mostrarModalEditar(seguro)"
-                                                title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger" 
-                                                @@click="verDocumentos(seguro)"
-                                                title="Documentos">
-                                            <i class="fas fa-file-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <!-- Cards Resumen Seguros -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary card-lift h-100">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="text-xs fw-bold text-primary text-uppercase mb-1">
+                                    Seguros Activos
+                                </div>
+                                <div class="h5 mb-0 fw-bold">{{ estadisticas.activos }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-shield-check fs-2 text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success card-lift h-100">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="text-xs fw-bold text-success text-uppercase mb-1">
+                                    Seguros por Vencer (30 días)
+                                </div>
+                                <div class="h5 mb-0 fw-bold">{{ estadisticas.porVencer30 }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-shield-exclamation fs-2 text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning card-lift h-100">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="text-xs fw-bold text-warning text-uppercase mb-1">
+                                    Seguros por Vencer (15 días)
+                                </div>
+                                <div class="h5 mb-0 fw-bold">{{ estadisticas.porVencer15 }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-shield-exclamation fs-2 text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-danger card-lift h-100">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="text-xs fw-bold text-danger text-uppercase mb-1">
+                                    Seguros Vencidos
+                                </div>
+                                <div class="h5 mb-0 fw-bold">{{ estadisticas.vencidos }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-shield-x fs-2 text-danger"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Listado de Seguros -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 fw-bold">Listado de Seguros</h6>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2" v-on:click="toggleFiltros">
+                                <i class="bi bi-funnel"></i> Filtros
+                            </button>
+                            <button class="btn btn-sm btn-primary" v-on:click="mostrarModalCrear">
+                                <i class="bi bi-plus-circle"></i> Nuevo Seguro
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Filtros (ocultos inicialmente) -->
+                        <div class="row mb-3" v-show="mostrarFiltros">
+                            <div class="col-12">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <form v-on:submit.prevent="aplicarFiltros">
+                                            <div class="row g-3">
+                                                <div class="col-md-3">
+                                                    <label for="filterAseguradora" class="form-label">Aseguradora</label>
+                                                    <select class="form-select" v-model="filtros.aseguradora">
+                                                        <option value="">Todas</option>
+                                                        <option value="Mapfre">Mapfre</option>
+                                                        <option value="Seguros Banreservas">Seguros Banreservas</option>
+                                                        <option value="Universal">Universal</option>
+                                                        <option value="Humano Seguros">Humano Seguros</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="filterEstado" class="form-label">Estado</label>
+                                                    <select class="form-select" v-model="filtros.estado">
+                                                        <option value="">Todos</option>
+                                                        <option value="activo">Activo</option>
+                                                        <option value="por-vencer">Por Vencer</option>
+                                                        <option value="vencido">Vencido</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="filterFechaInicio" class="form-label">Vence después de</label>
+                                                    <input type="date" class="form-control" v-model="filtros.fechaInicio">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="filterFechaFin" class="form-label">Vence antes de</label>
+                                                    <input type="date" class="form-control" v-model="filtros.fechaFin">
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-12 text-end">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary me-2" v-on:click="limpiarFiltros">
+                                                        Limpiar
+                                                    </button>
+                                                    <button type="submit" class="btn btn-sm btn-primary">
+                                                        Aplicar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Loading -->
+                        <div v-if="cargando" class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Cargando seguros...</p>
+                        </div>
+
+                        <!-- Sin datos -->
+                        <div v-else-if="seguros.length === 0" class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i> No se encontraron seguros registrados.
+                        </div>
+
+                        <!-- Tabla de Seguros -->
+                        <div v-else class="table-responsive">
+                            <table class="table table-hover" id="insuranceTable">
+                                <thead>
+                                    <tr>
+                                        <th>Vehículo</th>
+                                        <th>Aseguradora</th>
+                                        <th>Póliza</th>
+                                        <th>Cobertura</th>
+                                        <th>Vigencia</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="seguro in segurosFiltrados" :key="seguro.id" :class="obtenerClaseEstado(seguro)">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-car-front-fill me-2 text-primary"></i>
+                                                <div>
+                                                    <div class="fw-bold">{{ obtenerInfoVehiculoSeguro(seguro) }}</div>
+                                                    <div class="text-muted small">{{ obtenerPlacaVehiculoSeguro(seguro) }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ seguro.aseguradora }}</td>
+                                        <td>{{ seguro.numeroPoliza }}</td>
+                                        <td>
+                                            <div class="fw-bold">{{ obtenerTipoCobertura(seguro) }}</div>
+                                            <div class="text-muted small" v-if="seguro.montoCobertura && seguro.montoCobertura > 0">
+                                                RD$ {{ formatearMoneda(seguro.montoCobertura) }}
+                                            </div>
+                                            <div class="text-muted small" v-else>
+                                                Monto no especificado
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>{{ formatearFecha(seguro.fechaInicio) }} - {{ formatearFecha(seguro.fechaVencimiento) }}</div>
+                                            <div class="text-muted small">{{ obtenerDiasRestantes(seguro.fechaVencimiento) }}</div>
+                                        </td>
+                                        <td>
+                                            <span :class="obtenerBadgeEstado(seguro)">{{ obtenerTextoEstado(seguro) }}</span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1"
+                                                    v-on:click="verDetalles(seguro)"
+                                                    title="Ver detalles">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                            <button v-if="esSeguroActivo(seguro)"
+                                                    class="btn btn-sm btn-outline-warning me-1"
+                                                    v-on:click="mostrarModalEditar(seguro)"
+                                                    title="Editar">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button v-if="!esSeguroActivo(seguro)"
+                                                    class="btn btn-sm btn-outline-warning me-1"
+                                                    v-on:click="renovarSeguro(seguro)"
+                                                    title="Renovar">
+                                                <i class="bi bi-arrow-repeat"></i>
+                                            </button>
+                                            <button v-if="esSeguroActivo(seguro)"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    v-on:click="eliminarSeguro(seguro)"
+                                                    title="Eliminar">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Paginación -->
+                        <nav aria-label="Page navigation" v-if="seguros.length > 0">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item" :class="{ disabled: paginaActual === 1 }">
+                                    <a class="page-link" href="#" v-on:click.prevent="cambiarPagina(paginaActual - 1)">Anterior</a>
+                                </li>
+                                <li v-for="pagina in totalPaginas" :key="pagina"
+                                    class="page-item" :class="{ active: pagina === paginaActual }">
+                                    <a class="page-link" href="#" v-on:click.prevent="cambiarPagina(pagina)">{{ pagina }}</a>
+                                </li>
+                                <li class="page-item" :class="{ disabled: paginaActual === totalPaginas }">
+                                    <a class="page-link" href="#" v-on:click.prevent="cambiarPagina(paginaActual + 1)">Siguiente</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Insurance Modal -->
-    <div class="modal fade" id="insuranceModal" tabindex="-1" aria-labelledby="insuranceModalLabel" aria-hidden="true">
+    <!-- Modal para agregar/editar seguro -->
+    <div class="modal fade" id="addInsuranceModal" tabindex="-1" aria-labelledby="addInsuranceModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header text-white bg-primary">
-                    <h5 class="modal-title" id="insuranceModalLabel">{{ editando ? 'Editar' : 'Registrar' }} Póliza de Seguro</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="addInsuranceModalLabel">{{ editando ? 'Editar' : 'Registrar Nuevo' }} Seguro</h5>
+                    <button type="button" class="btn-close btn-close-white" v-on:click="cerrarModal('addInsuranceModal')" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="insuranceForm" @@submit.prevent="guardarSeguro">
+                    <form v-on:submit.prevent="guardarSeguro">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="insuranceVehicle" class="form-label">Vehículo</label>
-                                <select class="form-select" id="insuranceVehicle" v-model="seguroForm.vehiculoId" required>
-                                    <option value="" selected disabled>Seleccione...</option>
+                                <label for="insuranceVehicle" class="form-label">Vehículo <span class="text-danger">*</span></label>
+                                <select class="form-select" v-model="seguroForm.vehiculoId" required>
+                                    <option value="" selected disabled>Seleccionar vehículo...</option>
                                     <option v-for="vehiculo in vehiculos" :key="vehiculo.id" :value="vehiculo.id">
-                                        {{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.placa }})
+                                        {{ vehiculo.marca }} {{ vehiculo.modelo }} - {{ vehiculo.placaFisica }}
                                     </option>
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="insuranceCompany" class="form-label">Compañía de Seguros</label>
-                                <input type="text" class="form-control" id="insuranceCompany" v-model="seguroForm.compania" required>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="insurancePolicy" class="form-label">Número de Póliza</label>
-                                <input type="text" class="form-control" id="insurancePolicy" v-model="seguroForm.numeroPoliza" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="insuranceType" class="form-label">Tipo de Póliza</label>
-                                <select class="form-select" id="insuranceType" v-model="seguroForm.tipo" required>
-                                    <option value="" selected disabled>Seleccione...</option>
-                                    <option value="Todo Riesgo">Todo Riesgo</option>
-                                    <option value="Terceros Completo">Terceros Completo</option>
-                                    <option value="Responsabilidad Civil">Responsabilidad Civil</option>
+                                <label for="insuranceCompany" class="form-label">Aseguradora <span class="text-danger">*</span></label>
+                                <select class="form-select" v-model="seguroForm.aseguradora" required>
+                                    <option value="" selected disabled>Seleccionar aseguradora...</option>
+                                    <option value="Mapfre">Mapfre</option>
+                                    <option value="Seguros Banreservas">Seguros Banreservas</option>
+                                    <option value="Universal">Universal</option>
+                                    <option value="Humano Seguros">Humano Seguros</option>
+                                    <option value="Otro">Otro</option>
                                 </select>
                             </div>
                         </div>
+
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label for="insuranceStart" class="form-label">Fecha Inicio</label>
-                                <input type="date" class="form-control" id="insuranceStart" v-model="seguroForm.fechaInicio" required>
+                                <label for="policyNumber" class="form-label">Número de Póliza <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" v-model="seguroForm.numeroPoliza" required>
                             </div>
                             <div class="col-md-4">
-                                <label for="insuranceEnd" class="form-label">Fecha Vencimiento</label>
-                                <input type="date" class="form-control" id="insuranceEnd" v-model="seguroForm.fechaVencimiento" required>
+                                <label for="policyType" class="form-label">Tipo de Póliza <span class="text-danger">*</span></label>
+                                <select class="form-select" v-model="seguroForm.tipoCobertura" required>
+                                    <option value="" selected disabled>Seleccionar tipo...</option>
+                                    <option value="Todo riesgo">Todo riesgo</option>
+                                    <option value="Responsabilidad civil">Responsabilidad civil</option>
+                                    <option value="Daños a terceros">Daños a terceros</option>
+                                    <option value="Cobertura amplia">Cobertura amplia</option>
+                                </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="insuranceCoverage" class="form-label">Cobertura ($)</label>
-                                <input type="number" class="form-control" id="insuranceCoverage" v-model="seguroForm.cobertura" min="0" step="0.01" required>
+                                <label for="coverageAmount" class="form-label">Monto de Cobertura (RD$) <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" v-model="seguroForm.montoCobertura" min="0" step="0.01" required>
                             </div>
                         </div>
+
                         <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="insuranceDeductible" class="form-label">Deducible ($)</label>
-                                <input type="number" class="form-control" id="insuranceDeductible" v-model="seguroForm.deducible" min="0" step="0.01" required>
+                            <div class="col-md-4">
+                                <label for="startDate" class="form-label">Fecha Inicio <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" v-model="seguroForm.fechaInicio" required>
                             </div>
-                            <div class="col-md-6">
-                                <label for="insuranceCost" class="form-label">Costo de Póliza ($)</label>
-                                <input type="number" class="form-control" id="insuranceCost" v-model="seguroForm.costo" min="0" step="0.01" required>
+                            <div class="col-md-4">
+                                <label for="endDate" class="form-label">Fecha Vencimiento <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" v-model="seguroForm.fechaVencimiento" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="currentMileage" class="form-label">Kilometraje del Vehículo</label>
+                                <input type="number" class="form-control" :value="obtenerKilometrajeVehiculo()" readonly>
+                                <small class="text-muted">Kilometraje actual del vehículo seleccionado</small>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="insuranceDocuments" class="form-label">Constancia de Pago del seguro - (Formato PDF, máximo 5MB)</label>
-                            <input class="form-control" type="file" id="insuranceDocuments" @@change="onFileSelected" accept=".pdf" required>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="monthlyPremium" class="form-label">Prima Mensual (RD$) <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" v-model="seguroForm.primaMensual" min="0" step="0.01" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="annualCost" class="form-label">Costo Anual (RD$) <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" v-model="seguroForm.costoAnual" min="0" step="0.01" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="deductible" class="form-label">Deducible (RD$)</label>
+                                <input type="number" class="form-control" v-model="seguroForm.deducible" min="0" step="0.01">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="insuranceBroker" class="form-label">Corredor de Seguros</label>
+                                <input type="text" class="form-control" v-model="seguroForm.corredor">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="brokerContact" class="form-label">Teléfono de Contacto</label>
+                                <input type="tel" class="form-control" v-model="seguroForm.telefonoContacto">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="brokerEmail" class="form-label">Email de Contacto</label>
+                                <input type="email" class="form-control" v-model="seguroForm.emailContacto" placeholder="ejemplo@correo.com">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="coverageDetails" class="form-label">Detalles de Cobertura</label>
+                                <textarea class="form-control" v-model="seguroForm.cobertura" rows="3" placeholder="Escribe aquí los detalles de la cobertura (ej: Daños a Terceros, Robo Total, …)"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="insuranceDocuments" class="form-label">Documentos del Seguro</label>
+                                <input class="form-control" type="file" v-on:change="seleccionarDocumentos" multiple accept=".pdf,.jpg,.jpeg,.png">
+                                <small class="text-muted">Subir copia de la póliza y documentos relacionados (PDF, imágenes).</small>
+                                <div v-if="documentosSeleccionados.length > 0" class="mt-2">
+                                    <span class="badge bg-info">{{ documentosSeleccionados.length }} documentos seleccionados</span>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" @@click="guardarSeguro">Guardar Póliza</button>
+                    <button type="button" class="btn btn-secondary" v-on:click="cerrarModal('addInsuranceModal')">Cancelar</button>
+                    <button type="button" class="btn btn-primary" v-on:click="guardarSeguro" :disabled="guardando">
+                        <span v-if="guardando">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Guardando...
+                        </span>
+                        <span v-else>
+                            <i class="bi bi-check-circle me-1"></i> Guardar Seguro
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para renovar seguro -->
+    <div class="modal fade" id="renewInsuranceModal" tabindex="-1" aria-labelledby="renewInsuranceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-success">
+                    <h5 class="modal-title" id="renewInsuranceModalLabel">
+                        <i class="bi bi-arrow-repeat me-2"></i>Renovar Seguro
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" v-on:click="cerrarModal('renewInsuranceModal')" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Información del seguro actual (solo lectura) -->
+                    <div class="card bg-light mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0 fw-bold">
+                                <i class="bi bi-info-circle me-2"></i>Información del Seguro Actual
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Vehículo:</span>
+                                        <span v-if="seguroRenovacion.vehiculo">
+                                            {{ seguroRenovacion.vehiculo.marca }} {{ seguroRenovacion.vehiculo.modelo }} - {{ seguroRenovacion.vehiculo.placaFisica }}
+                                        </span>
+                                        <span v-else>{{ obtenerInfoVehiculoSeguro(seguroRenovacion) }} - {{ obtenerPlacaVehiculoSeguro(seguroRenovacion) }}</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Aseguradora:</span> {{ seguroRenovacion.aseguradora }}
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Póliza Actual:</span> {{ seguroRenovacion.numeroPoliza }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Tipo de Cobertura:</span> {{ seguroRenovacion.tipoPoliza || seguroRenovacion.cobertura }}
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Monto de Cobertura:</span>
+                                        <span v-if="seguroRenovacion.montoCobertura">
+                                            RD$ {{ formatearMoneda(seguroRenovacion.montoCobertura) }}
+                                        </span>
+                                        <span v-else class="text-muted">No especificado</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Vigencia Actual:</span>
+                                        {{ formatearFecha(seguroRenovacion.fechaInicio) }} - {{ formatearFecha(seguroRenovacion.fechaVencimiento) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de renovación -->
+                    <form v-on:submit.prevent="procesarRenovacion">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0 fw-bold">
+                                    <i class="bi bi-pencil-square me-2"></i>Datos de la Renovación
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <!-- Nuevo número de póliza -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nuevo Número de Póliza <span class="text-danger">*</span></label>
+                                        <input type="text"
+                                               class="form-control"
+                                               v-model="renovacionForm.numeroPoliza"
+                                               required
+                                               placeholder="Ingrese el nuevo número de póliza">
+                                        <small class="text-muted">Se sugiere mantener referencia al número anterior</small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Kilometraje Actual del Vehículo <span class="text-danger">*</span></label>
+                                        <input type="number"
+                                               class="form-control"
+                                               v-model="renovacionForm.kilometraje"
+                                               min="0"
+                                               step="1"
+                                               required>
+                                    </div>
+                                </div>
+
+                                <!-- Fechas de renovación -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fecha Inicio <span class="text-danger">*</span></label>
+                                        <input type="date"
+                                               class="form-control"
+                                               v-model="renovacionForm.fechaInicio"
+                                               required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fecha Vencimiento <span class="text-danger">*</span></label>
+                                        <input type="date"
+                                               class="form-control"
+                                               v-model="renovacionForm.fechaVencimiento"
+                                               required>
+                                    </div>
+                                </div>
+
+                                <!-- Detalles de cobertura actualizados -->
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <label class="form-label">Detalles de Cobertura Actualizados</label>
+                                        <textarea class="form-control"
+                                                  v-model="renovacionForm.cobertura"
+                                                  rows="3"
+                                                  placeholder="Especifique cualquier cambio en la cobertura para la renovación"></textarea>
+                                        <small class="text-muted">Indique si hay cambios en la cobertura respecto al seguro anterior</small>
+                                    </div>
+                                </div>
+
+                                <!-- Documentos de la renovación -->
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <label class="form-label">Documentos de la Renovación</label>
+                                        <input class="form-control"
+                                               type="file"
+                                               v-on:change="seleccionarDocumentosRenovacion"
+                                               multiple
+                                               accept=".pdf,.jpg,.jpeg,.png">
+                                        <small class="text-muted">Nueva póliza renovada y documentos relacionados (PDF, imágenes).</small>
+                                        <div v-if="documentosRenovacion.length > 0" class="mt-2">
+                                            <span class="badge bg-success">{{ documentosRenovacion.length }} documentos seleccionados</span>
+                                            <div class="mt-1">
+                                                <small v-for="(doc, index) in documentosRenovacion"
+                                                       :key="index"
+                                                       class="d-block text-muted">
+                                                    <i class="bi bi-file-earmark me-1"></i>{{ doc.name }}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sugerencias automáticas de fechas -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="alert alert-info">
+                                            <h6 class="alert-heading">
+                                                <i class="bi bi-lightbulb me-2"></i>Sugerencias para la Renovación:
+                                            </h6>
+                                            <ul class="mb-0">
+                                                <li>
+                                                    <strong>Fecha de inicio:</strong>
+                                                    Se recomienda que sea el día siguiente al vencimiento actual (
+                                                    {{ calcularFechaSugerida(seguroRenovacion.fechaVencimiento, 1) }})
+                                                </li>
+                                                <li><strong>Fecha de vencimiento:</strong> Un año después de la nueva fecha de inicio</li>
+                                                <li><strong>Número de póliza:</strong> Incluir referencia al año de renovación</li>
+                                                <li><strong>Documentos:</strong> Asegurar que incluya la nueva póliza firmada</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" v-on:click="cerrarModal('renewInsuranceModal')">
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                    </button>
+
+                    <button type="button" class="btn btn-success" v-on:click="procesarRenovacion" :disabled="guardando">
+                        <span v-if="guardando">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Procesando...
+                        </span>
+                        <span v-else>
+                            <i class="bi bi-arrow-repeat me-1"></i>Renovar Seguro
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver detalles del seguro -->
+    <div class="modal fade" id="viewInsuranceModal" tabindex="-1" aria-labelledby="viewInsuranceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" id="viewInsuranceModalLabel">Detalles del Seguro</h5>
+                    <button type="button" class="btn-close btn-close-white" v-on:click="cerrarModal('viewInsuranceModal')" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Información del Vehículo y Seguro -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold">Información del Vehículo</h6>
+                            <div class="mb-2">
+                                <span class="fw-bold">Marca/Modelo:</span>
+                                <span v-if="seguroDetalle.vehiculo">
+                                    {{ seguroDetalle.vehiculo.marca || 'N/A' }} {{ seguroDetalle.vehiculo.modelo || 'N/A' }}
+                                </span>
+                                <span v-else class="text-muted">Sin información del vehículo</span>
+                            </div>
+                            <div class="mb-2">
+                                <span class="fw-bold">Placa:</span>
+                                <span v-if="seguroDetalle.vehiculo && seguroDetalle.vehiculo.placaFisica">
+                                    {{ seguroDetalle.vehiculo.placaFisica }}
+                                </span>
+                                <span v-else class="text-muted">No especificada</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold">Información del Seguro</h6>
+                            <div class="mb-2"><span class="fw-bold">Aseguradora:</span> {{ seguroDetalle.aseguradora || 'N/A' }}</div>
+                            <div class="mb-2"><span class="fw-bold">Póliza:</span> {{ seguroDetalle.numeroPoliza || 'N/A' }}</div>
+                            <div class="mb-2">
+                                <span class="fw-bold">Tipo:</span>
+                                {{ seguroDetalle.tipoPoliza || seguroDetalle.cobertura || 'No especificado' }}
+                            </div>
+                            <div class="mb-2">
+                                <span class="fw-bold">Estado:</span>
+                                <span :class="obtenerBadgeEstado(seguroDetalle)">{{ obtenerTextoEstado(seguroDetalle) }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cobertura, Vigencia y Costos -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <h6 class="fw-bold">Cobertura</h6>
+                            <div class="mb-2">
+                                <span class="fw-bold">Monto:</span>
+                                <span v-if="seguroDetalle.montoCobertura && seguroDetalle.montoCobertura > 0">
+                                    RD$ {{ formatearMoneda(seguroDetalle.montoCobertura) }}
+                                </span>
+                                <span v-else class="text-muted">No especificado</span>
+                            </div>
+                            <div class="mb-2">
+                                <span class="fw-bold">Deducible:</span>
+                                <span v-if="seguroDetalle.deducible && seguroDetalle.deducible > 0">
+                                    RD$ {{ formatearMoneda(seguroDetalle.deducible) }}
+                                </span>
+                                <span v-else class="text-muted">No especificado</span>
+                            </div>
+                            <div>
+                                <span class="fw-bold">Detalles:</span>
+                                {{ seguroDetalle.cobertura || seguroDetalle.detallesCobertura || 'No especificado' }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="fw-bold">Vigencia</h6>
+                            <div class="mb-2"><span class="fw-bold">Inicio:</span> {{ formatearFecha(seguroDetalle.fechaInicio) }}</div>
+                            <div class="mb-2"><span class="fw-bold">Vencimiento:</span> {{ formatearFecha(seguroDetalle.fechaVencimiento) }}</div>
+                            <div><span class="fw-bold">Días restantes:</span> {{ obtenerDiasRestantes(seguroDetalle.fechaVencimiento) }}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="fw-bold">Costos</h6>
+                            <div class="mb-2">
+                                <span class="fw-bold">Prima mensual:</span>
+                                <span v-if="seguroDetalle.primaMensual">
+                                    RD$ {{ formatearMoneda(seguroDetalle.primaMensual) }}
+                                </span>
+                                <span v-else class="text-muted">No especificada</span>
+                            </div>
+                            <div class="mb-2">
+                                <span class="fw-bold">Costo anual:</span>
+                                <span v-if="seguroDetalle.costoAnual">
+                                    RD$ {{ formatearMoneda(seguroDetalle.costoAnual) }}
+                                </span>
+                                <span v-else class="text-muted">No especificado</span>
+                            </div>
+                            <div>
+                                <span class="fw-bold">Kilometraje:</span>
+                                <span v-if="seguroDetalle.kilometraje">
+                                    {{ seguroDetalle.kilometraje }} km
+                                </span>
+                                <span v-else-if="seguroDetalle.vehiculo && seguroDetalle.vehiculo.kilometraje">
+                                    {{ seguroDetalle.vehiculo.kilometraje }} km
+                                </span>
+                                <span v-else class="text-muted">N/A km</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información de Contacto y Documentos -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold">Información de Contacto</h6>
+                            <div class="mb-2">
+                                <span class="fw-bold">Corredor:</span>
+                                {{ seguroDetalle.corredorSeguro || seguroDetalle.corredor || 'No especificado' }}
+                            </div>
+                            <div class="mb-2">
+                                <span class="fw-bold">Teléfono:</span>
+                                {{ seguroDetalle.telefonoContacto || 'No especificado' }}
+                            </div>
+                            <div>
+                                <span class="fw-bold">Email:</span>
+                                {{ seguroDetalle.emailContacto || 'No especificado' }}
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN DE DOCUMENTOS CON FUNCIONES DE ELIMINACIÓN COMPLETA -->
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold mb-0">Documentos Adjuntos</h6>
+                            </div>
+
+                            <!-- Lista de documentos con funciones completas -->
+                            <div v-if="documentosSeguro.length > 0" class="border rounded p-3" style="max-height: 300px; overflow-y: auto;">
+                                <div v-for="(documento, index) in documentosSeguro" :key="documento.id"
+                                     class="d-flex justify-content-between align-items-start border-bottom pb-2 mb-2"
+                                     :class="{ 'border-bottom-0 mb-0 pb-0': index === documentosSeguro.length - 1 }">
+
+                                    <div class="d-flex align-items-start flex-grow-1 me-3">
+                                        <i :class="[obtenerIconoDocumento(documento.nombre), obtenerColorIcono(documento.nombre)]"
+                                           class="me-2 mt-1 fs-5"></i>
+
+                                        <div class="flex-grow-1 min-width-0">
+                                            <div class="fw-bold text-truncate" :title="documento.nombre">
+                                                {{ documento.nombre }}
+                                            </div>
+                                            <div v-if="documento.descripcion" class="text-muted small">
+                                                {{ documento.descripcion }}
+                                            </div>
+                                            <div class="text-muted small">
+                                                <span v-if="documento.fechaCreacion">
+                                                    Subido: {{ formatearFecha(documento.fechaCreacion) }}
+                                                </span>
+                                                <span v-if="documento.tamanoArchivo" class="ms-2">
+                                                    | {{ formatearTamanoArchivo(documento.tamanoArchivo) }}
+                                                </span>
+                                                <span v-if="documento.tipoContenido" class="ms-2">
+                                                    | {{ documento.tipoContenido }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-column gap-1">
+                                        <button class="btn btn-sm btn-outline-primary"
+                                                v-on:click="descargarDocumento(documento)"
+                                                title="Descargar documento">
+                                            <i class="bi bi-download"></i>
+                                        </button>
+
+                                        <button class="btn btn-sm btn-outline-danger"
+                                                v-on:click="eliminarDocumento(documento)"
+                                                title="Eliminar documento">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Estado cuando no hay documentos -->
+                            <div v-else class="text-center text-muted py-4 border rounded">
+                                <i class="bi bi-file-earmark-x fs-1 text-muted"></i>
+                                <p class="mb-2">No hay documentos adjuntos</p>
+                            </div>
+
+                            <!-- Indicador de carga para documentos -->
+                            <div v-if="guardando" class="text-center mt-3">
+                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                    <span class="visually-hidden">Procesando...</span>
+                                </div>
+                                <small class="text-muted ms-2">Procesando documentos...</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer del modal -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" v-on:click="cerrarModal('viewInsuranceModal')">
+                        <i class="bi bi-x-circle me-1"></i>Cerrar
+                    </button>
                 </div>
             </div>
         </div>
@@ -144,155 +785,8 @@
 </div>
 
 @section Scripts {
-    <script>
-        const { createApp } = Vue;
-        
-        createApp({
-            data() {
-                return {
-                    seguros: [],
-                    vehiculos: [],
-                    seguroForm: {
-                        id: 0,
-                        vehiculoId: '',
-                        compania: '',
-                        numeroPoliza: '',
-                        tipo: '',
-                        fechaInicio: new Date().toISOString().slice(0, 10),
-                        fechaVencimiento: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().slice(0, 10),
-                        cobertura: 0,
-                        deducible: 0,
-                        costo: 0,
-                        documento: null
-                    },
-                    editando: false,
-                    modalSeguro: null
-                }
-            },
-            mounted() {
-                this.cargarSeguros();
-                this.cargarVehiculos();
-                this.modalSeguro = new bootstrap.Modal(document.getElementById('insuranceModal'));
-            },
-            methods: {
-                async cargarSeguros() {
-                    try {
-                        const response = await axios.get('/api/Seguros');
-                        this.seguros = response.data;
-                    } catch (error) {
-                        console.error('Error al cargar seguros:', error);
-                    }
-                },
-                async cargarVehiculos() {
-                    try {
-                        const response = await axios.get('/api/Vehiculos');
-                        this.vehiculos = response.data;
-                    } catch (error) {
-                        console.error('Error al cargar vehículos:', error);
-                    }
-                },
-                mostrarModalCrear() {
-                    this.editando = false;
-                    this.seguroForm = {
-                        id: 0,
-                        vehiculoId: '',
-                        compania: '',
-                        numeroPoliza: '',
-                        tipo: '',
-                        fechaInicio: new Date().toISOString().slice(0, 10),
-                        fechaVencimiento: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().slice(0, 10),
-                        cobertura: 0,
-                        deducible: 0,
-                        costo: 0,
-                        documento: null
-                    };
-                    this.modalSeguro.show();
-                },
-                mostrarModalEditar(seguro) {
-                    this.editando = true;
-                    this.seguroForm = {
-                        id: seguro.id,
-                        vehiculoId: seguro.vehiculoId,
-                        compania: seguro.compania,
-                        numeroPoliza: seguro.numeroPoliza,
-                        tipo: seguro.tipo,
-                        fechaInicio: seguro.fechaInicio ? new Date(seguro.fechaInicio).toISOString().slice(0, 10) : '',
-                        fechaVencimiento: seguro.fechaVencimiento ? new Date(seguro.fechaVencimiento).toISOString().slice(0, 10) : '',
-                        cobertura: seguro.cobertura,
-                        deducible: seguro.deducible,
-                        costo: seguro.costo,
-                        documento: null
-                    };
-                    this.modalSeguro.show();
-                },
-                onFileSelected(event) {
-                    this.seguroForm.documento = event.target.files[0];
-                },
-                async guardarSeguro() {
-                    try {
-                        const formData = new FormData();
-                        formData.append('id', this.seguroForm.id);
-                        formData.append('vehiculoId', this.seguroForm.vehiculoId);
-                        formData.append('compania', this.seguroForm.compania);
-                        formData.append('numeroPoliza', this.seguroForm.numeroPoliza);
-                        formData.append('tipo', this.seguroForm.tipo);
-                        formData.append('fechaInicio', this.seguroForm.fechaInicio);
-                        formData.append('fechaVencimiento', this.seguroForm.fechaVencimiento);
-                        formData.append('cobertura', this.seguroForm.cobertura);
-                        formData.append('deducible', this.seguroForm.deducible);
-                        formData.append('costo', this.seguroForm.costo);
-                        
-                        if (this.seguroForm.documento) {
-                            formData.append('documento', this.seguroForm.documento);
-                        }
-
-                        if (this.editando) {
-                            await axios.put(`/api/Seguros/${this.seguroForm.id}`, formData, {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data'
-                                }
-                            });
-                        } else {
-                            await axios.post('/api/Seguros', formData, {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data'
-                                }
-                            });
-                        }
-
-                        await this.cargarSeguros();
-                        this.modalSeguro.hide();
-                        alert(this.editando ? 'Póliza actualizada con éxito' : 'Póliza registrada con éxito');
-                    } catch (error) {
-                        console.error('Error al guardar póliza:', error);
-                        alert('Error al guardar póliza');
-                    }
-                },
-                verDetalles(seguro) {
-                    alert(`Ver detalles de seguro ${seguro.id} (Funcionalidad en desarrollo)`);
-                    // Aquí implementarías la lógica para mostrar los detalles en un modal
-                },
-                verDocumentos(seguro) {
-                    alert(`Ver documentos de seguro ${seguro.id} (Funcionalidad en desarrollo)`);
-                    // Aquí implementarías la lógica para mostrar los documentos
-                },
-                formatDate(dateString) {
-                    if (!dateString) return '-';
-                    const date = new Date(dateString);
-                    return date.toLocaleDateString('es-ES');
-                },
-                vencimientoClass(fechaVencimiento) {
-                    if (!fechaVencimiento) return '';
-                    
-                    const hoy = new Date();
-                    const vencimiento = new Date(fechaVencimiento);
-                    const diff = Math.floor((vencimiento - hoy) / (1000 * 60 * 60 * 24));
-                    
-                    if (diff < 0) return 'text-danger fw-bold';
-                    if (diff < 30) return 'text-warning fw-bold';
-                    return '';
-                }
-            }
-        }).mount('#seguros-app');
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/seguros.js"></script>
 }

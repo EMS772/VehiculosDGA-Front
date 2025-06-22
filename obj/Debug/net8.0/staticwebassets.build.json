@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "b532nOzPKNAZuB/xg2UbY4/BtVDfHlb/d9T8ks1AAhU=",
+  "Hash": "xQacpsYlKp2NsjgH6dda8/EJfSEFFLP+5RM5Frzn1Pg=",
   "Source": "VehiculosDGA.Web",
   "BasePath": "_content/VehiculosDGA.Web",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "VehiculosDGA.Web\\wwwroot",
       "Source": "VehiculosDGA.Web",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\VehiculosDGA.Web.styles.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\VehiculosDGA.Web.styles.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "VehiculosDGA.Web#[.{fingerprint}]?.styles.css",
       "AssetKind": "All",
@@ -35,13 +35,13 @@
       "Integrity": "xjvtkEzZCne7RM55cptYbtbVOREPOQ4BH2MYHt+zocw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\VehiculosDGA.Web.styles.css"
+      "OriginalItemSpec": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\VehiculosDGA.Web.styles.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VehiculosDGA.Web.bundle.scp.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VehiculosDGA.Web.bundle.scp.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "VehiculosDGA.Web#[.{fingerprint}]!.bundle.scp.css",
       "AssetKind": "All",
@@ -56,13 +56,13 @@
       "Integrity": "xjvtkEzZCne7RM55cptYbtbVOREPOQ4BH2MYHt+zocw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VehiculosDGA.Web.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VehiculosDGA.Web.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\css\\auth.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\auth.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "css/auth#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -80,10 +80,31 @@
       "OriginalItemSpec": "wwwroot\\css\\auth.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\css\\site.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\seguros-bulma.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
+      "BasePath": "_content/VehiculosDGA.Web",
+      "RelativePath": "css/seguros-bulma#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "igjd5bg03m",
+      "Integrity": "wtQaogIWHE9tBUxQv4WRBFd7TXhE+gK1Ng66by1HRSc=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\seguros-bulma.css"
+    },
+    {
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\site.css",
+      "SourceId": "VehiculosDGA.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "css/site#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -94,17 +115,17 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "s4pwr9778m",
-      "Integrity": "xMlXrdlGpHbNS3ltp/27Tu4zIRpp9Fwgv9+tugJlqTQ=",
+      "Fingerprint": "5ipweew5fc",
+      "Integrity": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\css\\styles.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\styles.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "css/styles#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -115,17 +136,17 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "s9tppa6c7u",
-      "Integrity": "kB6OtvDI+NzNg1SIcd2oibKI58Ux3yBoolJ6ICoc1rI=",
+      "Fingerprint": "0h9ew99z6t",
+      "Integrity": "dFtCRgjPaAAZxOrSzSXLpe9S5l9KEkD+EqKPKsXxEaY=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\styles.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\css\\vehiculos.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\vehiculos.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "css/vehiculos#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -143,10 +164,10 @@
       "OriginalItemSpec": "wwwroot\\css\\vehiculos.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\favicon.ico",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\favicon.ico",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "favicon#[.{fingerprint}]?.ico",
       "AssetKind": "All",
@@ -164,10 +185,10 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\app.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\app.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "js/app#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -185,10 +206,73 @@
       "OriginalItemSpec": "wwwroot\\js\\app.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\Dahsboard.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\Asignaciones.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
+      "BasePath": "_content/VehiculosDGA.Web",
+      "RelativePath": "js/Asignaciones#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "tn4wvdn8vc",
+      "Integrity": "Z91YsS8amwOOCYVbj8FIhKFy4DmMCeCnMHfjDLU+NVM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\Asignaciones.js"
+    },
+    {
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\auth-manager.js",
+      "SourceId": "VehiculosDGA.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
+      "BasePath": "_content/VehiculosDGA.Web",
+      "RelativePath": "js/auth-manager#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "9pd052nhsy",
+      "Integrity": "XWKG5nC2rT9S5qAn71Jt1/PdsieeOLpwrbTR9g3Rdvk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\auth-manager.js"
+    },
+    {
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\Colaboradores.js",
+      "SourceId": "VehiculosDGA.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
+      "BasePath": "_content/VehiculosDGA.Web",
+      "RelativePath": "js/Colaboradores#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "a3llvwp9qa",
+      "Integrity": "Bi35HXOQLEUpjKf1OAppLVChlcaJgmj0Q3a/9IdnMCY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\Colaboradores.js"
+    },
+    {
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\Dahsboard.js",
+      "SourceId": "VehiculosDGA.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "js/Dahsboard#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -206,10 +290,10 @@
       "OriginalItemSpec": "wwwroot\\js\\Dahsboard.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\login.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\login.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "js/login#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -220,17 +304,17 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "rjphj19tyn",
-      "Integrity": "af2u+XW52tLjI876P2G6EB1gpPZ6aPT+V8WDJm69GZY=",
+      "Fingerprint": "6zorho43w6",
+      "Integrity": "MshFcLhsu5c9Nrp0WYdBEO7CVnj0UbNbmOFMc95NpFQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\login.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\register.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\register.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "js/register#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -248,10 +332,31 @@
       "OriginalItemSpec": "wwwroot\\js\\register.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\vehiculos.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\seguros.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
+      "BasePath": "_content/VehiculosDGA.Web",
+      "RelativePath": "js/seguros#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "j2z44txmda",
+      "Integrity": "dc2B3X3FzF37y2ubUOTot3u/UuqTrBqGZIcdoSxEOEU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\seguros.js"
+    },
+    {
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\vehiculos.js",
+      "SourceId": "VehiculosDGA.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "js/vehiculos#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -262,17 +367,17 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "2hikuwm7k3",
-      "Integrity": "hhhD1aa7We00pxByso06ysSyjhBegbN8vBd+6U0ColM=",
+      "Fingerprint": "7eajbjizv9",
+      "Integrity": "oU05C9Tb7WOsw5/uDqRoJ767qWqVs4u2vMaRPtptrBE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\vehiculos.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -290,10 +395,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -311,10 +416,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -332,10 +437,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.min.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -353,10 +458,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -374,10 +479,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -395,10 +500,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -416,10 +521,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.min.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -437,10 +542,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -458,10 +563,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -479,10 +584,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -500,10 +605,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.min.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -521,10 +626,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -542,10 +647,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -563,10 +668,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -584,10 +689,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -605,10 +710,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -626,10 +731,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -647,10 +752,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -668,10 +773,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.min.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -689,10 +794,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -710,10 +815,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -731,10 +836,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -752,10 +857,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -773,10 +878,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -794,10 +899,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -815,10 +920,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -836,10 +941,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.min.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -857,10 +962,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -878,10 +983,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -899,10 +1004,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -920,10 +1025,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -941,10 +1046,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -962,10 +1067,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.js#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -983,10 +1088,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.min#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1004,10 +1109,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.min.js#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -1025,10 +1130,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1046,10 +1151,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.js#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -1067,10 +1172,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.min#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1088,10 +1193,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.min.js#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -1109,10 +1214,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1130,10 +1235,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.js#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -1151,10 +1256,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.min#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1172,10 +1277,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.min.js#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -1193,10 +1298,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\LICENSE",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/bootstrap/LICENSE#[.{fingerprint}]?",
       "AssetKind": "All",
@@ -1214,10 +1319,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\LICENSE"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/jquery/dist/jquery#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1235,10 +1340,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\dist\\jquery.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/jquery/dist/jquery.min#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1256,10 +1361,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\dist\\jquery.min.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/jquery/dist/jquery.min#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -1277,10 +1382,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\LICENSE.txt",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/jquery/LICENSE#[.{fingerprint}]?.txt",
       "AssetKind": "All",
@@ -1298,10 +1403,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\LICENSE.txt"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/jquery-validation/dist/additional-methods#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1319,10 +1424,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/jquery-validation/dist/additional-methods.min#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1340,10 +1445,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/jquery-validation/dist/jquery.validate#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1361,10 +1466,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/jquery-validation/dist/jquery.validate.min#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1382,10 +1487,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/jquery-validation/LICENSE#[.{fingerprint}]?.md",
       "AssetKind": "All",
@@ -1403,10 +1508,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\LICENSE.md"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1424,10 +1529,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min#[.{fingerprint}]?.js",
       "AssetKind": "All",
@@ -1445,10 +1550,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
     },
     {
-      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "Identity": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
       "SourceId": "VehiculosDGA.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\",
       "BasePath": "_content/VehiculosDGA.Web",
       "RelativePath": "lib/jquery-validation-unobtrusive/LICENSE#[.{fingerprint}]?.txt",
       "AssetKind": "All",
@@ -1469,7 +1574,7 @@
   "Endpoints": [
     {
       "Route": "css/auth.6p10kou7ku.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\css\\auth.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\auth.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1514,7 +1619,7 @@
     },
     {
       "Route": "css/auth.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\css\\auth.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\auth.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1550,8 +1655,8 @@
       ]
     },
     {
-      "Route": "css/site.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\css\\site.css",
+      "Route": "css/seguros-bulma.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\seguros-bulma.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1560,7 +1665,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "16612"
+          "Value": "960"
         },
         {
           "Name": "Content-Type",
@@ -1568,11 +1673,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"xMlXrdlGpHbNS3ltp/27Tu4zIRpp9Fwgv9+tugJlqTQ=\""
+          "Value": "\"wtQaogIWHE9tBUxQv4WRBFd7TXhE+gK1Ng66by1HRSc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 30 May 2025 18:47:31 GMT"
+          "Value": "Thu, 05 Jun 2025 18:29:30 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1582,13 +1687,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-xMlXrdlGpHbNS3ltp/27Tu4zIRpp9Fwgv9+tugJlqTQ="
+          "Value": "sha256-wtQaogIWHE9tBUxQv4WRBFd7TXhE+gK1Ng66by1HRSc="
         }
       ]
     },
     {
-      "Route": "css/site.s4pwr9778m.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\css\\site.css",
+      "Route": "css/seguros-bulma.igjd5bg03m.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\seguros-bulma.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1597,7 +1702,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "16612"
+          "Value": "960"
         },
         {
           "Name": "Content-Type",
@@ -1605,11 +1710,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"xMlXrdlGpHbNS3ltp/27Tu4zIRpp9Fwgv9+tugJlqTQ=\""
+          "Value": "\"wtQaogIWHE9tBUxQv4WRBFd7TXhE+gK1Ng66by1HRSc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 30 May 2025 18:47:31 GMT"
+          "Value": "Thu, 05 Jun 2025 18:29:30 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1619,7 +1724,52 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "s4pwr9778m"
+          "Value": "igjd5bg03m"
+        },
+        {
+          "Name": "label",
+          "Value": "css/seguros-bulma.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-wtQaogIWHE9tBUxQv4WRBFd7TXhE+gK1Ng66by1HRSc="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.5ipweew5fc.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "0"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 18:12:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "5ipweew5fc"
         },
         {
           "Name": "label",
@@ -1627,13 +1777,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-xMlXrdlGpHbNS3ltp/27Tu4zIRpp9Fwgv9+tugJlqTQ="
+          "Value": "sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="
         }
       ]
     },
     {
-      "Route": "css/styles.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\css\\styles.css",
+      "Route": "css/site.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1642,7 +1792,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14033"
+          "Value": "0"
         },
         {
           "Name": "Content-Type",
@@ -1650,11 +1800,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"kB6OtvDI+NzNg1SIcd2oibKI58Ux3yBoolJ6ICoc1rI=\""
+          "Value": "\"47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 27 May 2025 15:08:06 GMT"
+          "Value": "Thu, 05 Jun 2025 18:12:12 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1664,13 +1814,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-kB6OtvDI+NzNg1SIcd2oibKI58Ux3yBoolJ6ICoc1rI="
+          "Value": "sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="
         }
       ]
     },
     {
-      "Route": "css/styles.s9tppa6c7u.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\css\\styles.css",
+      "Route": "css/styles.0h9ew99z6t.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1679,7 +1829,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14033"
+          "Value": "20535"
         },
         {
           "Name": "Content-Type",
@@ -1687,11 +1837,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"kB6OtvDI+NzNg1SIcd2oibKI58Ux3yBoolJ6ICoc1rI=\""
+          "Value": "\"dFtCRgjPaAAZxOrSzSXLpe9S5l9KEkD+EqKPKsXxEaY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 27 May 2025 15:08:06 GMT"
+          "Value": "Fri, 20 Jun 2025 13:51:26 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1701,7 +1851,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "s9tppa6c7u"
+          "Value": "0h9ew99z6t"
         },
         {
           "Name": "label",
@@ -1709,13 +1859,50 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-kB6OtvDI+NzNg1SIcd2oibKI58Ux3yBoolJ6ICoc1rI="
+          "Value": "sha256-dFtCRgjPaAAZxOrSzSXLpe9S5l9KEkD+EqKPKsXxEaY="
+        }
+      ]
+    },
+    {
+      "Route": "css/styles.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "20535"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"dFtCRgjPaAAZxOrSzSXLpe9S5l9KEkD+EqKPKsXxEaY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 20 Jun 2025 13:51:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-dFtCRgjPaAAZxOrSzSXLpe9S5l9KEkD+EqKPKsXxEaY="
         }
       ]
     },
     {
       "Route": "css/vehiculos.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\css\\vehiculos.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\vehiculos.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1736,7 +1923,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 30 May 2025 18:47:31 GMT"
+          "Value": "Fri, 30 May 2025 18:47:30 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1752,7 +1939,7 @@
     },
     {
       "Route": "css/vehiculos.lhjgfu1nxw.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\css\\vehiculos.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\vehiculos.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1773,7 +1960,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 30 May 2025 18:47:31 GMT"
+          "Value": "Fri, 30 May 2025 18:47:30 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1797,7 +1984,7 @@
     },
     {
       "Route": "favicon.61n19gt1b8.ico",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\favicon.ico",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\favicon.ico",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1842,7 +2029,7 @@
     },
     {
       "Route": "favicon.ico",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\favicon.ico",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\favicon.ico",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1879,7 +2066,7 @@
     },
     {
       "Route": "js/app.3ygr873p8k.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\app.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\app.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1924,7 +2111,7 @@
     },
     {
       "Route": "js/app.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\app.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\app.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1960,8 +2147,254 @@
       ]
     },
     {
+      "Route": "js/Asignaciones.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\Asignaciones.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "57433"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Z91YsS8amwOOCYVbj8FIhKFy4DmMCeCnMHfjDLU+NVM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 22 Jun 2025 01:44:27 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Z91YsS8amwOOCYVbj8FIhKFy4DmMCeCnMHfjDLU+NVM="
+        }
+      ]
+    },
+    {
+      "Route": "js/Asignaciones.tn4wvdn8vc.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\Asignaciones.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "57433"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Z91YsS8amwOOCYVbj8FIhKFy4DmMCeCnMHfjDLU+NVM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 22 Jun 2025 01:44:27 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "tn4wvdn8vc"
+        },
+        {
+          "Name": "label",
+          "Value": "js/Asignaciones.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Z91YsS8amwOOCYVbj8FIhKFy4DmMCeCnMHfjDLU+NVM="
+        }
+      ]
+    },
+    {
+      "Route": "js/auth-manager.9pd052nhsy.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\auth-manager.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9244"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XWKG5nC2rT9S5qAn71Jt1/PdsieeOLpwrbTR9g3Rdvk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Jun 2025 14:14:23 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9pd052nhsy"
+        },
+        {
+          "Name": "label",
+          "Value": "js/auth-manager.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-XWKG5nC2rT9S5qAn71Jt1/PdsieeOLpwrbTR9g3Rdvk="
+        }
+      ]
+    },
+    {
+      "Route": "js/auth-manager.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\auth-manager.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9244"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"XWKG5nC2rT9S5qAn71Jt1/PdsieeOLpwrbTR9g3Rdvk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Jun 2025 14:14:23 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-XWKG5nC2rT9S5qAn71Jt1/PdsieeOLpwrbTR9g3Rdvk="
+        }
+      ]
+    },
+    {
+      "Route": "js/Colaboradores.a3llvwp9qa.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\Colaboradores.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "36573"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Bi35HXOQLEUpjKf1OAppLVChlcaJgmj0Q3a/9IdnMCY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 20 Jun 2025 13:51:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "a3llvwp9qa"
+        },
+        {
+          "Name": "label",
+          "Value": "js/Colaboradores.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Bi35HXOQLEUpjKf1OAppLVChlcaJgmj0Q3a/9IdnMCY="
+        }
+      ]
+    },
+    {
+      "Route": "js/Colaboradores.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\Colaboradores.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "36573"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Bi35HXOQLEUpjKf1OAppLVChlcaJgmj0Q3a/9IdnMCY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 20 Jun 2025 13:51:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Bi35HXOQLEUpjKf1OAppLVChlcaJgmj0Q3a/9IdnMCY="
+        }
+      ]
+    },
+    {
       "Route": "js/Dahsboard.3r8b2a0bt1.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\Dahsboard.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\Dahsboard.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1982,7 +2415,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 23 May 2025 01:51:14 GMT"
+          "Value": "Thu, 12 Jun 2025 19:44:24 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2006,7 +2439,7 @@
     },
     {
       "Route": "js/Dahsboard.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\Dahsboard.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\Dahsboard.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2027,7 +2460,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 23 May 2025 01:51:14 GMT"
+          "Value": "Thu, 12 Jun 2025 19:44:24 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2042,8 +2475,8 @@
       ]
     },
     {
-      "Route": "js/login.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\login.js",
+      "Route": "js/login.6zorho43w6.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\login.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2052,7 +2485,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "4281"
+          "Value": "6010"
         },
         {
           "Name": "Content-Type",
@@ -2060,48 +2493,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"af2u+XW52tLjI876P2G6EB1gpPZ6aPT+V8WDJm69GZY=\""
+          "Value": "\"MshFcLhsu5c9Nrp0WYdBEO7CVnj0UbNbmOFMc95NpFQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 29 May 2025 17:38:01 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-af2u+XW52tLjI876P2G6EB1gpPZ6aPT+V8WDJm69GZY="
-        }
-      ]
-    },
-    {
-      "Route": "js/login.rjphj19tyn.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\login.js",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "4281"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"af2u+XW52tLjI876P2G6EB1gpPZ6aPT+V8WDJm69GZY=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 29 May 2025 17:38:01 GMT"
+          "Value": "Tue, 10 Jun 2025 15:07:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2111,7 +2507,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "rjphj19tyn"
+          "Value": "6zorho43w6"
         },
         {
           "Name": "label",
@@ -2119,13 +2515,50 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-af2u+XW52tLjI876P2G6EB1gpPZ6aPT+V8WDJm69GZY="
+          "Value": "sha256-MshFcLhsu5c9Nrp0WYdBEO7CVnj0UbNbmOFMc95NpFQ="
+        }
+      ]
+    },
+    {
+      "Route": "js/login.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\login.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6010"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"MshFcLhsu5c9Nrp0WYdBEO7CVnj0UbNbmOFMc95NpFQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Jun 2025 15:07:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-MshFcLhsu5c9Nrp0WYdBEO7CVnj0UbNbmOFMc95NpFQ="
         }
       ]
     },
     {
       "Route": "js/register.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\register.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\register.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2162,7 +2595,7 @@
     },
     {
       "Route": "js/register.ptt6wrg05q.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\register.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\register.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2206,8 +2639,8 @@
       ]
     },
     {
-      "Route": "js/vehiculos.2hikuwm7k3.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\vehiculos.js",
+      "Route": "js/seguros.j2z44txmda.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\seguros.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2216,7 +2649,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "38324"
+          "Value": "44496"
         },
         {
           "Name": "Content-Type",
@@ -2224,11 +2657,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"hhhD1aa7We00pxByso06ysSyjhBegbN8vBd+6U0ColM=\""
+          "Value": "\"dc2B3X3FzF37y2ubUOTot3u/UuqTrBqGZIcdoSxEOEU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 01 Jun 2025 02:16:00 GMT"
+          "Value": "Fri, 06 Jun 2025 01:57:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2238,21 +2671,21 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "2hikuwm7k3"
+          "Value": "j2z44txmda"
         },
         {
           "Name": "label",
-          "Value": "js/vehiculos.js"
+          "Value": "js/seguros.js"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-hhhD1aa7We00pxByso06ysSyjhBegbN8vBd+6U0ColM="
+          "Value": "sha256-dc2B3X3FzF37y2ubUOTot3u/UuqTrBqGZIcdoSxEOEU="
         }
       ]
     },
     {
-      "Route": "js/vehiculos.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\js\\vehiculos.js",
+      "Route": "js/seguros.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\seguros.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2261,7 +2694,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "38324"
+          "Value": "44496"
         },
         {
           "Name": "Content-Type",
@@ -2269,11 +2702,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"hhhD1aa7We00pxByso06ysSyjhBegbN8vBd+6U0ColM=\""
+          "Value": "\"dc2B3X3FzF37y2ubUOTot3u/UuqTrBqGZIcdoSxEOEU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 01 Jun 2025 02:16:00 GMT"
+          "Value": "Fri, 06 Jun 2025 01:57:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2283,13 +2716,95 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-hhhD1aa7We00pxByso06ysSyjhBegbN8vBd+6U0ColM="
+          "Value": "sha256-dc2B3X3FzF37y2ubUOTot3u/UuqTrBqGZIcdoSxEOEU="
+        }
+      ]
+    },
+    {
+      "Route": "js/vehiculos.7eajbjizv9.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\vehiculos.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "42991"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"oU05C9Tb7WOsw5/uDqRoJ767qWqVs4u2vMaRPtptrBE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Jun 2025 03:34:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "7eajbjizv9"
+        },
+        {
+          "Name": "label",
+          "Value": "js/vehiculos.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-oU05C9Tb7WOsw5/uDqRoJ767qWqVs4u2vMaRPtptrBE="
+        }
+      ]
+    },
+    {
+      "Route": "js/vehiculos.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\vehiculos.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "42991"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"oU05C9Tb7WOsw5/uDqRoJ767qWqVs4u2vMaRPtptrBE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 08 Jun 2025 03:34:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-oU05C9Tb7WOsw5/uDqRoJ767qWqVs4u2vMaRPtptrBE="
         }
       ]
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2326,7 +2841,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.css.73kdqttayv.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2371,7 +2886,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2408,7 +2923,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.min.bpk8xqwxhs.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2453,7 +2968,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.min.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2490,7 +3005,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.min.css.8inm30yfxf.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2535,7 +3050,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.min.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2572,7 +3087,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.mpyigms19s.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2617,7 +3132,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.rtl.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2654,7 +3169,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.rtl.css.4gxs3k148c.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2699,7 +3214,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.rtl.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2736,7 +3251,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.rtl.min.9b9oa1qrmt.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2781,7 +3296,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.rtl.min.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2818,7 +3333,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.rtl.min.css.fctod5rc9n.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2863,7 +3378,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2900,7 +3415,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap.rtl.ve6x09088i.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2945,7 +3460,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.agp80tu62r.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2990,7 +3505,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3027,7 +3542,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3064,7 +3579,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.css.st1cbwfwo5.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3109,7 +3624,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.min.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3146,7 +3661,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.min.css.5vj65cig9w.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3191,7 +3706,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3228,7 +3743,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.min.unj9p35syc.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3273,7 +3788,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3310,7 +3825,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.rtl.css.2q4vfeazbq.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3355,7 +3870,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3392,7 +3907,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3429,7 +3944,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3466,7 +3981,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.o371a8zbv2.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3511,7 +4026,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.n1oizzvkh6.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3556,7 +4071,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-grid.rtl.q2ku51ktnl.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3601,7 +4116,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.7na4sro3qu.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3646,7 +4161,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3683,7 +4198,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.css.jeal3x0ldm.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3728,7 +4243,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3765,7 +4280,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.min.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3802,7 +4317,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3839,7 +4354,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.min.css.okkk44j0xs.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3884,7 +4399,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.min.f8imaxxbri.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3929,7 +4444,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.0wve5yxp74.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3974,7 +4489,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4011,7 +4526,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.cwzlr5n8x4.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4056,7 +4571,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4093,7 +4608,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4130,7 +4645,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4167,7 +4682,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.wmug9u23qg.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4212,7 +4727,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.npxfuf8dg6.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4257,7 +4772,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4294,7 +4809,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.css.j75batdsum.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4339,7 +4854,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4376,7 +4891,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.min.16095smhkz.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4421,7 +4936,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.min.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4458,7 +4973,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4495,7 +5010,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.min.css.vy0bq9ydhf.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4540,7 +5055,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.b4skse8du6.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4585,7 +5100,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4622,7 +5137,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.ab1c3rmv7g.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4667,7 +5182,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4704,7 +5219,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4741,7 +5256,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.56d2bn4wt9.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4786,7 +5301,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4823,7 +5338,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.u3xrusw2ol.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4868,7 +5383,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/css/bootstrap-utilities.tey0rigmnh.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4913,7 +5428,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.bundle.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4950,7 +5465,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.bundle.js.kbynt5jhd9.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4995,7 +5510,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.bundle.js.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5032,7 +5547,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.bundle.l2av4jpuoj.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5077,7 +5592,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.bundle.min.25iw1kog22.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5122,7 +5637,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.bundle.min.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5159,7 +5674,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.bundle.min.js.c2nslu3uf3.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5204,7 +5719,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5241,7 +5756,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.esm.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5278,7 +5793,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.esm.js.2lgwfvgpvi.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5323,7 +5838,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.esm.js.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5360,7 +5875,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.esm.m39kt2b5c9.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5405,7 +5920,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.esm.min.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5442,7 +5957,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5479,7 +5994,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.esm.min.js.wsezl0heh6.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5524,7 +6039,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.esm.min.um2aeqy4ik.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5569,7 +6084,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5606,7 +6121,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.js.6ukhryfubh.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5651,7 +6166,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.js.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5688,7 +6203,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.min.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5725,7 +6240,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.min.js.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5762,7 +6277,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.min.js.u33ctipx7g.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5807,7 +6322,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.min.zwph15dxgs.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5852,7 +6367,7 @@
     },
     {
       "Route": "lib/bootstrap/dist/js/bootstrap.o4kw7cc6tf.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5897,7 +6412,7 @@
     },
     {
       "Route": "lib/bootstrap/LICENSE",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\LICENSE",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5934,7 +6449,7 @@
     },
     {
       "Route": "lib/bootstrap/LICENSE.81b7ukuj9c",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\bootstrap\\LICENSE",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5979,7 +6494,7 @@
     },
     {
       "Route": "lib/jquery/dist/jquery.fwhahm2icz.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6024,7 +6539,7 @@
     },
     {
       "Route": "lib/jquery/dist/jquery.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6061,7 +6576,7 @@
     },
     {
       "Route": "lib/jquery/dist/jquery.min.5pze98is44.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6106,7 +6621,7 @@
     },
     {
       "Route": "lib/jquery/dist/jquery.min.dd6z7egasc.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6151,7 +6666,7 @@
     },
     {
       "Route": "lib/jquery/dist/jquery.min.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6188,7 +6703,7 @@
     },
     {
       "Route": "lib/jquery/dist/jquery.min.map",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6225,7 +6740,7 @@
     },
     {
       "Route": "lib/jquery/LICENSE.mlv21k5csn.txt",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\LICENSE.txt",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6270,7 +6785,7 @@
     },
     {
       "Route": "lib/jquery/LICENSE.txt",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery\\LICENSE.txt",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6307,7 +6822,7 @@
     },
     {
       "Route": "lib/jquery-validation/dist/additional-methods.ay5nd8zt9x.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6352,7 +6867,7 @@
     },
     {
       "Route": "lib/jquery-validation/dist/additional-methods.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6389,7 +6904,7 @@
     },
     {
       "Route": "lib/jquery-validation/dist/additional-methods.min.9oaff4kq20.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6434,7 +6949,7 @@
     },
     {
       "Route": "lib/jquery-validation/dist/additional-methods.min.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6471,7 +6986,7 @@
     },
     {
       "Route": "lib/jquery-validation/dist/jquery.validate.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6508,7 +7023,7 @@
     },
     {
       "Route": "lib/jquery-validation/dist/jquery.validate.min.b7iojwaux1.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6553,7 +7068,7 @@
     },
     {
       "Route": "lib/jquery-validation/dist/jquery.validate.min.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6590,7 +7105,7 @@
     },
     {
       "Route": "lib/jquery-validation/dist/jquery.validate.pzqfkb6aqo.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6635,7 +7150,7 @@
     },
     {
       "Route": "lib/jquery-validation/LICENSE.md",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6672,7 +7187,7 @@
     },
     {
       "Route": "lib/jquery-validation/LICENSE.x0q3zqp4vz.md",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6717,7 +7232,7 @@
     },
     {
       "Route": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.47otxtyo56.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6762,7 +7277,7 @@
     },
     {
       "Route": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6799,7 +7314,7 @@
     },
     {
       "Route": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.4v8eqarkd7.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6844,7 +7359,7 @@
     },
     {
       "Route": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6881,7 +7396,7 @@
     },
     {
       "Route": "lib/jquery-validation-unobtrusive/LICENSE.356vix0kms.txt",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6926,7 +7441,7 @@
     },
     {
       "Route": "lib/jquery-validation-unobtrusive/LICENSE.txt",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6963,7 +7478,7 @@
     },
     {
       "Route": "VehiculosDGA.Web.bundle.scp.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VehiculosDGA.Web.bundle.scp.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VehiculosDGA.Web.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6984,7 +7499,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 13:21:29 GMT"
+          "Value": "Mon, 02 Jun 2025 13:21:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -7000,7 +7515,7 @@
     },
     {
       "Route": "VehiculosDGA.Web.enfca8cngq.bundle.scp.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VehiculosDGA.Web.bundle.scp.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VehiculosDGA.Web.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7021,7 +7536,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 13:21:29 GMT"
+          "Value": "Mon, 02 Jun 2025 13:21:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -7045,7 +7560,7 @@
     },
     {
       "Route": "VehiculosDGA.Web.enfca8cngq.styles.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\VehiculosDGA.Web.styles.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\VehiculosDGA.Web.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7066,7 +7581,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 13:21:29 GMT"
+          "Value": "Mon, 02 Jun 2025 13:21:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -7090,7 +7605,7 @@
     },
     {
       "Route": "VehiculosDGA.Web.styles.css",
-      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\VehiculosDGA.Web.styles.css",
+      "AssetFile": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\VehiculosDGA.Web.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -7111,7 +7626,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 02 Jun 2025 13:21:29 GMT"
+          "Value": "Mon, 02 Jun 2025 13:21:28 GMT"
         },
         {
           "Name": "Cache-Control",

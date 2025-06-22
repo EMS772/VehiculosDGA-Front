@@ -49,15 +49,8 @@ new Vue({
                 if (response.data) {
                     this.success = 'Inicio de sesión exitoso. Redirigiendo...';
 
-                    // Guardar token si viene en la respuesta
-                    if (response.data.token) {
-                        localStorage.setItem('authToken', response.data.token);
-                    }
-
-                    // Guardar datos del usuario si vienen en la respuesta
-                    if (response.data.user) {
-                        localStorage.setItem('userData', JSON.stringify(response.data.user));
-                    }
+                    // Guardar todos los datos de autenticación
+                    this.saveAuthData(response.data);
 
                     // Recordar email si está marcado
                     if (this.rememberMe) {
@@ -97,6 +90,54 @@ new Vue({
                 }
             } finally {
                 this.loading = false;
+            }
+        },
+
+        // Guardar datos de autenticación
+        saveAuthData(authResponse) {
+            // Guardar token
+            if (authResponse.token) {
+                localStorage.setItem('authToken', authResponse.token);
+            }
+
+            // Guardar datos completos del usuario
+            if (authResponse.user) {
+                localStorage.setItem('userData', JSON.stringify(authResponse.user));
+            }
+
+            // Guardar permisos específicos para acceso rápido
+            if (authResponse.user) {
+                localStorage.setItem('controlFlotilla', authResponse.user.controlFlotilla.toString());
+                localStorage.setItem('controlServicios', authResponse.user.controlServicios.toString());
+
+                // Guardar información de qué mostrar
+                const showSidebar = authResponse.user.controlFlotilla || authResponse.user.controlServicios;
+                localStorage.setItem('showSidebar', showSidebar.toString());
+            }
+
+            // Decodificar token para guardar claims
+            if (authResponse.token) {
+                try {
+                    const claims = this.parseJwt(authResponse.token);
+                    localStorage.setItem('userClaims', JSON.stringify(claims));
+                } catch (error) {
+                    console.error('Error al decodificar token:', error);
+                }
+            }
+        },
+
+        // Decodificar JWT
+        parseJwt(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (error) {
+                console.error('Error al decodificar JWT:', error);
+                return null;
             }
         },
 

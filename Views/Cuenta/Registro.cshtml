@@ -1,73 +1,670 @@
 ﻿@{
-    ViewData["Title"] = "Registro";
-    Layout = "_LayoutEmpty";
+    ViewData["Title"] = "Configuración del Sistema";
+    Layout = "_Layout";
 }
 
-<div id="app-register">
-    <div class="register-container">
-        <div class="register-card">
-            <div class="register-header">
-                <img src="/img/logo-aduanas.png" alt="DGA Logo" class="logo">
-                <h1>Sistema de Gestión de Vehículos</h1>
+<!-- Configuración General -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card h-100">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs" id="configTabs" role="tablist">
+
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="false">
+                            <i class="bi bi-people me-2"></i>Usuarios
+                        </button>
+                    </li>
+                </ul>
             </div>
-            <div class="register-body">
-                <h2>Crear Cuenta</h2>
-                <div class="alert alert-danger" v-if="error" v-cloak>{{error}}</div>
-                <div class="alert alert-success" v-if="success" v-cloak>{{success}}</div>
-                <form v-on:submit.prevent="register">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="nombre">Nombre</label>
-                                <input type="text" id="nombre" class="form-control" v-model="user.nombre" required>
+            <div class="card-body">
+                <div class="tab-content" id="configTabsContent">
+
+
+                    <!-- Pestaña de Gestión de Usuarios -->
+                    <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
+                        <div id="app-users">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold mb-0">Usuarios del Sistema</h5>
+                                <button class="btn btn-sm btn-primary" v-on:click="mostrarModalCrearUsuario">
+                                    <i class="bi bi-plus-circle"></i> Nuevo Usuario
+                                </button>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="apellido">Apellido</label>
-                                <input type="text" id="apellido" class="form-control" v-model="user.apellido" required>
+
+                            <!-- Filtros de búsqueda -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" v-model="searchTerm" placeholder="Buscar por nombre o email..." />
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-select" v-model="filterRole">
+                                        <option value="">Todos los roles</option>
+                                        <option value="Admin">Administrador</option>
+                                        <option value="Manager">Gerente</option>
+                                        <option value="Employee">Empleado</option>
+                                        <option value="User">Usuario</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-select" v-model="filterStatus">
+                                        <option value="">Todos los estados</option>
+                                        <option value="true">Activos</option>
+                                        <option value="false">Inactivos</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-outline-secondary w-100" v-on:click="loadUsers">
+                                        <i class="bi bi-arrow-clockwise"></i> Actualizar
+                                    </button>
+                                </div>
                             </div>
+
+                            <!-- Alertas -->
+                            <div class="alert alert-danger" v-if="error" v-cloak>{{ error }}</div>
+                            <div class="alert alert-success" v-if="success" v-cloak>{{ success }}</div>
+
+                            <!-- Tabla de usuarios -->
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Email</th>
+                                            <th>Rol</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="user in filteredUsers" :key="user.id">
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-circle me-2">
+                                                        {{ getInitials(user.nombre, user.apellido) }}
+                                                    </div>
+                                                    <div>
+                                                        <strong>{{ user.nombre }} {{ user.apellido }}</strong>
+                                                        <br>
+                                                        <small class="text-muted">{{ user.cargo || 'No especificado' }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>{{ user.email }}</td>
+                                            <td>
+                                                <span v-for="role in user.roles" :key="role"
+                                                      :class="getRoleClass(role)"
+                                                      class="badge me-1">
+                                                    {{ getRoleLabel(role) }}
+                                                </span>
+                                                <div class="mt-1" v-if="user.controlFlotilla || user.controlServicios">
+                                                    <span v-if="user.controlFlotilla" class="badge bg-info badge-sm me-1" title="Control de Flotilla">
+                                                        <i class="bi bi-truck"></i> Flotilla
+                                                    </span>
+                                                    <span v-if="user.controlServicios" class="badge bg-warning badge-sm" title="Control de Servicios">
+                                                        <i class="bi bi-tools"></i> Servicios
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span :class="user.activo ? 'badge bg-success' : 'badge bg-danger'">
+                                                    {{ user.activo ? 'Activo' : 'Inactivo' }}
+                                                </span>
+                                                <br>
+                                                <small class="text-muted">{{ formatDate(user.ultimoAcceso) }}</small>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <button v-if="!user.activo"
+                                                            class="btn btn-outline-success"
+                                                            v-on:click="toggleUserStatus(user.id, true)"
+                                                            title="Activar usuario">
+                                                        <i class="bi bi-check-circle"></i>
+                                                    </button>
+                                                    <button v-if="user.activo"
+                                                            class="btn btn-outline-warning"
+                                                            v-on:click="toggleUserStatus(user.id, false)"
+                                                            title="Desactivar usuario">
+                                                        <i class="bi bi-x-circle"></i>
+                                                    </button>
+                                                   
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr v-if="filteredUsers.length === 0">
+                                            <td colspan="5" class="text-center py-4 text-muted">
+                                                <i class="bi bi-inbox fs-1"></i>
+                                                <p class="mt-2">No se encontraron usuarios</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Paginación -->
+                            <nav aria-label="Page navigation" v-if="filteredUsers.length > 0">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                                        <button class="page-link" v-on:click="changePage(currentPage - 1)" :disabled="currentPage === 1">
+                                            Anterior
+                                        </button>
+                                    </li>
+                                    <li v-for="page in totalPages" :key="page"
+                                        class="page-item" :class="{ active: page === currentPage }">
+                                        <button class="page-link" v-on:click="changePage(page)">{{ page }}</button>
+                                    </li>
+                                    <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                                        <button class="page-link" v-on:click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">
+                                            Siguiente
+                                        </button>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="cargo">Cargo</label>
-                        <input type="text" id="cargo" class="form-control" v-model="user.cargo" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Correo Electrónico</label>
-                        <input type="email" id="email" class="form-control" v-model="user.email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Contraseña</label>
-                        <input type="password" id="password" class="form-control" v-model="user.password" required>
-                        <small class="form-text text-muted">La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirmar Contraseña</label>
-                        <input type="password" id="confirmPassword" class="form-control" v-model="user.confirmPassword" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" v-model="acceptTerms" required>
-                            <span class="custom-control-indicator"></span>
-                            <span class="custom-control-description">Acepto los <a href="#">términos y condiciones</a></span>
-                        </label>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block" v-bind:disabled="loading || !acceptTerms">
-                        <span v-if="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</span>
-                        <span v-else>Registrarse</span>
-                    </button>
-                </form>
-                <div class="register-footer">
-                    <p>¿Ya tiene una cuenta? <a href="/Account/Login">Iniciar Sesión</a></p>
+
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal de Registro de Usuario - TODO DENTRO DEL SCOPE DE VUE -->
+    <div id="app-register">
+        <div class="modal" id="registerUserModal" tabindex="-1" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">Registrar Nuevo Usuario</h5>
+                        <button type="button" class="btn-close btn-close-white" v-on:click="cerrarModal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger" v-if="error" v-cloak>{{ error }}</div>
+                        <div class="alert alert-success" v-if="success" v-cloak>{{ success }}</div>
+
+                        <form v-on:submit.prevent="register">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+                                    <input type="text" id="nombre" class="form-control" v-model="user.nombre" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="apellido" class="form-label">Apellido <span class="text-danger">*</span></label>
+                                    <input type="text" id="apellido" class="form-control" v-model="user.apellido" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cargo" class="form-label">Cargo <span class="text-danger">*</span></label>
+                                <input type="text" id="cargo" class="form-control" v-model="user.cargo" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
+                                <input type="email" id="email" class="form-control" v-model="user.email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña <span class="text-danger">*</span></label>
+                                <input type="password" id="password" class="form-control" v-model="user.password" required>
+                                <small class="form-text text-muted">
+                                    Mínimo 8 caracteres con mayúscula, minúscula, número y carácter especial.
+                                </small>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirmar Contraseña <span class="text-danger">*</span></label>
+                                <input type="password" id="confirmPassword" class="form-control" v-model="user.confirmPassword" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Permiso Especial (opcional)</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="permisoEspecial" id="controlFlotilla"
+                                           value="flotilla" v-model="permisoSeleccionado" v-on:change="updatePermisos">
+                                    <label class="form-check-label" for="controlFlotilla">
+                                        Control de Flotilla
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="permisoEspecial" id="controlServicios"
+                                           value="servicios" v-model="permisoSeleccionado" v-on:change="updatePermisos">
+                                    <label class="form-check-label" for="controlServicios">
+                                        Control de Servicios
+                                    </label>
+                                </div>
+                               
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" v-on:click="cerrarModal">
+                            <i class="bi bi-x me-1"></i> Cancelar
+                        </button>
+                        <button type="button" class="btn btn-primary" v-on:click="register" :disabled="loading">
+                            <i class="bi bi-person-plus me-1"></i>
+                            {{ loading ? 'Registrando...' : 'Registrar Usuario' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Backdrop del modal -->
+        <div class="modal-backdrop" v-if="showModal" v-on:click="cerrarModal"></div>
+    </div>
 </div>
 
+<style>
+    /* Estilos simplificados sin animaciones */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1050;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        outline: 0;
+    }
+
+        .modal.show {
+            display: block !important;
+        }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1040;
+        width: 100vw;
+        height: 100vh;
+        background-color: #000;
+        opacity: 0.5;
+    }
+
+    .modal-dialog {
+        position: relative;
+        width: auto;
+        margin: 1.75rem auto;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 0.3rem;
+        outline: 0;
+    }
+
+    .avatar-circle {
+        width: 40px;
+        height: 40px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .badge-sm {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+    /* Eliminar clases v-cloak */
+    [v-cloak] {
+        display: none;
+    }
+</style>
+
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Dependencias CDN -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script src="~/js/register.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        // Configuración de axios
+        const API_BASE_URL = 'https://localhost:7037';
+        const apiClient = axios.create({
+            baseURL: API_BASE_URL,
+            timeout: 30000
+        });
+
+        // Interceptor para agregar el token a todas las peticiones
+        apiClient.interceptors.request.use(
+            config => {
+                const token = localStorage.getItem('authToken');
+                if (token) {
+                    config.headers.Authorization = `Bearer ${token}`;
+                }
+                return config;
+            },
+            error => {
+                return Promise.reject(error);
+            }
+        );
+
+        // Interceptor para manejar respuestas 401
+        apiClient.interceptors.response.use(
+            response => response,
+            error => {
+                if (error.response?.status === 401) {
+                    console.error('Token expirado o inválido. Redirigiendo al login...');
+                    // Aquí podrías redirigir al login o mostrar un mensaje
+                    // window.location.href = '/login';
+                }
+                return Promise.reject(error);
+            }
+        );
+
+        // Configuración de Vue.js
+        Vue.config.devtools = true;
+
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM cargado, iniciando Vue apps...');
+
+            // Vue instance para gestión de usuarios
+            const usersApp = new Vue({
+                el: '#app-users',
+                data: {
+                    users: [],
+                    loadingUsers: false,
+                    error: '',
+                    success: '',
+                    searchTerm: '',
+                    filterRole: '',
+                    filterStatus: '',
+                    currentPage: 1,
+                    usersPerPage: 10
+                },
+                computed: {
+                    filteredUsers() {
+                        let filtered = this.users;
+
+                        if (this.searchTerm) {
+                            const term = this.searchTerm.toLowerCase();
+                            filtered = filtered.filter(user =>
+                                user.nombre.toLowerCase().includes(term) ||
+                                user.apellido.toLowerCase().includes(term) ||
+                                user.email.toLowerCase().includes(term) ||
+                                (user.cargo && user.cargo.toLowerCase().includes(term))
+                            );
+                        }
+
+                        if (this.filterRole) {
+                            filtered = filtered.filter(user =>
+                                user.roles && user.roles.includes(this.filterRole)
+                            );
+                        }
+
+                        if (this.filterStatus !== '') {
+                            const isActive = this.filterStatus === 'true';
+                            filtered = filtered.filter(user => user.activo === isActive);
+                        }
+
+                        const start = (this.currentPage - 1) * this.usersPerPage;
+                        const end = start + this.usersPerPage;
+                        return filtered.slice(start, end);
+                    },
+                    totalPages() {
+                        let filtered = this.users;
+
+                        if (this.searchTerm) {
+                            const term = this.searchTerm.toLowerCase();
+                            filtered = filtered.filter(user =>
+                                user.nombre.toLowerCase().includes(term) ||
+                                user.apellido.toLowerCase().includes(term) ||
+                                user.email.toLowerCase().includes(term)
+                            );
+                        }
+
+                        if (this.filterRole) {
+                            filtered = filtered.filter(user =>
+                                user.roles && user.roles.includes(this.filterRole)
+                            );
+                        }
+
+                        if (this.filterStatus !== '') {
+                            const isActive = this.filterStatus === 'true';
+                            filtered = filtered.filter(user => user.activo === isActive);
+                        }
+
+                        return Math.ceil(filtered.length / this.usersPerPage);
+                    }
+                },
+                methods: {
+                    mostrarModalCrearUsuario() {
+                        console.log('Mostrando modal de crear usuario');
+                        if (window.registerApp) {
+                            window.registerApp.resetForm();
+                            window.registerApp.abrirModal();
+                        }
+                    },
+
+                    async loadUsers() {
+                        try {
+                            this.loadingUsers = true;
+                            this.error = '';
+
+                            const response = await apiClient.get('/api/Auth/Usuarios');
+                            console.log('Usuarios cargados:', response.data);
+
+                            this.users = response.data;
+                            this.success = `Usuarios cargados correctamente (${this.users.length} usuarios)`;
+
+                            setTimeout(() => { this.success = ''; }, 3000);
+
+                        } catch (err) {
+                            console.error('Error al cargar usuarios:', err);
+                            this.error = `Error: No se pudo cargar la lista de usuarios`;
+                        } finally {
+                            this.loadingUsers = false;
+                        }
+                    },
+
+                    async toggleUserStatus(userId, activate) {
+                        try {
+                            const endpoint = activate ? `ActivarUsuario/${userId}` : `DesactivarUsuario/${userId}`;
+                            await apiClient.patch(`/api/Auth/${endpoint}`);
+
+                            const user = this.users.find(u => u.id === userId);
+                            if (user) {
+                                user.activo = activate;
+                            }
+
+                            this.success = `Usuario ${activate ? 'activado' : 'desactivado'} correctamente`;
+                            setTimeout(() => { this.success = ''; }, 3000);
+
+                        } catch (err) {
+                            console.error('Error al cambiar estado del usuario:', err);
+                            this.error = 'Error al cambiar el estado del usuario';
+                        }
+                    },
+
+                    editUser(user) {
+                        alert('Función de edición en desarrollo');
+                    },
+
+                    changePage(page) {
+                        if (page >= 1 && page <= this.totalPages) {
+                            this.currentPage = page;
+                        }
+                    },
+
+                    getInitials(nombre, apellido) {
+                        return (nombre?.charAt(0) || '') + (apellido?.charAt(0) || '');
+                    },
+
+                    getRoleClass(role) {
+                        const classes = {
+                            'Admin': 'bg-danger',
+                            'Manager': 'bg-warning',
+                            'Employee': 'bg-info',
+                            'User': 'bg-secondary'
+                        };
+                        return classes[role] || 'bg-secondary';
+                    },
+
+                    getRoleLabel(role) {
+                        const labels = {
+                            'Admin': 'Administrador',
+                            'Manager': 'Gerente',
+                            'Employee': 'Empleado',
+                            'User': 'Usuario'
+                        };
+                        return labels[role] || role;
+                    },
+
+                    formatDate(dateString) {
+                        if (!dateString) return 'Nunca';
+                        const date = new Date(dateString);
+                        return date.toLocaleString('es-ES', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+                },
+                mounted() {
+                    console.log('Users Vue app montada');
+                    this.loadUsers();
+                }
+            });
+
+            // Vue instance para registro de usuario
+            const registerApp = new Vue({
+                el: '#app-register',
+                data: {
+                    user: {
+                        nombre: '',
+                        apellido: '',
+                        cargo: '',
+                        email: '',
+                        password: '',
+                        confirmPassword: '',
+                        controlFlotilla: false,
+                        controlServicios: false
+                    },
+                    permisoSeleccionado: '',
+                    loading: false,
+                    error: '',
+                    success: '',
+                    showModal: false
+                },
+                methods: {
+                    abrirModal() {
+                        const modal = document.getElementById('registerUserModal');
+                        if (modal) {
+                            modal.style.display = 'block';
+                            modal.classList.add('show');
+                            this.showModal = true;
+                        }
+                    },
+
+                    cerrarModal() {
+                        const modal = document.getElementById('registerUserModal');
+                        if (modal) {
+                            modal.classList.remove('show');
+                            modal.style.display = 'none';
+                            this.showModal = false;
+                        }
+                    },
+
+                    updatePermisos() {
+                        this.user.controlFlotilla = false;
+                        this.user.controlServicios = false;
+
+                        if (this.permisoSeleccionado === 'flotilla') {
+                            this.user.controlFlotilla = true;
+                        } else if (this.permisoSeleccionado === 'servicios') {
+                            this.user.controlServicios = true;
+                        }
+                    },
+
+                    async register() {
+                        if (this.loading) return;
+
+                        this.loading = true;
+                        this.error = '';
+                        this.success = '';
+
+                        try {
+                            // Validaciones
+                            if (!this.user.nombre || !this.user.apellido || !this.user.email || !this.user.password) {
+                                throw new Error('Todos los campos obligatorios deben ser completados.');
+                            }
+
+                            if (this.user.password !== this.user.confirmPassword) {
+                                throw new Error('Las contraseñas no coinciden.');
+                            }
+
+                            if (this.user.password.length < 8) {
+                                throw new Error('La contraseña debe tener al menos 8 caracteres.');
+                            }
+
+                                   const userData = {
+                                        Email: this.user.email.trim(),           // ✅ PascalCase
+                                        Password: this.user.password,            // ✅ PascalCase
+                                        ConfirmPassword: this.user.confirmPassword, // ✅ Esto era el problema principal
+                                        Nombre: this.user.nombre.trim(),
+                                        Apellido: this.user.apellido.trim(),
+                                        Cargo: this.user.cargo?.trim() || '',
+                                        ControlFlotilla: this.user.controlFlotilla,
+                                        ControlServicios: this.user.controlServicios
+                                    };
+
+                            const response = await apiClient.post('/api/Auth/Registro', userData);
+
+                            this.success = 'Usuario registrado correctamente.';
+
+                            setTimeout(() => {
+                                this.cerrarModal();
+                                if (window.usersApp) {
+                                    window.usersApp.loadUsers();
+                                }
+                            }, 1500);
+
+                        } catch (err) {
+                            if (err.response) {
+                                this.error = err.response.data?.message || 'Error del servidor';
+                            } else {
+                                this.error = err.message || 'Error al registrar usuario';
+                            }
+                        } finally {
+                            this.loading = false;
+                        }
+                    },
+
+                    resetForm() {
+                        this.user = {
+                            nombre: '',
+                            apellido: '',
+                            cargo: '',
+                            email: '',
+                            password: '',
+                            confirmPassword: '',
+                            controlFlotilla: false,
+                            controlServicios: false
+                        };
+                        this.permisoSeleccionado = '';
+                        this.error = '';
+                        this.success = '';
+                    }
+                },
+                mounted() {
+                    console.log('Register Vue app montada');
+                }
+            });
+
+            // Hacer las apps globales
+            window.usersApp = usersApp;
+            window.registerApp = registerApp;
+        });
+    </script>
 }

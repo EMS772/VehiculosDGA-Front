@@ -1,163 +1,793 @@
 ﻿@{
-    ViewData["Title"] = "Asignaciones de Vehículos";
-    ViewData["NavbarTitle"] = "Asignaciones de Vehículos";
+    ViewData["Title"] = "Gestión de Asignaciones";
+    ViewData["NavbarTitle"] = "Gestión de Asignaciones";
     ViewData["ActivePage"] = "Asignaciones";
+    Layout = "_Layout";
 }
 
-<div class="row my-4">
-    <div class="col-lg-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold">Asignaciones de Vehículos</h2>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#assignVehicleModal">
-                <i class="bi bi-person-plus me-1"></i> Nueva Asignación
-            </button>
-        </div>
+<div id="asignaciones-app">
+    <div class="row my-4">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">Gestión de Asignaciones</h2>
+                <button class="btn btn-primary" v-on:click="mostrarModalCrear">
+                    <i class="fas fa-plus me-1"></i> Nueva Asignación
+                </button>
+            </div>
 
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Vehículo</th>
-                                <th>Colaborador</th>
-                                <th>Fecha Asignación</th>
-                                <th>Fecha Devolución</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="6" class="text-center text-muted">No hay asignaciones registradas</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- Filter Section -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form v-on:submit.prevent="filtrarAsignaciones">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="filterEstado" class="form-label">Estado</label>
+                                <select class="form-select" v-model="filtros.estado">
+                                    <option value="">Todos</option>
+                                    <option value="0">Activa</option>
+                                    <option value="2">Completada</option>
+                                    <option value="3">Cancelada</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="filterTipo" class="form-label">Tipo</label>
+                                <select class="form-select" v-model="filtros.tipoAsignacion">
+                                    <option value="">Todos</option>
+                                    <option v-for="tipo in tiposAsignacion" :key="tipo.value" :value="tipo.value">{{ tipo.text }}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="fechaDesde" class="form-label">Fecha Desde</label>
+                                <input type="date" class="form-control" v-model="filtros.fechaDesde">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="fechaHasta" class="form-label">Fecha Hasta</label>
+                                <input type="date" class="form-control" v-model="filtros.fechaHasta">
+                            </div>
+                            <div class="col-md-12 mt-3 d-flex justify-content-end">
+                                <button type="button" class="btn btn-primary" @@click="filtrarAsignaciones">
+                                    <i class="fas fa-filter me-1"></i> Filtrar
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary ms-2" @@click="limpiarFiltros">
+                                    <i class="fas fa-times me-1"></i> Limpiar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Asignaciones Table -->
+            <div class="card shadow">
+                <div class="card-body">
+                    <div v-if="cargando" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Cargando asignaciones...</p>
+                    </div>
+
+                    <div v-else-if="asignaciones.length === 0" class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> No se encontraron asignaciones con los criterios seleccionados.
+                    </div>
+
+                    <div class="table-responsive" v-else>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Vehículo</th>
+                                    <th>Colaborador</th>
+                                    <th>Fecha Asignación</th>
+                                    <th>Fecha Devolución</th>
+                                    <th>Estado</th>
+                                    <th>Tipo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="asignacion in asignaciones" :key="asignacion.id">
+                                    <td>
+                                        <span v-if="asignacion.vehiculo">
+                                            {{ asignacion.vehiculo.marca }} {{ asignacion.vehiculo.modelo }}
+                                        </span>
+                                        <span v-else>
+                                            ID: {{ asignacion.vehiculoId }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span v-if="asignacion.colaborador">
+                                            {{ asignacion.colaborador.nombre }} {{ asignacion.colaborador.apellido }}
+                                        </span>
+                                        <span v-else>
+                                            ID: {{ asignacion.colaboradorId }}
+                                        </span>
+                                    </td>
+                                    <td>{{ formatearFecha(asignacion.fechaAsignacion) }}</td>
+                                    <td>{{ formatearFecha(asignacion.fechaDevolucion) }}</td>
+                                    <td>
+                                        <span :class="obtenerEstadoClass(asignacion.estado)">
+                                            {{ obtenerTextoEstado(asignacion.estado) }}
+                                        </span>
+                                    </td>
+                                    <td>{{ obtenerTextoTipoAsignacion(asignacion.tipoAsignacion) }}</td>
+                                    <td>
+                                        <!-- Botón Ver Detalles -->
+                                        <button class="btn btn-sm btn-outline-primary me-1"
+                                                v-on:click="mostrarDetalles(asignacion)"
+                                                title="Ver Detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+
+                                        <!-- Botón Editar (solo si estado === 1) -->
+                                        <button class="btn btn-sm btn-outline-secondary me-1"
+                                                v-on:click="mostrarModalEditar(asignacion)"
+                                                title="Editar"
+                                                v-if="asignacion.estado === 0">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+
+                                        <!-- Botón Devolución (solo si estado === 0) -->
+                                        <button class="btn btn-sm btn-outline-warning me-1"
+                                                v-on:click="mostrarModalDevolucion(asignacion)"
+                                                title="Procesar Devolución"
+                                                v-if="asignacion.estado === 0">
+                                            <i class="fas fa-undo"></i>
+                                        </button>
+
+                                        <!-- Botón Eliminar (nuevo) -->
+                                        <button class="btn btn-sm btn-outline-danger"
+                                                v-on:click="confirmarEliminar(asignacion)"
+                                                title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nueva Asignación -->
+    <div class="modal fade" id="nuevaAsignacionModal" tabindex="-1" aria-labelledby="nuevaAsignacionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title" id="nuevaAsignacionModalLabel">
+                        <i class="fas fa-plus me-2"></i>Nueva Asignación
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" v-on:click="cerrarModal('nuevaAsignacionModal')" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form v-on:submit.prevent="guardarAsignacion">
+                        <!-- Información Básica -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Información Básica</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="vehiculo" class="form-label">Vehículo *</label>
+                                        <select v-model="asignacionForm.vehiculoId" class="form-select">
+                                            <option disabled value="">Seleccione un vehículo</option>
+                                            <option v-for="vehiculo in vehiculosDisponibles" :key="vehiculo.id" :value="vehiculo.id">
+                                                {{ vehiculo.marca }} {{ vehiculo.modelo }} - {{ vehiculo.placaFisica }}
+                                            </option>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="colaborador" class="form-label">Colaborador *</label>
+                                        <select class="form-select" v-model="asignacionForm.colaboradorId" required>
+                                            <option value="">Seleccione un colaborador...</option>
+                                            <option v-for="colaborador in colaboradoresDisponibles" :key="colaborador.id" :value="colaborador.id">
+                                                {{ colaborador.nombre }} {{ colaborador.apellido }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="fechaAsignacion" class="form-label">Fecha Asignación *</label>
+                                        <input type="date" class="form-control" v-model="asignacionForm.fechaAsignacion" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="fechaEstimadaDevolucion" class="form-label">Fecha Estimada Devolución</label>
+                                        <input type="date" class="form-control" v-model="asignacionForm.fechaEstimadaDevolucion">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="kilometrajeInicial" class="form-label">Kilometraje Inicial *</label>
+                                        <input type="number" class="form-control" v-model="asignacionForm.kilometrajeInicial" min="0" required>
+                                        <small class="text-muted" v-if="asignacionForm.vehiculoId">
+                                            Último kilometraje registrado del vehículo
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="tipoAsignacion" class="form-label">Tipo Asignación *</label>
+                                        <select class="form-select" v-model="asignacionForm.tipoAsignacion" required>
+                                            <option v-for="tipo in tiposAsignacion" :key="tipo.value" :value="tipo.value">
+                                                {{ tipo.text }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="proposito" class="form-label">Propósito *</label>
+                                        <textarea class="form-control" v-model="asignacionForm.proposito" rows="2" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Oficio y Expediente -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-file-alt me-2"></i>Oficio y Expediente</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="numeroOficio" class="form-label">Número de Oficio *</label>
+                                        <input type="text" class="form-control" v-model="asignacionForm.numeroOficio" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="tipoExpediente" class="form-label">Tipo de Expediente</label>
+                                        <select class="form-select" v-model="asignacionForm.tipoExpediente">
+                                            <option v-for="tipo in tiposExpediente" :key="tipo.value" :value="tipo.value">
+                                                {{ tipo.text }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="institucionAsignada" class="form-label">Institución Asignada</label>
+                                        <input type="text" class="form-control" v-model="asignacionForm.institucionAsignada">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="departamentoAsignado" class="form-label">Departamento Asignado</label>
+                                        <input type="text" class="form-control" v-model="asignacionForm.departamentoAsignado">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="responsableInstitucion" class="form-label">Responsable Institución</label>
+                                        <input type="text" class="form-control" v-model="asignacionForm.responsableInstitucion">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cargoResponsable" class="form-label">Cargo Responsable</label>
+                                        <input type="text" class="form-control" v-model="asignacionForm.cargoResponsable">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="observacionesExpediente" class="form-label">Observaciones Expediente</label>
+                                        <textarea class="form-control" v-model="asignacionForm.observacionesExpediente" rows="2"></textarea>
+                                    </div>
+                                    <div class="col-md-6 mb-3 d-flex align-items-center">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" v-model="asignacionForm.generarPlantilla">
+                                            <label class="form-check-label">
+                                                Generar Plantilla Automáticamente
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Observaciones -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-sticky-note me-2"></i>Observaciones</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="observaciones" class="form-label">Observaciones</label>
+                                    <textarea class="form-control" v-model="asignacionForm.observaciones" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Documentos -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-paperclip me-2"></i>Documentos (Opcional)</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="documentos" class="form-label">Documentos de la Asignación</label>
+                                    <input class="form-control" type="file" v-on:change="seleccionarDocumentos"
+                                           accept=".pdf,.jpg,.png,.jpeg,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar" multiple>
+                                    <small class="text-muted">Formatos soportados: PDF, Imágenes, Word, Excel, TXT, ZIP, RAR</small>
+                                    <div v-if="documentosSeleccionados.length > 0" class="mt-2">
+                                        <span class="badge bg-info">{{ documentosSeleccionados.length }} documentos seleccionados</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" v-on:click="cerrarModal('nuevaAsignacionModal')">
+                        <i class="fas fa-times me-1"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" v-on:click="guardarAsignacion" :disabled="guardando">
+                        <span v-if="guardando">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Guardando...
+                        </span>
+                        <span v-else>
+                            <i class="fas fa-save me-1"></i> Crear Asignación
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Asignación -->
+    <div class="modal fade" id="editarAsignacionModal" tabindex="-1" aria-labelledby="editarAsignacionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-warning">
+                    <h5 class="modal-title" id="editarAsignacionModalLabel">
+                        <i class="fas fa-edit me-2"></i>Editar Asignación
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" v-on:click="cerrarModal('editarAsignacionModal')" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Información no editable -->
+                    <div class="alert alert-info mb-3">
+                        <strong>Información de la Asignación:</strong><br>
+                        <strong>Vehículo:</strong>
+                        <span v-if="asignacionDetalle.vehiculo && asignacionDetalle.vehiculo.marca">
+                            {{ asignacionDetalle.vehiculo.marca }} {{ asignacionDetalle.vehiculo.modelo }}
+                        </span>
+                        <span v-else>
+                            ID {{ asignacionDetalle.vehiculoId || asignacionDetalle.vehiculo?.id || 'N/A' }}
+                        </span><br>
+                        <strong>Colaborador:</strong> {{ asignacionDetalle.colaborador?.nombre || 'N/A' }} {{ asignacionDetalle.colaborador?.apellido || '' }}<br>
+                        <strong>Fecha Asignación:</strong> {{ formatearFecha(asignacionDetalle.fechaAsignacion) }}<br>
+                        <strong>Kilometraje Inicial:</strong> {{ asignacionDetalle.kilometrajeInicial }} km
+                    </div>
+
+                    <!-- Campos editables -->
+                    <form v-on:submit.prevent="guardarAsignacion">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="fechaEstimadaDevolucionEdit" class="form-label">Fecha Estimada Devolución</label>
+                                <input type="date" class="form-control" v-model="asignacionForm.fechaEstimadaDevolucion">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="propositoEdit" class="form-label">Propósito *</label>
+                                <textarea class="form-control" v-model="asignacionForm.proposito" rows="2" required></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="observacionesEdit" class="form-label">Observaciones</label>
+                                <textarea class="form-control" v-model="asignacionForm.observaciones" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="numeroOficioEdit" class="form-label">Número de Oficio</label>
+                                <input type="text" class="form-control" v-model="asignacionForm.numeroOficio">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="observacionesExpedienteEdit" class="form-label">Observaciones Expediente</label>
+                                <textarea class="form-control" v-model="asignacionForm.observacionesExpediente" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="institucionAsignadaEdit" class="form-label">Institución Asignada</label>
+                                <input type="text" class="form-control" v-model="asignacionForm.institucionAsignada">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="departamentoAsignadoEdit" class="form-label">Departamento Asignado</label>
+                                <input type="text" class="form-control" v-model="asignacionForm.departamentoAsignado">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="responsableInstitucionEdit" class="form-label">Responsable Institución</label>
+                                <input type="text" class="form-control" v-model="asignacionForm.responsableInstitucion">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="cargoResponsableEdit" class="form-label">Cargo Responsable</label>
+                                <input type="text" class="form-control" v-model="asignacionForm.cargoResponsable">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" v-on:click="cerrarModal('editarAsignacionModal')">
+                        <i class="fas fa-times me-1"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-warning" v-on:click="guardarAsignacion" :disabled="guardando">
+                        <span v-if="guardando">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Actualizando...
+                        </span>
+                        <span v-else>
+                            <i class="fas fa-save me-1"></i> Actualizar Asignación
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detalles de Asignación -->
+    <div class="modal fade" id="asignacionDetailsModal" tabindex="-1" aria-labelledby="asignacionDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-info">
+                    <h5 class="modal-title" id="asignacionDetailsModalLabel">
+                        <i class="fas fa-info-circle me-2"></i>Detalles de Asignación
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" v-on:click="cerrarModal('asignacionDetailsModal')" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div v-if="cargandoDetalle" class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2">Cargando detalles...</p>
+                    </div>
+
+                    <div v-else>
+                        <!-- Pestañas -->
+                        <ul class="nav nav-tabs mb-3" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab">
+                                    <i class="fas fa-info-circle me-1"></i> Información General
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="expediente-tab" data-bs-toggle="tab" data-bs-target="#expediente" type="button" role="tab">
+                                    <i class="fas fa-folder me-1"></i> Expediente
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="docs-tab" data-bs-toggle="tab" data-bs-target="#docs" type="button" role="tab">
+                                    <i class="fas fa-file-alt me-1"></i> Documentos
+                                    <span class="badge bg-secondary ms-1" v-if="documentos && documentos.length > 0">{{ documentos.length }}</span>
+                                </button>
+                            </li>
+                        </ul>
+
+                        <!-- Contenido de pestañas -->
+                        <div class="tab-content">
+                            <!-- Pestaña General -->
+                            <div class="tab-pane fade show active" id="general" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0"><i class="fas fa-car me-2"></i>Información del Vehículo</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <p><strong>Marca/Modelo:</strong> {{ asignacionDetalle.vehiculo?.marca || 'N/A' }} {{ asignacionDetalle.vehiculo?.modelo || '' }}</p>
+                                                <p><strong>Placa:</strong> {{ asignacionDetalle.vehiculo?.placaFisica || 'N/A' }}</p>
+                                                <p><strong>Kilometraje Inicial:</strong> {{ asignacionDetalle.kilometrajeInicial }} km</p>
+                                                <p><strong>Kilometraje Final:</strong> {{ asignacionDetalle.kilometrajeFinal || 'N/A' }} km</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0"><i class="fas fa-user me-2"></i>Información del Colaborador</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>
+                                                    <strong>Colaborador:</strong>
+                                                    <span v-if="asignacionDetalle.colaborador && asignacionDetalle.colaborador.nombre !== 'N/A'">
+                                                        {{ asignacionDetalle.colaborador.nombre }} {{ asignacionDetalle.colaborador.apellido }}
+                                                    </span>
+                                                    <span v-else-if="asignacionDetalle.colaboradorNombre">
+                                                        {{ asignacionDetalle.colaboradorNombre }}
+                                                    </span>
+                                                    <span v-else>
+                                                        N/A
+                                                    </span>
+                                                </p>
+                                                <p><strong>Departamento:</strong> {{ asignacionDetalle.colaborador?.departamento || 'No especificado' }}</p>
+                                                <p><strong>Cargo:</strong> {{ asignacionDetalle.colaborador?.cargo || 'No especificado' }}</p>
+                                                <p>
+                                                    <strong>Numero Cedula:</strong>
+                                                    <span v-if="asignacionDetalle.colaborador?.cedula && asignacionDetalle.colaborador.cedula !== 'No especificado'">
+                                                        {{ asignacionDetalle.colaborador.cedula }}
+                                                    </span>
+                                                    <span v-else>
+                                                        No especificado
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0"><i class="fas fa-calendar me-2"></i>Fechas y Estados</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <p><strong>Fecha Asignación:</strong> {{ formatearFecha(asignacionDetalle.fechaAsignacion) }}</p>
+                                                <p><strong>Fecha Estimada Devolución:</strong> {{ formatearFecha(asignacionDetalle.fechaEstimadaDevolucion) }}</p>
+                                                <p><strong>Fecha Devolución:</strong> {{ formatearFecha(asignacionDetalle.fechaDevolucion) }}</p>
+                                                <p>
+                                                    <strong>Estado:</strong>
+                                                    <span :class="obtenerEstadoClass(asignacionDetalle.estado)">
+                                                        {{ obtenerTextoEstado(asignacionDetalle.estado) }}
+                                                    </span>
+                                                </p>
+                                                <p><strong>Estado Devolución:</strong> {{ asignacionDetalle.estadoDevolucion || 'N/A' }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Detalles</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <p><strong>Tipo:</strong> {{ obtenerTextoTipoAsignacion(asignacionDetalle.tipoAsignacion) }}</p>
+                                                <p><strong>Número de Oficio:</strong> {{ asignacionDetalle.numeroOficio || 'N/A' }}</p>
+                                                <p><strong>Propósito:</strong></p>
+                                                <div class="p-2 bg-light rounded">{{ asignacionDetalle.proposito || 'Sin propósito especificado' }}</div>
+                                                <p class="mt-2"><strong>Observaciones:</strong></p>
+                                                <div class="p-2 bg-light rounded">{{ asignacionDetalle.observaciones || 'Sin observaciones' }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Información Institucional -->
+                                <div class="row mt-3" v-if="asignacionDetalle.institucionAsignada || asignacionDetalle.departamentoAsignado">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0"><i class="fas fa-building me-2"></i>Información Institucional</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p><strong>Institución:</strong> {{ asignacionDetalle.institucionAsignada || 'N/A' }}</p>
+                                                        <p><strong>Departamento:</strong> {{ asignacionDetalle.departamentoAsignado || 'N/A' }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p><strong>Responsable:</strong> {{ asignacionDetalle.responsableInstitucion || 'N/A' }}</p>
+                                                        <p><strong>Cargo:</strong> {{ asignacionDetalle.cargoResponsable || 'N/A' }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pestaña Expediente -->
+                            <div class="tab-pane fade" id="expediente" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0"><i class="fas fa-folder me-2"></i>Estado del Expediente</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>
+                                                    <strong>Estado:</strong>
+                                                    <span :class="obtenerExpedienteClass(asignacionDetalle.estadoExpediente)">
+                                                        {{ obtenerTextoExpediente(asignacionDetalle.estadoExpediente) }}
+                                                    </span>
+                                                </p>
+                                                <p><strong>Tipo:</strong> {{ obtenerTextoTipoExpediente(asignacionDetalle.tipoExpediente) }}</p>
+                                                <p>
+                                                    <strong>Expediente Completo:</strong>
+                                                    <span :class="asignacionDetalle.expedienteCompleto ? 'badge bg-success' : 'badge bg-warning'">
+                                                        {{ asignacionDetalle.expedienteCompleto ? 'Sí' : 'No' }}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0"><i class="fas fa-sticky-note me-2"></i>Observaciones del Expediente</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="p-2 bg-light rounded">
+                                                    {{ asignacionDetalle.observacionesExpediente || 'Sin observaciones específicas del expediente' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pestaña Documentos -->
+                            <div class="tab-pane fade" id="docs" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div v-if="!documentos || documentos.length === 0" class="alert alert-info">
+                                            <i class="fas fa-info-circle me-1"></i> No hay documentos disponibles para esta asignación.
+                                        </div>
+
+                                        <div v-else>
+                                            <h6 class="mb-3">Documentos de la Asignación ({{ documentos.length }})</h6>
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Nombre</th>
+                                                            <th>Tipo</th>
+                                                            <th>Tamaño</th>
+                                                            <th>Fecha</th>
+                                                            <th>Acciones</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr v-for="documento in documentos" :key="documento.id">
+                                                            <td>{{ documento.nombre || 'Sin nombre' }}</td>
+                                                            <td>
+                                                                <span class="badge bg-primary">{{ obtenerTipoDocumento(documento.nombre) }}</span>
+                                                            </td>
+                                                            <td>{{ formatearTamano(documento.tamano) }}</td>
+                                                            <td>{{ formatearFecha(documento.fechaCreacion) }}</td>
+                                                            <td>
+                                                                <button class="btn btn-sm btn-outline-primary me-1"
+                                                                        v-on:click="descargarDocumento(documento.id)"
+                                                                        title="Descargar">
+                                                                    <i class="fas fa-download"></i>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-outline-danger"
+                                                                        v-on:click="eliminarDocumento(documento.id)"
+                                                                        title="Eliminar">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <!-- Plantillas generadas -->
+                                        <div v-if="plantillas && plantillas.length > 0" class="mt-4">
+                                            <h6 class="mb-3">Plantillas Generadas ({{ plantillas.length }})</h6>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-2" v-for="plantilla in plantillas" :key="plantilla.id">
+                                                    <div class="d-flex justify-content-between align-items-center p-2 border rounded">
+                                                        <div>
+                                                            <i class="fas fa-file-word text-primary me-2"></i>
+                                                            {{ plantilla.nombre }}
+                                                        </div>
+                                                        <button class="btn btn-sm btn-outline-primary"
+                                                                v-on:click="descargarPlantilla(plantilla.id)">
+                                                            <i class="fas fa-download"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" v-on:click="cerrarModal('asignacionDetailsModal')">
+                        <i class="fas fa-times me-1"></i> Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Devolución -->
+    <div class="modal fade" id="devolucionModal" tabindex="-1" aria-labelledby="devolucionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header text-white bg-warning">
+                    <h5 class="modal-title" id="devolucionModalLabel">
+                        <i class="fas fa-undo me-2"></i>Devolución
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" v-on:click="cerrarModal('devolucionModal')" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info mb-3">
+                        <strong>Información de la Asignación:</strong><br>
+                        <strong>Vehículo:</strong>
+                        <span v-if="asignacionDetalle.vehiculo && asignacionDetalle.vehiculo.marca">
+                            {{ asignacionDetalle.vehiculo.marca }} {{ asignacionDetalle.vehiculo.modelo }}
+                        </span>
+                        <span v-else>
+                            ID {{ asignacionDetalle.vehiculoId }}
+                        </span><br>
+                        <strong>Colaborador:</strong>
+                        <span v-if="asignacionDetalle.colaborador && asignacionDetalle.colaborador.nombre">
+                            {{ asignacionDetalle.colaborador.nombre }} {{ asignacionDetalle.colaborador.apellido || '' }}
+                        </span>
+                        <span v-else>
+                            {{ asignacionDetalle.colaboradorNombre || 'N/A' }}
+                        </span><br>
+                        <strong>Fecha Asignación:</strong> {{ formatearFecha(asignacionDetalle.fechaAsignacion) }}<br>
+                        <strong>Kilometraje Inicial:</strong> {{ asignacionDetalle.kilometrajeInicial }} km
+                    </div>
+
+                    <form v-on:submit.prevent="realizarDevolucion">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="fechaDevolucion" class="form-label">Fecha de Devolución *</label>
+                                <input type="date" class="form-control" v-model="devolucionForm.fechaDevolucion" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="kilometrajeFinal" class="form-label">Kilometraje Final *</label>
+                                <input type="number" class="form-control" v-model="devolucionForm.kilometrajeFinal" min="0" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="estadoDevolucion" class="form-label">Estado de Devolución *</label>
+                                <select class="form-select" v-model="devolucionForm.estadoDevolucion" required>
+                                    <option v-for="estado in estadosDevolucion" :key="estado.value" :value="estado.value">
+                                        {{ estado.text }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="documentosDevolucion" class="form-label">Documentos de Devolución</label>
+                                <input class="form-control" type="file" v-on:change="seleccionarDocumentos"
+                                       accept=".pdf,.jpg,.png,.jpeg,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar" multiple>
+                                <small class="text-muted">Opcional: documentos relacionados con la devolución</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="observacionesDevolucion" class="form-label">Observaciones de Devolución</label>
+                                <textarea class="form-control" v-model="devolucionForm.observaciones" rows="3"
+                                          placeholder="Describa el estado del vehículo, daños, observaciones, etc."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" v-on:click="cerrarModal('devolucionModal')">
+                        <i class="fas fa-times me-1"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-warning" v-on:click="realizarDevolucion" :disabled="procesandoDevolucion">
+                        <span v-if="procesandoDevolucion">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Procesando...
+                        </span>
+                        <span v-else>
+                            <i class="fas fa-check me-1"></i> Procesar Devolución
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal Asignar Vehículo -->
-<div class="modal fade" id="assignVehicleModal" tabindex="-1" aria-labelledby="assignVehicleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="assignVehicleModalLabel">Asignar Vehículo</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Vehículo</label>
-                            <select class="form-select" disabled>
-                                <option>Seleccione un vehículo...</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Colaborador</label>
-                            <select class="form-select" disabled>
-                                <option>Seleccione un colaborador...</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha de Asignación</label>
-                            <input type="date" class="form-control" disabled>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha Estimada de Devolución</label>
-                            <input type="date" class="form-control" disabled>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Propósito</label>
-                        <textarea class="form-control" rows="2" disabled></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Documento de Autorización</label>
-                        <input class="form-control" type="file" disabled>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary disabled">Guardar Asignación</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Devolver Vehículo -->
-<div class="modal fade" id="returnVehicleModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Registrar Devolución</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Vehículo</label>
-                            <input type="text" class="form-control" value="Vehículo no seleccionado" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Colaborador</label>
-                            <input type="text" class="form-control" value="Colaborador no seleccionado" readonly>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha de Devolución</label>
-                            <input type="date" class="form-control" disabled>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Kilometraje Final</label>
-                            <input type="number" class="form-control" disabled>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Estado del Vehículo</label>
-                        <select class="form-select" disabled>
-                            <option>Seleccione el estado...</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Observaciones</label>
-                        <textarea class="form-control" rows="3" disabled></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Documentos de Devolución</label>
-                        <input class="form-control" type="file" disabled multiple>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary disabled">Registrar Devolución</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Inicializar modales
-            var assignModal = new bootstrap.Modal(document.getElementById('assignVehicleModal'));
-            var returnModal = new bootstrap.Modal(document.getElementById('returnVehicleModal'));
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="~/js/Asignaciones.js"></script>
 
-            // Simular botón de devolución (solo para demostración visual)
-            document.querySelectorAll('[data-bs-target="#returnVehicleModal"]').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    returnModal.show();
-                });
-            });
-        });
-    </script>
+
 }

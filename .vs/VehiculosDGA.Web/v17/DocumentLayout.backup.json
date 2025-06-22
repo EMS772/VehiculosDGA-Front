@@ -1,0 +1,269 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\views\\seguros\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:views\\seguros\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\controllers\\cuentacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:controllers\\cuentacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\views\\cuenta\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:views\\cuenta\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\wwwroot\\css\\auth.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:wwwroot\\css\\auth.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\wwwroot\\js\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:wwwroot\\js\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\views\\shared\\_layoutempty.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:views\\shared\\_layoutempty.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\wwwroot\\js\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:wwwroot\\js\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\views\\vehiculos\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:views\\vehiculos\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\views\\asignaciones\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:views\\asignaciones\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\views\\mantenimientos\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:views\\mantenimientos\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|c:\\users\\julio cesar\\source\\repos\\vehiculosdga.web vf\\vehiculosdga.web\\views\\reportes\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{92800A51-4FA4-3E9D-B1CF-9F53EEB72187}|VehiculosDGA.Web.csproj|solutionrelative:views\\reportes\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 183,
+          "SelectedChildIndex": 10,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Mantenimientos\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Mantenimientos\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Mantenimientos\\Index.cshtml",
+              "RelativeToolTip": "Views\\Mantenimientos\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-28T01:40:21.219Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Reportes\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Reportes\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Reportes\\Index.cshtml",
+              "RelativeToolTip": "Views\\Reportes\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-28T01:39:53.19Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-27T18:51:32.555Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGUAAABSAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-27T14:39:04.4Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Cuenta\\Login.cshtml",
+              "RelativeDocumentMoniker": "Views\\Cuenta\\Login.cshtml",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Cuenta\\Login.cshtml",
+              "RelativeToolTip": "Views\\Cuenta\\Login.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-29T14:10:35.207Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CuentaController.cs",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Controllers\\CuentaController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CuentaController.cs",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Controllers\\CuentaController.cs",
+              "RelativeToolTip": "Controllers\\CuentaController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T14:12:59.375Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T14:12:40.749Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "auth.css",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\auth.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\auth.css",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\auth.css",
+              "RelativeToolTip": "wwwroot\\css\\auth.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-05-29T14:11:17.586Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Seguros\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Seguros\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Seguros\\Index.cshtml",
+              "RelativeToolTip": "Views\\Seguros\\Index.cshtml",
+              "ViewState": "AgIAAHgCAAAAAAAAAAAAAA4AAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-27T18:52:08.047Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "_LayoutEmpty.cshtml",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Shared\\_LayoutEmpty.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_LayoutEmpty.cshtml",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Shared\\_LayoutEmpty.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_LayoutEmpty.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-29T14:09:29.541Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "login.js",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\login.js",
+              "RelativeDocumentMoniker": "wwwroot\\js\\login.js",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\login.js",
+              "RelativeToolTip": "wwwroot\\js\\login.js",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAADQAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-05-29T14:11:39.793Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Vehiculos\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Vehiculos\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Vehiculos\\Index.cshtml",
+              "RelativeToolTip": "Views\\Vehiculos\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-27T18:43:36.161Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "site.css",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\site.css",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "wwwroot\\css\\site.css",
+              "ViewState": "AgIAAMUAAAAAAAAAAAAswCEBAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-05-27T14:53:55.094Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Asignaciones\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Asignaciones\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\Views\\Asignaciones\\Index.cshtml",
+              "RelativeToolTip": "Views\\Asignaciones\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-28T01:41:26.441Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "app.js",
+              "DocumentMoniker": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\app.js",
+              "RelativeDocumentMoniker": "wwwroot\\js\\app.js",
+              "ToolTip": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\wwwroot\\js\\app.js",
+              "RelativeToolTip": "wwwroot\\js\\app.js",
+              "ViewState": "AgIAABIAAAAAAAAAAAAUwDUAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-05-27T18:29:38.03Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@
     ViewData["Title"] = "Inventario de Vehículos";
     ViewData["NavbarTitle"] = "Inventario de Vehículos";
     ViewData["ActivePage"] = "Inventario";
+    ViewData["ActiveMenu"] = "Vehiculos"; // o "Vehiculos", "Colaboradores", etc.
     Layout = "_Layout";
 }
 
@@ -15,7 +16,7 @@
                 </button>
             </div>
 
-            <!-- Filter Section -->
+            <!-- Filtros -->
             <div class="card mb-4">
                 <div class="card-body">
                     <form v-on:submit.prevent="filtrarVehiculos">
@@ -35,7 +36,9 @@
                                 <label for="filterType" class="form-label">Tipo</label>
                                 <select class="form-select" v-model="filtros.tipo">
                                     <option value="">Todos</option>
-                                    <option v-for="tipo in tiposVehiculo" :key="tipo.value" :value="tipo.value">{{ tipo.text }}</option>
+                                    <option v-for="tipo in tiposVehiculo" :key="tipo.value" :value="tipo.value">
+                                        {{ tipo.text }}
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -52,7 +55,7 @@
                 </div>
             </div>
 
-            <!-- Vehicles Table -->
+            <!-- Tabla de Vehículos -->
             <div class="card shadow">
                 <div class="card-body">
                     <div v-if="cargando" class="text-center py-5">
@@ -66,7 +69,7 @@
                         <i class="fas fa-info-circle me-2"></i> No se encontraron vehículos con los criterios seleccionados.
                     </div>
 
-                    <div v-else class="table-responsive">
+                    <div class="table-responsive" v-else>
                         <table class="table table-hover" id="vehiclesTable">
                             <thead>
                                 <tr>
@@ -77,30 +80,45 @@
                                     <th>Color</th>
                                     <th>Estado</th>
                                     <th>Ubicación</th>
+                                    <th>Seguro</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="vehiculo in vehiculos" :key="vehiculo.id" v-if="vehiculo">
+                                <tr v-for="vehiculo in vehiculos" :key="vehiculo.id">
                                     <td>{{ obtenerPlacaFisica(vehiculo) }}</td>
                                     <td>{{ vehiculo.marca || 'Sin marca' }} {{ vehiculo.modelo || 'Sin modelo' }}</td>
                                     <td>{{ obtenerTextoTipo(vehiculo.tipo) }}</td>
                                     <td>{{ vehiculo.anio || 'N/A' }}</td>
                                     <td>{{ vehiculo.color || 'N/A' }}</td>
                                     <td>
-                                        <span :class="estadoClass(vehiculo.estado)">{{ estadoTexto(vehiculo.estado) }}</span>
+                                        <span :class="estadoClass(vehiculo.estado)">
+                                            {{ estadoTexto(vehiculo.estado) }}
+                                        </span>
                                     </td>
                                     <td>{{ obtenerTextoUbicacion(vehiculo.ubicacion) }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-info"
+                                                v-on:click="verificarSeguroVehiculo(vehiculo.id)"
+                                                title="Verificar Seguro">
+                                            <i class="fas fa-shield-alt"></i>
+                                        </button>
+                                    </td>
                                     <td>
                                         <button class="btn btn-sm btn-outline-primary me-1"
                                                 v-on:click="mostrarDetalles(vehiculo)"
                                                 title="Ver Detalles">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-outline-secondary"
+                                        <button class="btn btn-sm btn-outline-secondary me-1"
                                                 v-on:click="mostrarModalEditar(vehiculo)"
                                                 title="Editar">
                                             <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger"
+                                                v-on:click="eliminarVehiculoSiSinSeguro(vehiculo)"
+                                                title="Eliminar">
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -112,17 +130,19 @@
         </div>
     </div>
 
-    <!-- Add/Edit Vehicle Modal -->
+    <!-- Modal Agregar/Editar Vehículo -->
     <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header text-white bg-primary">
-                    <h5 class="modal-title" id="addVehicleModalLabel">{{ editando ? 'Editar' : 'Agregar Nuevo' }} Vehículo</h5>
+                    <h5 class="modal-title" id="addVehicleModalLabel">
+                        {{ editando ? 'Editar' : 'Agregar Nuevo' }} Vehículo
+                    </h5>
                     <button type="button" class="btn-close btn-close-white" v-on:click="cerrarModal('addVehicleModal')" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="addVehicleForm" v-on:submit.prevent="guardarVehiculo">
-                        <!-- Información Básica del Vehículo -->
+                        <!-- Información Básica -->
                         <div class="card mb-3">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0"><i class="fas fa-car me-2"></i>Información Básica del Vehículo</h6>
@@ -140,8 +160,10 @@
                                     <div class="col-md-4">
                                         <label for="vehicleType" class="form-label">Tipo *</label>
                                         <select class="form-select" id="vehicleType" v-model="vehiculoForm.tipo" required>
-                                            <option value="" selected disabled>Seleccione...</option>
-                                            <option v-for="tipo in tiposVehiculo" :key="tipo.value" :value="tipo.value">{{ tipo.text }}</option>
+                                            <option value="" disabled selected>Seleccione...</option>
+                                            <option v-for="tipo in tiposVehiculo" :key="tipo.value" :value="tipo.value">
+                                                {{ tipo.text }}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -162,7 +184,7 @@
                             </div>
                         </div>
 
-                        <!-- Información de Placas y Identificación -->
+                        <!-- Placas e Identificación -->
                         <div class="card mb-3">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0"><i class="fas fa-id-card me-2"></i>Placas e Identificación</h6>
@@ -201,7 +223,7 @@
                             </div>
                         </div>
 
-                        <!-- Estados y Ubicación -->
+                        <!-- Estado y Ubicación -->
                         <div class="card mb-3">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0"><i class="fas fa-cog me-2"></i>Estados y Ubicación</h6>
@@ -222,7 +244,9 @@
                                         <label for="vehicleUbicacion" class="form-label">Ubicación</label>
                                         <select class="form-select" id="vehicleUbicacion" v-model="vehiculoForm.ubicacion">
                                             <option value="">Seleccione ubicación...</option>
-                                            <option v-for="ubicacion in ubicacionesVehiculo" :key="ubicacion.value" :value="ubicacion.value">{{ ubicacion.text }}</option>
+                                            <option v-for="ubicacion in ubicacionesVehiculo" :key="ubicacion.value" :value="ubicacion.value">
+                                                {{ ubicacion.text }}
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="col-md-4">
@@ -282,7 +306,7 @@
                             </div>
                         </div>
 
-                        <!-- Notas -->
+                        <!-- Observaciones -->
                         <div class="card mb-3">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0"><i class="fas fa-sticky-note me-2"></i>Observaciones</h6>
@@ -295,7 +319,7 @@
                             </div>
                         </div>
 
-                        <!-- Documentos y Fotos (solo mostrar si es creación o hay documentos seleccionados en edición) -->
+                        <!-- Documentos (solo en creación) -->
                         <div class="card mb-3" v-if="!editando">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0"><i class="fas fa-paperclip me-2"></i>Documentos (Opcional)</h6>
@@ -303,9 +327,14 @@
                             <div class="card-body">
                                 <div class="row mb-3">
                                     <div class="col-md-12">
-                                        <label for="vehicleDocuments" class="form-label">Documentos del Vehículo</label>
-                                        <input class="form-control" type="file" id="vehicleDocuments" v-on:change="seleccionarDocumentos" accept=".pdf,.jpg,.png,.jpeg,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar" multiple>
-                                        <small class="text-muted">Formatos soportados: PDF, Imágenes (JPG, PNG), Word, Excel, TXT, ZIP, RAR</small>
+                                        <label for="vehicleDocumentsCreate" class="form-label">Documentos del Vehículo</label>
+                                        <input class="form-control"
+                                               type="file"
+                                               id="vehicleDocumentsCreate"
+                                               v-on:change="seleccionarDocumentos"
+                                               accept=".pdf,.jpg,.png,.jpeg,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar"
+                                               multiple>
+                                        <small class="text-muted">Formatos soportados: PDF, Imágenes, Word, Excel, TXT, ZIP, RAR</small>
                                         <div v-if="documentosSeleccionados.length > 0" class="mt-2">
                                             <span class="badge bg-info">{{ documentosSeleccionados.length }} documentos seleccionados</span>
                                         </div>
@@ -314,27 +343,55 @@
                             </div>
                         </div>
 
-                        <!-- Sección especial para edición - documentos opcionales -->
+                        <!-- Documentos Adicionales (solo en edición) -->
                         <div class="card mb-3" v-if="editando">
                             <div class="card-header bg-light">
-                                <h6 class="mb-0">
-                                    <i class="fas fa-paperclip me-2"></i>Agregar Documentos Adicionales (Opcional)
-                                </h6>
+                                <h6 class="mb-0"><i class="fas fa-paperclip me-2"></i>Agregar Documentos Adicionales (Opcional)</h6>
                             </div>
                             <div class="card-body">
                                 <div class="alert alert-info mb-3">
                                     <i class="fas fa-info-circle me-2"></i>
-                                    <strong>Nota:</strong> Los documentos existentes se mantendrán. Solo seleccione archivos si desea agregar documentos adicionales.
+                                    <strong>Importante:</strong> Los documentos existentes se mantendrán. Solo agrega nuevos documentos si deseas anexarlos.
+                                </div>
+                                <div class="alert alert-success mb-3" v-if="vehiculoDetalle && vehiculoDetalle.id">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <span v-if="documentos && documentos.length > 0">
+                                        Este vehículo ya tiene <strong>{{ documentos.length }} documento(s)</strong> que se mantendrán.
+                                    </span>
+                                    <span v-else>
+                                        Este vehículo no tiene documentos existentes. Los que selecciones serán los primeros.
+                                    </span>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-12">
-                                        <label for="vehicleDocuments" class="form-label">Documentos Adicionales</label>
-                                        <input class="form-control" type="file" id="vehicleDocuments" v-on:change="seleccionarDocumentos" accept=".pdf,.jpg,.png,.jpeg,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar" multiple>
-                                        <small class="text-muted">Formatos soportados: PDF, Imágenes (JPG, PNG), Word, Excel, TXT, ZIP, RAR</small>
+                                        <label for="vehicleDocumentsEdit" class="form-label">
+                                            <i class="fas fa-plus me-1"></i>Documentos Adicionales
+                                        </label>
+                                        <input class="form-control"
+                                               type="file"
+                                               id="vehicleDocumentsEdit"
+                                               v-on:change="seleccionarDocumentos"
+                                               accept=".pdf,.jpg,.png,.jpeg,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar"
+                                               multiple>
+                                        <small class="text-muted">Formatos soportados: PDF, Imágenes, Word, Excel, TXT, ZIP, RAR</small>
                                         <div v-if="documentosSeleccionados.length > 0" class="mt-2">
-                                            <span class="badge bg-info">{{ documentosSeleccionados.length }} documentos adicionales seleccionados</span>
+                                            <div class="alert alert-warning mb-0">
+                                                <i class="fas fa-plus-circle me-2"></i>
+                                                <strong>{{ documentosSeleccionados.length }} documento(s) nuevo(s)</strong> serán agregados:
+                                                <ul class="mb-0 mt-2">
+                                                    <li v-for="(doc, index) in documentosSeleccionados" :key="index" class="small">
+                                                        {{ doc.name }} ({{ formatearTamano(doc.size) }})
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="text-center" v-if="vehiculoDetalle && vehiculoDetalle.id">
+                                    <button type="button" class="btn btn-sm btn-outline-info"
+                                            v-on:click="mostrarDetalles(vehiculoDetalle)">
+                                        <i class="fas fa-eye me-1"></i> Ver documentos existentes
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -350,7 +407,7 @@
                             Guardando...
                         </span>
                         <span v-else>
-                            <i class="fas fa-save me-1"></i> Guardar Vehículo
+                            <i class="fas fa-save me-1"></i> {{ editando ? 'Actualizar' : 'Guardar' }} Vehículo
                         </span>
                     </button>
                 </div>
@@ -358,18 +415,19 @@
         </div>
     </div>
 
-    <!-- Vehicle Details Modal -->
+    <!-- Modal Detalles de Vehículo -->
     <div class="modal fade" id="vehicleDetailsModal" tabindex="-1" aria-labelledby="vehicleDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header text-white bg-primary">
                     <h5 class="modal-title" id="vehicleDetailsModalLabel">
-                        Detalles del Vehículo: {{ vehiculoDetalle.marca }} {{ vehiculoDetalle.modelo }} ({{ obtenerPlacaFisica(vehiculoDetalle) }})
+                        Detalles del Vehículo: {{ vehiculoDetalle.marca }} {{ vehiculoDetalle.modelo }}
+                        ({{ obtenerPlacaFisica(vehiculoDetalle) }})
                     </h5>
                     <button type="button" class="btn-close btn-close-white" v-on:click="cerrarModal('vehicleDetailsModal')" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Pestañas de navegación -->
+                    <!-- Pestañas -->
                     <ul class="nav nav-tabs mb-3" id="vehicleDetailsTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">
@@ -394,9 +452,9 @@
                         </li>
                     </ul>
 
-                    <!-- Contenido de las pestañas -->
+                    <!-- Contenido Pestañas -->
                     <div class="tab-content" id="vehicleDetailsTabsContent">
-                        <!-- Pestaña de Información General -->
+                        <!-- Información General -->
                         <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
                             <div class="row">
                                 <div class="col-md-6">
@@ -405,12 +463,12 @@
                                             <h6 class="mb-0"><i class="fas fa-car me-2"></i>Información Básica</h6>
                                         </div>
                                         <div class="card-body">
-                                            <p><strong>Marca:</strong> <span>{{ vehiculoDetalle.marca || 'N/A' }}</span></p>
-                                            <p><strong>Modelo:</strong> <span>{{ vehiculoDetalle.modelo || 'N/A' }}</span></p>
-                                            <p><strong>Tipo:</strong> <span>{{ obtenerTextoTipo(vehiculoDetalle.tipo) }}</span></p>
-                                            <p><strong>Año:</strong> <span>{{ vehiculoDetalle.anio || 'N/A' }}</span></p>
-                                            <p><strong>Color:</strong> <span>{{ vehiculoDetalle.color || 'N/A' }}</span></p>
-                                            <p><strong>Kilometraje:</strong> <span>{{ vehiculoDetalle.kilometraje || 0 }} km</span></p>
+                                            <p><strong>Marca:</strong> {{ vehiculoDetalle.marca || 'N/A' }}</p>
+                                            <p><strong>Modelo:</strong> {{ vehiculoDetalle.modelo || 'N/A' }}</p>
+                                            <p><strong>Tipo:</strong> {{ obtenerTextoTipo(vehiculoDetalle.tipo) }}</p>
+                                            <p><strong>Año:</strong> {{ vehiculoDetalle.anio || 'N/A' }}</p>
+                                            <p><strong>Color:</strong> {{ vehiculoDetalle.color || 'N/A' }}</p>
+                                            <p><strong>Kilometraje:</strong> {{ vehiculoDetalle.kilometraje || 0 }} km</p>
                                         </div>
                                     </div>
                                 </div>
@@ -420,10 +478,15 @@
                                             <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Estado y Ubicación</h6>
                                         </div>
                                         <div class="card-body">
-                                            <p><strong>Estado:</strong> <span :class="estadoClass(vehiculoDetalle.estado)">{{ estadoTexto(vehiculoDetalle.estado) }}</span></p>
-                                            <p><strong>Ubicación:</strong> <span>{{ obtenerTextoUbicacion(vehiculoDetalle.ubicacion) }}</span></p>
-                                            <p><strong>Estado Matrícula:</strong> <span>{{ vehiculoDetalle.estadoMatricula || 'N/A' }}</span></p>
-                                            <p><strong>Fecha de Adquisición:</strong> <span>{{ formatearFecha(vehiculoDetalle.fechaAdquisicion) }}</span></p>
+                                            <p>
+                                                <strong>Estado:</strong>
+                                                <span :class="estadoClass(vehiculoDetalle.estado)">
+                                                    {{ estadoTexto(vehiculoDetalle.estado) }}
+                                                </span>
+                                            </p>
+                                            <p><strong>Ubicación:</strong> {{ obtenerTextoUbicacion(vehiculoDetalle.ubicacion) }}</p>
+                                            <p><strong>Estado Matrícula:</strong> {{ vehiculoDetalle.estadoMatricula || 'N/A' }}</p>
+                                            <p><strong>Fecha de Adquisición:</strong> {{ formatearFecha(vehiculoDetalle.fechaAdquisicion) }}</p>
                                             <p>
                                                 <strong>Registrado en Contabilidad:</strong>
                                                 <span :class="vehiculoDetalle.registradoContabilidad ? 'badge bg-success' : 'badge bg-secondary'">
@@ -448,7 +511,7 @@
                             </div>
                         </div>
 
-                        <!-- Pestaña de Información Técnica -->
+                        <!-- Información Técnica -->
                         <div class="tab-pane fade" id="technical" role="tabpanel" aria-labelledby="technical-tab">
                             <div class="row">
                                 <div class="col-md-6">
@@ -457,10 +520,10 @@
                                             <h6 class="mb-0"><i class="fas fa-id-card me-2"></i>Identificación Física</h6>
                                         </div>
                                         <div class="card-body">
-                                            <p><strong>Placa Física:</strong> <span>{{ vehiculoDetalle.placaFisica || 'N/A' }}</span></p>
-                                            <p><strong>Placa Matrícula:</strong> <span>{{ vehiculoDetalle.placaMatricula || 'N/A' }}</span></p>
-                                            <p><strong>N° Chasis:</strong> <span>{{ vehiculoDetalle.chasis || 'N/A' }}</span></p>
-                                            <p><strong>N° Motor:</strong> <span>{{ vehiculoDetalle.numeroMotor || 'N/A' }}</span></p>
+                                            <p><strong>Placa Física:</strong> {{ vehiculoDetalle.placaFisica || 'N/A' }}</p>
+                                            <p><strong>Placa Matrícula:</strong> {{ vehiculoDetalle.placaMatricula || 'N/A' }}</p>
+                                            <p><strong>N° Chasis:</strong> {{ vehiculoDetalle.chasis || 'N/A' }}</p>
+                                            <p><strong>N° Motor:</strong> {{ vehiculoDetalle.numeroMotor || 'N/A' }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -470,15 +533,15 @@
                                             <h6 class="mb-0"><i class="fas fa-check-circle me-2"></i>Información DGII</h6>
                                         </div>
                                         <div class="card-body">
-                                            <p><strong>Placa Validada DGII:</strong> <span>{{ vehiculoDetalle.placaValidadaDGII || 'No especificada' }}</span></p>
-                                            <p><strong>Chasis Validado DGII:</strong> <span>{{ vehiculoDetalle.chasisValidadoDGII || 'No especificado' }}</span></p>
+                                            <p><strong>Placa Validada DGII:</strong> {{ vehiculoDetalle.placaValidadaDGII || 'No especificada' }}</p>
+                                            <p><strong>Chasis Validado DGII:</strong> {{ vehiculoDetalle.chasisValidadoDGII || 'No especificado' }}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Pestaña de Información Administrativa -->
+                        <!-- Información Administrativa -->
                         <div class="tab-pane fade" id="administrative" role="tabpanel" aria-labelledby="administrative-tab">
                             <div class="row">
                                 <div class="col-md-6">
@@ -487,9 +550,9 @@
                                             <h6 class="mb-0"><i class="fas fa-building me-2"></i>Información Corporativa</h6>
                                         </div>
                                         <div class="card-body">
-                                            <p><strong>Número Activo Fijo:</strong> <span>{{ vehiculoDetalle.numeroActivoFijo || 'N/A' }}</span></p>
-                                            <p><strong>Número Pase Rápido:</strong> <span>{{ vehiculoDetalle.numeroPaseRapido || 'N/A' }}</span></p>
-                                            <p><strong>Estatus Jurídico:</strong> <span>{{ vehiculoDetalle.estatusJuridico || 'N/A' }}</span></p>
+                                            <p><strong>Número Activo Fijo:</strong> {{ vehiculoDetalle.numeroActivoFijo || 'N/A' }}</p>
+                                            <p><strong>Número Pase Rápido:</strong> {{ vehiculoDetalle.numeroPaseRapido || 'N/A' }}</p>
+                                            <p><strong>Estatus Jurídico:</strong> {{ vehiculoDetalle.estatusJuridico || 'N/A' }}</p>
                                             <p>
                                                 <strong>Registrado en Contabilidad:</strong>
                                                 <span :class="vehiculoDetalle.registradoContabilidad ? 'badge bg-success' : 'badge bg-secondary'">
@@ -505,14 +568,14 @@
                                             <h6 class="mb-0"><i class="fas fa-calendar me-2"></i>Fechas Importantes</h6>
                                         </div>
                                         <div class="card-body">
-                                            <p><strong>Fecha de Adquisición:</strong> <span>{{ formatearFecha(vehiculoDetalle.fechaAdquisicion) }}</span></p>
+                                            <p><strong>Fecha de Adquisición:</strong> {{ formatearFecha(vehiculoDetalle.fechaAdquisicion) }}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Pestaña de Documentos -->
+                        <!-- Documentos -->
                         <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
                             <div class="row">
                                 <div class="col-12">
@@ -522,17 +585,13 @@
                                         </div>
                                         <p class="mt-2 text-muted">Cargando documentos...</p>
                                     </div>
-
                                     <div v-else-if="!documentos || documentos.length === 0" class="alert alert-info">
                                         <i class="fas fa-info-circle me-1"></i> No hay documentos disponibles para este vehículo.
                                     </div>
-
                                     <div v-else>
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <h6 class="mb-0">Documentos del Vehículo ({{ documentos.length }})</h6>
                                         </div>
-
-                                        <!-- Lista simple de documentos -->
                                         <div class="table-responsive">
                                             <table class="table table-sm table-hover">
                                                 <thead>
@@ -548,7 +607,9 @@
                                                     <tr v-for="documento in documentos" :key="documento.id">
                                                         <td>{{ documento.nombre }}</td>
                                                         <td>
-                                                            <span class="badge bg-primary">{{ obtenerTipoDocumento(documento.nombre) }}</span>
+                                                            <span class="badge bg-primary">
+                                                                {{ obtenerTipoDocumento(documento.nombre) }}
+                                                            </span>
                                                         </td>
                                                         <td>{{ formatearTamano(documento.tamano) }}</td>
                                                         <td>{{ formatearFecha(documento.fechaCreacion) }}</td>
@@ -572,6 +633,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -584,10 +646,846 @@
     </div>
 </div>
 
+
 @section Scripts {
+    <!-- Dependencias CDN -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="~/js/vehiculos.js"></script>
+
+    <script>
+        // ============================================
+        // CONFIGURACIÓN DE AXIOS Y BASE URL
+        // ============================================
+        const API_BASE_URL = 'https://localhost:7037';
+
+        const apiClient = axios.create({
+            baseURL: API_BASE_URL,
+            timeout: 30000
+        });
+
+        // Interceptor de petición: agregar token
+        apiClient.interceptors.request.use(config => {
+            console.log('[Axios] Request –', config.method, config.url);
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        });
+
+        // Interceptor de respuesta: manejo 401
+        apiClient.interceptors.response.use(
+            response => {
+                console.log('[Axios] Response –', response.status, response.config.url);
+                return response;
+            },
+            error => {
+                console.warn('[Axios] Response Error –', error.response?.status, error.config?.url);
+                if (error.response?.status === 401) {
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('userData');
+                    window.location.href = '/Account/Login';
+                }
+                return Promise.reject(error);
+            }
+        );
+
+
+        // ============================================
+        // GESTOR DE MODALES
+        // ============================================
+        class SimpleModalManager {
+            static activeModals = new Set();
+
+            static show(modalId) {
+                console.log(`[ModalManager] show("${modalId}")`);
+                const modalElement = document.getElementById(modalId);
+                if (!modalElement) {
+                    console.error(`[ModalManager] Modal "${modalId}" no encontrado`);
+                    return;
+                }
+                this.hideAll();
+                this.createOverlay();
+
+                modalElement.style.display = 'flex';
+                modalElement.classList.add('show');
+
+                const overlay = document.getElementById('modal-overlay');
+                if (overlay) overlay.classList.add('show');
+
+                this.activeModals.add(modalId);
+                this.addCloseListeners(modalId);
+            }
+
+            static hide(modalId) {
+                console.log(`[ModalManager] hide("${modalId}")`);
+                const modalElement = document.getElementById(modalId);
+                if (!modalElement) {
+                    console.warn(`[ModalManager] Modal "${modalId}" no encontrado`);
+                    return;
+                }
+                modalElement.classList.remove('show');
+                setTimeout(() => {
+                    modalElement.style.display = 'none';
+                    this.activeModals.delete(modalId);
+                    if (this.activeModals.size === 0) {
+                        this.cleanup();
+                    }
+                }, 300);
+            }
+
+            static hideAll() {
+                console.log('[ModalManager] hideAll()');
+                document.querySelectorAll('.modal.show').forEach(modal => {
+                    modal.classList.remove('show');
+                    modal.style.display = 'none';
+                });
+                this.activeModals.clear();
+                this.cleanup();
+            }
+
+            static createOverlay() {
+                console.log('[ModalManager] createOverlay()');
+                let overlay = document.getElementById('modal-overlay');
+                if (!overlay) {
+                    overlay = document.createElement('div');
+                    overlay.id = 'modal-overlay';
+                    overlay.className = 'custom-modal-overlay';
+                    overlay.onclick = () => this.hideAll();
+                    document.body.appendChild(overlay);
+                }
+            }
+
+            static addCloseListeners(modalId) {
+                const modalElement = document.getElementById(modalId);
+                const closeButtons = modalElement.querySelectorAll('[data-bs-dismiss="modal"], .btn-close');
+                closeButtons.forEach(btn => {
+                    btn.onclick = (e) => {
+                        e.preventDefault();
+                        this.hide(modalId);
+                    };
+                });
+                const escapeHandler = (e) => {
+                    if (e.key === 'Escape') {
+                        this.hide(modalId);
+                        document.removeEventListener('keydown', escapeHandler);
+                    }
+                };
+                document.addEventListener('keydown', escapeHandler);
+            }
+
+            static cleanup() {
+                console.log('[ModalManager] cleanup()');
+                const overlay = document.getElementById('modal-overlay');
+                if (overlay) overlay.classList.remove('show');
+                document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+            }
+        }
+
+
+        // ============================================
+        // APLICACIÓN VUE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function () {
+            window.vehiculosApp = new Vue({
+                el: '#vehiculos-app',
+
+                data: {
+                    vehiculos: [],
+                    vehiculoDetalle: {},
+                    documentos: [],
+
+                    cargando: false,
+                    cargandoFotos: false,
+                    guardando: false,
+                    subiendoDocumento: false,
+                    editando: false,
+                    verificandoSeguro: {},
+
+                    filtros: {
+                        estado: '',
+                        tipo: '',
+                        marca: ''
+                    },
+
+                    vehiculoForm: {
+                        id: null,
+                        marca: '',
+                        modelo: '',
+                        tipo: '',
+                        anio: new Date().getFullYear(),
+                        color: '',
+                        placaFisica: '',
+                        placaMatricula: '',
+                        placaValidadaDGII: '',
+                        chasisValidadoDGII: '',
+                        chasis: '',
+                        numeroMotor: '',
+                        estado: 1,
+                        notas: '',
+                        kilometraje: 0,
+                        fechaAdquisicion: '',
+                        numeroActivoFijo: '',
+                        registradoContabilidad: false,
+                        estatusJuridico: '',
+                        ubicacion: '',
+                        numeroPaseRapido: '',
+                        estadoMatricula: ''
+                    },
+
+                    documentoUpload: {
+                        archivo: null,
+                        descripcion: ''
+                    },
+
+                    documentosSeleccionados: [],
+
+                    tiposVehiculo: [
+                        { value: '1', text: 'Sedán' },
+                        { value: '2', text: 'SUV' },
+                        { value: '3', text: 'Pickup' },
+                        { value: '4', text: 'Van' },
+                        { value: '5', text: 'Camión' },
+                        { value: '6', text: 'Motocicleta' },
+                        { value: '7', text: 'Bus' },
+                        { value: '8', text: 'Otros' }
+                    ],
+
+                    ubicacionesVehiculo: [
+                        { value: '1', text: 'Oficina Principal' },
+                        { value: '2', text: 'Sede Regional Norte' },
+                        { value: '3', text: 'Sede Regional Sur' },
+                        { value: '4', text: 'Sede Regional Este' },
+                        { value: '5', text: 'Sede Regional Oeste' },
+                        { value: '6', text: 'Taller Mecánico' },
+                        { value: '7', text: 'En Campo' },
+                        { value: '8', text: 'Almacén' },
+                        { value: '9', text: 'En Mantenimiento' },
+                        { value: '10', text: 'Otros' }
+                    ]
+                },
+
+                methods: {
+                    // ------------------------------
+                    // MODALES
+                    // ------------------------------
+                            //--------------------------------
+        // Mostrar detalles en modal
+        //--------------------------------
+        async mostrarDetalles(vehiculo) {
+          // Carga la información completa (incluye documentos) vía API
+          await this.cargarDetallesParaEdicion(vehiculo);
+
+          // Al asignar this.vehiculoDetalle, tu modal de detalles
+          // (vehicleDetailsModal) ya podrá mostrar datos como marca/modelo, etc.
+          // Finalmente, levanta el modal:
+          SimpleModalManager.show('vehicleDetailsModal');
+        },
+                    mostrarModalCrear() {
+                        this.editando = false;
+                        this.limpiarFormulario();
+                        SimpleModalManager.show('addVehicleModal');
+                    },
+                    async mostrarModalEditar(vehiculo) {
+                        this.editando = true;
+                        await this.cargarDetallesParaEdicion(vehiculo);
+                        const v = this.vehiculoDetalle;
+                        this.vehiculoForm = {
+                            id: v.id,
+                            marca: v.marca || '',
+                            modelo: v.modelo || '',
+                            tipo: v.tipo != null ? String(v.tipo) : '',
+                            anio: v.anio || new Date().getFullYear(),
+                            color: v.color || '',
+                            placaFisica: v.placaFisica || '',
+                            placaMatricula: v.placaMatricula || '',
+                            placaValidadaDGII: v.placaValidadaDGII || '',
+                            chasisValidadoDGII: v.chasisValidadoDGII || '',
+                            chasis: v.chasis || '',
+                            numeroMotor: v.numeroMotor || '',
+                            estado: v.estado || 1,
+                            notas: v.notas || '',
+                            kilometraje: v.kilometraje || 0,
+                            fechaAdquisicion: v.fechaAdquisicion ? v.fechaAdquisicion.split('T')[0] : '',
+                            numeroActivoFijo: v.numeroActivoFijo || '',
+                            registradoContabilidad: v.registradoContabilidad || false,
+                            estatusJuridico: v.estatusJuridico || '',
+                            ubicacion: v.ubicacion != null ? String(v.ubicacion) : '',
+                            numeroPaseRapido: v.numeroPaseRapido || '',
+                            estadoMatricula: v.estadoMatricula || ''
+                        };
+                        this.documentosSeleccionados = [];
+                        SimpleModalManager.show('addVehicleModal');
+                    },
+                    async cargarDetallesParaEdicion(vehiculo) {
+                        try {
+                            const response = await apiClient.get(`/api/Vehiculos/${vehiculo.id}`);
+                            this.vehiculoDetalle = response.data;
+                            await this.cargarDocumentosVehiculo(vehiculo.id);
+                        } catch (error) {
+                            console.error('[Vue] cargarDetallesParaEdicion – error:', error);
+                            this.vehiculoDetalle = vehiculo;
+                        }
+                    },
+                    cerrarModal(modalId) {
+                        SimpleModalManager.hide(modalId);
+                    },
+
+                    // ------------------------------
+                    // SEGURO
+                    // ------------------------------
+                    async verificarSeguroVehiculo(vehiculoId) {
+                        this.$set(this.verificandoSeguro, vehiculoId, true);
+                        try {
+                            const response = await apiClient.get(`/api/Vehiculos/${vehiculoId}/seguro`);
+                            const seguroInfo = response.data;
+                            this.mostrarInfoSeguro(seguroInfo);
+                            return seguroInfo;
+                        } catch (error) {
+                            console.error('[Vue] verificarSeguroVehiculo – error:', error);
+                            this.mostrarError('Error al verificar el seguro del vehículo');
+                            return null;
+                        } finally {
+                            this.$set(this.verificandoSeguro, vehiculoId, false);
+                        }
+                    },
+                    mostrarInfoSeguro(seguroInfo) {
+                        let titulo = `Estado del Seguro - ${seguroInfo.placaFisica}`;
+                        let mensaje = '';
+                        let tipo = 'info';
+
+                        if (seguroInfo.tieneSeguro) {
+                            if (seguroInfo.seguroVigente) {
+                                tipo = 'success';
+                                mensaje = `✅ SEGURO VIGENTE\n\n` +
+                                          `Aseguradora: ${seguroInfo.detalleSeguro.aseguradora}\n` +
+                                          `Póliza: ${seguroInfo.detalleSeguro.numeroPoliza}\n` +
+                                          `Vigencia: ${this.formatearFecha(seguroInfo.detalleSeguro.fechaInicio)} - ${this.formatearFecha(seguroInfo.detalleSeguro.fechaVencimiento)}\n`;
+
+                                if (seguroInfo.detalleSeguro.diasParaVencimiento <= 30) {
+                                    mensaje += `\n⚠️ ATENCIÓN: Vence en ${seguroInfo.detalleSeguro.diasParaVencimiento} días`;
+                                    tipo = 'warning';
+                                }
+                            } else {
+                                tipo = 'error';
+                                mensaje = `❌ SEGURO VENCIDO\n\n` +
+                                          `Aseguradora: ${seguroInfo.detalleSeguro.aseguradora}\n` +
+                                          `Póliza: ${seguroInfo.detalleSeguro.numeroPoliza}\n` +
+                                          `Venció: ${this.formatearFecha(seguroInfo.detalleSeguro.fechaVencimiento)}\n` +
+                                          `Días vencido: ${Math.abs(seguroInfo.detalleSeguro.diasParaVencimiento)}`;
+                            }
+                        } else {
+                            tipo = 'error';
+                            mensaje = `❌ SIN SEGURO\n\nEste vehículo no tiene póliza de seguro asignada.`;
+                        }
+
+                        this.mostrarNotificacionSeguro(titulo, mensaje, tipo);
+                    },
+                    mostrarNotificacionSeguro(titulo, mensaje, tipo = 'info') {
+                        const modalId = 'modal-seguro-info';
+                        let modal = document.getElementById(modalId);
+
+                        if (!modal) {
+                            modal = document.createElement('div');
+                            modal.id = modalId;
+                            modal.className = 'modal fade';
+                            modal.innerHTML = `
+                                <div class="modal-dialog modal-dialog-centered">
+                                  <div class="modal-content">
+                                    <div class="modal-header ${this.obtenerClaseHeader(tipo)}">
+                                      <h5 class="modal-title">${titulo}</h5>
+                                      <button type="button" class="btn-close btn-close-white" onclick="SimpleModalManager.hide('${modalId}')"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <div class="alert ${this.obtenerClaseAlerta(tipo)} mb-0">
+                                        <pre style="margin:0; white-space:pre-wrap; font-family:inherit;">${mensaje}</pre>
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" onclick="SimpleModalManager.hide('${modalId}')">
+                                        <i class="fas fa-times me-1"></i> Cerrar
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                            `;
+                            document.body.appendChild(modal);
+                        } else {
+                            modal.querySelector('.modal-title').textContent = titulo;
+                            modal.querySelector('.modal-header').className = `modal-header ${this.obtenerClaseHeader(tipo)}`;
+                            modal.querySelector('.alert').className = `alert ${this.obtenerClaseAlerta(tipo)} mb-0`;
+                            modal.querySelector('pre').textContent = mensaje;
+                        }
+                        SimpleModalManager.show(modalId);
+                    },
+                    obtenerClaseHeader(tipo) {
+                        const clases = {
+                            success: 'bg-success text-white',
+                            error: 'bg-danger text-white',
+                            warning: 'bg-warning text-dark',
+                            info: 'bg-primary text-white'
+                        };
+                        return clases[tipo] || clases.info;
+                    },
+                    obtenerClaseAlerta(tipo) {
+                        const clases = {
+                            success: 'alert-success',
+                            error: 'alert-danger',
+                            warning: 'alert-warning',
+                            info: 'alert-info'
+                        };
+                        return clases[tipo] || clases.info;
+                    },
+                    async tieneSeguroVigente(vehiculoId) {
+                        console.log('[Vue] tieneSeguroVigente() – verificando ID:', vehiculoId);
+                        try {
+                            const response = await apiClient.get(`/api/Vehiculos/${vehiculoId}/seguro`);
+                            console.log('[Vue] tieneSeguroVigente() – respuesta:', response.data);
+                            return response.data ? response.data.seguroVigente : false;
+                        } catch (e) {
+                            console.error('[Vue] tieneSeguroVigente() – error:', e);
+                            return false;
+                        }
+                    },
+
+                    // ------------------------------
+                    // GESTIÓN DE VEHÍCULOS
+                    // ------------------------------
+                    async cargarVehiculos() {
+                        this.cargando = true;
+                        try {
+                            const response = await apiClient.get('/api/Vehiculos');
+                            this.vehiculos = response.data;
+                        } catch (error) {
+                            console.error('[Vue] cargarVehiculos() – error:', error);
+                            this.mostrarError('Error al cargar los vehículos');
+                        } finally {
+                            this.cargando = false;
+                        }
+                    },
+                    async filtrarVehiculos() {
+                        this.cargando = true;
+                        try {
+                            let url = '/api/Vehiculos';
+
+                            if (this.filtros.estado && !this.filtros.tipo && !this.filtros.marca) {
+                                url = `/api/Vehiculos/estado/${this.filtros.estado}`;
+                                const response = await apiClient.get(url);
+                                this.vehiculos = response.data;
+                                return;
+                            } else if (this.filtros.tipo || this.filtros.marca) {
+                                const searchParams = {
+                                    estado: this.filtros.estado ? parseInt(this.filtros.estado) : null,
+                                    tipo: this.filtros.tipo ? parseInt(this.filtros.tipo) : null,
+                                    marca: this.filtros.marca || null
+                                };
+                                const response = await apiClient.post('/api/Vehiculos/buscar', searchParams);
+                                this.vehiculos = response.data;
+                                return;
+                            }
+                            const response = await apiClient.get(url);
+                            this.vehiculos = response.data;
+                        } catch (error) {
+                            console.error('[Vue] filtrarVehiculos() – error:', error);
+                            this.mostrarError('Error al filtrar los vehículos');
+                        } finally {
+                            this.cargando = false;
+                        }
+                    },
+                    async guardarVehiculo() {
+                        this.guardando = true;
+                        try {
+                            // Preparamos FormData
+                            const formData = new FormData();
+                            if (this.editando) {
+                                formData.append('Id', this.vehiculoForm.id.toString());
+                            }
+                            formData.append('Marca', (this.vehiculoForm.marca || '').trim());
+                            formData.append('Modelo', (this.vehiculoForm.modelo || '').trim());
+                            formData.append('Tipo', (this.vehiculoForm.tipo || '').toString());
+                            formData.append('Anio', (parseInt(this.vehiculoForm.anio) || new Date().getFullYear()).toString());
+                            formData.append('Color', (this.vehiculoForm.color || '').trim());
+                            formData.append('PlacaFisica', (this.vehiculoForm.placaFisica || '').trim());
+                            formData.append('Chasis', (this.vehiculoForm.chasis || '').trim());
+                            formData.append('NumeroMotor', (this.vehiculoForm.numeroMotor || '').trim());
+                            formData.append('Estado', parseInt(this.vehiculoForm.estado).toString());
+                            formData.append('Kilometraje', (parseInt(this.vehiculoForm.kilometraje) || 0).toString());
+                            formData.append('FechaAdquisicion', this.vehiculoForm.fechaAdquisicion || new Date().toISOString().split('T')[0]);
+                            formData.append('RegistradoContabilidad', Boolean(this.vehiculoForm.registradoContabilidad).toString());
+
+                            // Campos opcionales
+                            if (this.vehiculoForm.placaMatricula && this.vehiculoForm.placaMatricula.trim() !== '') {
+                                formData.append('PlacaMatricula', this.vehiculoForm.placaMatricula.trim());
+                            }
+                            if (this.vehiculoForm.placaValidadaDGII && this.vehiculoForm.placaValidadaDGII.trim() !== '') {
+                                formData.append('PlacaValidadaDGII', this.vehiculoForm.placaValidadaDGII.trim());
+                            }
+                            if (this.vehiculoForm.chasisValidadoDGII && this.vehiculoForm.chasisValidadoDGII.trim() !== '') {
+                                formData.append('ChasisValidadoDGII', this.vehiculoForm.chasisValidadoDGII.trim());
+                            }
+                            if (this.vehiculoForm.notas && this.vehiculoForm.notas.trim() !== '') {
+                                formData.append('Notas', this.vehiculoForm.notas.trim());
+                            }
+                            if (this.vehiculoForm.numeroActivoFijo && this.vehiculoForm.numeroActivoFijo.trim() !== '') {
+                                formData.append('NumeroActivoFijo', this.vehiculoForm.numeroActivoFijo.trim());
+                            }
+                            if (this.vehiculoForm.estatusJuridico && this.vehiculoForm.estatusJuridico.trim() !== '') {
+                                formData.append('EstatusJuridico', this.vehiculoForm.estatusJuridico.trim());
+                            }
+                            if (this.vehiculoForm.numeroPaseRapido && this.vehiculoForm.numeroPaseRapido.trim() !== '') {
+                                formData.append('NumeroPaseRapido', this.vehiculoForm.numeroPaseRapido.trim());
+                            }
+                            if (this.vehiculoForm.estadoMatricula && this.vehiculoForm.estadoMatricula.trim() !== '') {
+                                formData.append('EstadoMatricula', this.vehiculoForm.estadoMatricula.trim());
+                            }
+                            if (this.vehiculoForm.ubicacion && this.vehiculoForm.ubicacion !== '' && this.vehiculoForm.ubicacion !== null) {
+                                formData.append('Ubicacion', parseInt(this.vehiculoForm.ubicacion).toString());
+                            }
+
+                            // Documentos seleccionados
+                            if (this.documentosSeleccionados && this.documentosSeleccionados.length > 0) {
+                                this.documentosSeleccionados.forEach((archivo) => {
+                                    formData.append('Documentos', archivo);
+                                });
+                            }
+
+                            let response;
+                            if (this.editando) {
+                                response = await apiClient.put(`/api/Vehiculos/${this.vehiculoForm.id}`, formData);
+                                this.mostrarExito("Vehículo actualizado exitosamente");
+                            } else {
+                                response = await apiClient.post(`/api/Vehiculos`, formData);
+                                this.mostrarExito("Vehículo creado exitosamente");
+                            }
+
+                            this.cerrarModal("addVehicleModal");
+                            await this.cargarVehiculos();
+                        } catch (error) {
+                            console.error('[Vue] guardarVehiculo() – error:', error);
+                            if (error.response?.status === 400 && error.response.data.errors) {
+                                const mensajes = [];
+                                Object.keys(error.response.data.errors).forEach(campo => {
+                                    error.response.data.errors[campo].forEach(err => {
+                                        mensajes.push(`${campo}: ${err}`);
+                                    });
+                                });
+                                this.mostrarError(`Errores de validación:\n${mensajes.join('\n')}`);
+                            } else if (error.response?.status === 500) {
+                                this.mostrarError("Error interno del servidor. Revisar logs.");
+                            } else {
+                                this.mostrarError("Error al guardar el vehículo. Intente nuevamente.");
+                            }
+                        } finally {
+                            this.guardando = false;
+                        }
+                    },
+
+                    // ------------------------------
+                    // ELIMINACIÓN CON CHEQUEO DE SEGURO
+                    // ------------------------------
+                    async eliminarVehiculoSiSinSeguro(vehiculo) {
+                        console.log(`[Vue] eliminarVehiculoSiSinSeguro() – ID=${vehiculo.id}`);
+                        try {
+                            const tieneSeguro = await this.tieneSeguroVigente(vehiculo.id);
+                            if (tieneSeguro) {
+                                this.mostrarError('No se puede eliminar este vehículo porque tiene un seguro vigente.');
+                                return;
+                            }
+                            // Si no tiene seguro, procedemos a eliminar
+                            await this.eliminarVehiculo(vehiculo.id);
+                        } catch (err) {
+                            console.error('[Vue] eliminarVehiculoSiSinSeguro() – error:', err);
+                            this.mostrarError('Error al verificar el seguro. Intente nuevamente.');
+                        }
+                    },
+                    async eliminarVehiculo(vehiculoId) {
+                        if (!confirm('¿Está seguro de que desea eliminar este vehículo?')) {
+                            return;
+                        }
+                        try {
+                            await apiClient.delete(`/api/Vehiculos/${vehiculoId}`);
+                            this.mostrarExito('Vehículo eliminado exitosamente');
+                            await this.cargarVehiculos();
+                        } catch (error) {
+                            console.error('[Vue] eliminarVehiculo() – error:', error);
+                            this.mostrarError('Error al eliminar el vehículo');
+                        }
+                    },
+
+                    // ------------------------------
+                    // DOCUMENTOS
+                    // ------------------------------
+                    async cargarDocumentosVehiculo(vehiculoId) {
+                        this.cargandoFotos = true;
+                        try {
+                            const response = await apiClient.get(`/api/Vehiculos/${vehiculoId}/documentos`);
+                            this.documentos = response.data;
+                        } catch (error) {
+                            console.error('[Vue] cargarDocumentosVehiculo() – error:', error);
+                            this.documentos = [];
+                        } finally {
+                            this.cargandoFotos = false;
+                        }
+                    },
+                    async descargarDocumento(documentoId) {
+                        try {
+                            const infoResponse = await apiClient.get(`/api/Documentos/${documentoId}`);
+                            const response = await apiClient.get(`/api/Documentos/${documentoId}/Contenido`, { responseType: 'blob' });
+                            const url = window.URL.createObjectURL(new Blob([response.data]));
+                            const link = document.createElement('a');
+                            link.href = url;
+
+                            let filename = infoResponse.data.nombre || 'documento';
+                            if (!filename.includes('.')) {
+                                const contentType = response.headers['content-type'];
+                                const extension = this.obtenerExtensionPorContentType(contentType);
+                                if (extension) filename += `.${extension}`;
+                            }
+
+                            link.setAttribute('download', filename);
+                            document.body.appendChild(link);
+                            link.click();
+                            link.remove();
+                            window.URL.revokeObjectURL(url);
+
+                            this.mostrarExito(`Documento "${filename}" descargado exitosamente`);
+                        } catch (error) {
+                            console.error('[Vue] descargarDocumento() – error:', error);
+                            this.mostrarError('Error al descargar el documento');
+                        }
+                    },
+                    async eliminarDocumento(documentoId) {
+                        if (!confirm('¿Está seguro de que desea eliminar este documento?')) return;
+                        try {
+                            await apiClient.delete(`/api/Documentos/${documentoId}`);
+                            this.mostrarExito('Documento eliminado exitosamente');
+                            await this.cargarDocumentosVehiculo(this.vehiculoDetalle.id);
+                        } catch (error) {
+                            console.error('[Vue] eliminarDocumento() – error:', error);
+                            this.mostrarError('Error al eliminar el documento');
+                        }
+                    },
+                    seleccionarDocumentos(event) {
+                        this.documentosSeleccionados = Array.from(event.target.files);
+                    },
+
+                    // ------------------------------
+                    // UTILIDADES DE DOCUMENTOS
+                    // ------------------------------
+                    obtenerExtension(filename) {
+                        if (!filename) return '';
+                        const parts = filename.split('.');
+                        return parts.length > 1 ? parts.pop().toUpperCase() : '';
+                    },
+                    obtenerTipoDocumento(filename) {
+                        const ext = this.obtenerExtension(filename).toLowerCase();
+                        const tipos = {
+                            pdf: 'PDF', doc: 'Word', docx: 'Word',
+                            xls: 'Excel', xlsx: 'Excel',
+                            ppt: 'PowerPoint', pptx: 'PowerPoint',
+                            jpg: 'Imagen', jpeg: 'Imagen', png: 'Imagen', gif: 'Imagen',
+                            txt: 'Texto', zip: 'Archivo', rar: 'Archivo'
+                        };
+                        return tipos[ext] || 'Documento';
+                    },
+                    obtenerExtensionPorContentType(contentType) {
+                        const mime = {
+                            'application/pdf': 'pdf',
+                            'application/msword': 'doc',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+                            'application/vnd.ms-excel': 'xls',
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+                            'application/vnd.ms-powerpoint': 'ppt',
+                            'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx',
+                            'image/jpeg': 'jpg',
+                            'image/png': 'png',
+                            'image/gif': 'gif',
+                            'text/plain': 'txt',
+                            'application/zip': 'zip',
+                            'application/x-rar-compressed': 'rar'
+                        };
+                        return mime[contentType] || null;
+                    },
+                    formatearTamano(bytes) {
+                        if (!bytes) return 'N/A';
+                        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                        if (bytes === 0) return '0 Bytes';
+                        const i = Math.floor(Math.log(bytes) / Math.log(1024));
+                        return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + ' ' + sizes[i];
+                    },
+
+                    // ------------------------------
+                    // UTILIDADES GENERALES
+                    // ------------------------------
+                    limpiarFormulario() {
+                        this.vehiculoForm = {
+                            id: null,
+                            marca: '',
+                            modelo: '',
+                            tipo: '',
+                            anio: new Date().getFullYear(),
+                            color: '',
+                            placaFisica: '',
+                            placaMatricula: '',
+                            placaValidadaDGII: '',
+                            chasisValidadoDGII: '',
+                            chasis: '',
+                            numeroMotor: '',
+                            estado: 1,
+                            notas: '',
+                            kilometraje: 0,
+                            fechaAdquisicion: '',
+                            numeroActivoFijo: '',
+                            registradoContabilidad: false,
+                            estatusJuridico: '',
+                            ubicacion: '',
+                            numeroPaseRapido: '',
+                            estadoMatricula: ''
+                        };
+                        this.documentosSeleccionados = [];
+                        this.vehiculoDetalle = {};
+                        this.documentos = [];
+
+                        const inputDocsCreate = document.getElementById('vehicleDocumentsCreate');
+                        if (inputDocsCreate) inputDocsCreate.value = '';
+                        const inputDocsEdit = document.getElementById('vehicleDocumentsEdit');
+                        if (inputDocsEdit) inputDocsEdit.value = '';
+                    },
+                    obtenerPlacaFisica(vehiculo) {
+                        if (!vehiculo) return 'N/A';
+                        return vehiculo.placaFisica || vehiculo.placa || 'Sin placa física';
+                    },
+                    obtenerTextoTipo(tipoId) {
+                        if (!tipoId && tipoId !== 0) return 'Sin especificar';
+                        const tipo = this.tiposVehiculo.find(t => t.value === tipoId.toString());
+                        return tipo ? tipo.text : `Tipo ${tipoId}`;
+                    },
+                    obtenerTextoUbicacion(ubicacionId) {
+                        if (!ubicacionId && ubicacionId !== 0) return 'Sin especificar';
+                        const ubi = this.ubicacionesVehiculo.find(u => u.value === ubicacionId.toString());
+                        return ubi ? ubi.text : `Ubicación ${ubicacionId}`;
+                    },
+                    estadoClass(estado) {
+                        if (!estado && estado !== 0) return 'badge bg-secondary';
+                        const clases = {
+                            1: 'badge bg-success',    // Disponible
+                            2: 'badge bg-warning text-dark', // Asignado
+                            3: 'badge bg-info',       // En Taller
+                            4: 'badge bg-secondary',  // No Disponible
+                            5: 'badge bg-danger'      // De Baja
+                        };
+                        return clases[estado] || 'badge bg-secondary';
+                    },
+                    estadoTexto(estado) {
+                        if (!estado && estado !== 0) return 'Sin estado';
+                        const textos = {
+                            1: 'Disponible',
+                            2: 'Asignado',
+                            3: 'En Taller',
+                            4: 'No Disponible',
+                            5: 'De Baja'
+                        };
+                        return textos[estado] || `Estado ${estado}`;
+                    },
+                    formatearFecha(fecha) {
+                        if (!fecha) return 'No especificada';
+                        try {
+                            return new Date(fecha).toLocaleDateString('es-DO');
+                        } catch {
+                            return 'Fecha inválida';
+                        }
+                    },
+
+                    // ------------------------------
+                    // NOTIFICACIONES FLOTANTES
+                    // ------------------------------
+                    mostrarError(mensaje) {
+                        this.mostrarNotificacion(mensaje, 'error');
+                    },
+                    mostrarExito(mensaje) {
+                        this.mostrarNotificacion(mensaje, 'success');
+                    },
+                    mostrarNotificacion(mensaje, tipo = 'info') {
+                        let container = document.getElementById('notification-container');
+                        if (!container) {
+                            container = document.createElement('div');
+                            container.id = 'notification-container';
+                            container.style.cssText = `
+                                position: fixed;
+                                top: 20px;
+                                right: 20px;
+                                z-index: 9999;
+                                max-width: 400px;
+                            `;
+                            document.body.appendChild(container);
+                        }
+
+                        const notification = document.createElement('div');
+                        const iconos = { success: '✓', error: '✗', info: 'ℹ' };
+                        const colores = { success: '#6bbd4a', error: '#e74c3c', info: '#3a9bd9' };
+
+                        notification.style.cssText = `
+                            background: white;
+                            border-left: 4px solid ${colores[tipo]};
+                            border-radius: 8px;
+                            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                            padding: 1rem;
+                            margin-bottom: 0.5rem;
+                            display: flex;
+                            align-items: center;
+                            transform: translateX(100%);
+                            transition: transform 0.3s ease;
+                        `;
+                        notification.innerHTML = `
+                            <span style="color: ${colores[tipo]}; font-weight: bold; margin-right: 10px; font-size: 1.2rem;">
+                                ${iconos[tipo]}
+                            </span>
+                            <span style="color: #2d3748;">${mensaje}</span>
+                        `;
+                        container.appendChild(notification);
+
+                        // Mostrar
+                        setTimeout(() => {
+                            notification.style.transform = 'translateX(0)';
+                        }, 100);
+                        // Desaparecer
+                        setTimeout(() => {
+                            notification.style.transform = 'translateX(100%)';
+                            setTimeout(() => {
+                                if (notification.parentNode) {
+                                    notification.parentNode.removeChild(notification);
+                                }
+                            }, 300);
+                        }, 4000);
+
+                        notification.addEventListener('click', () => {
+                            notification.style.transform = 'translateX(100%)';
+                            setTimeout(() => {
+                                if (notification.parentNode) {
+                                    notification.parentNode.removeChild(notification);
+                                }
+                            }, 300);
+                        });
+                    }
+                },
+
+                async mounted() {
+                    const token = localStorage.getItem('authToken');
+                    if (!token) {
+                        window.location.href = '/Account/Login';
+                        return;
+                    }
+                    await this.cargarVehiculos();
+                },
+
+                beforeDestroy() {
+                    SimpleModalManager.hideAll();
+                    const container = document.getElementById('notification-container');
+                    if (container) container.remove();
+                }
+            });
+        });
+    </script>
 }

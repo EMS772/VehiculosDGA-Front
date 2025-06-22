@@ -5,7 +5,7 @@ namespace VehiculosDGA.Controllers
 {
     public class CuentaController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Registro()
         {
             return View();
         }

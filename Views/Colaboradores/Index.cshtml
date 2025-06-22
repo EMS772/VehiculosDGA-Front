@@ -1,0 +1,471 @@
+﻿@{
+    ViewData["Title"] = "Gestión de Colaboradores";
+    ViewData["NavbarTitle"] = "Colaboradores";
+    ViewData["ActivePage"] = "Colaboradores";
+    Layout = "_Layout";
+}
+<div id="colaboradores-app">
+    <!-- 1) Encabezado y botón "Agregar" -->
+    <div class="row my-4">
+        <div class="col-lg-12 d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">Colaboradores</h2>
+            <button class="btn btn-primary" @@click="mostrarModalCrear">
+                <i class="fas fa-plus me-1"></i> Agregar Colaborador
+            </button>
+        </div>
+    </div>
+
+    <!-- 2) Filtros -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form class="row gx-3 gy-2" @@submit.prevent="filtrarColaboradores">
+                        <!-- Filtro por Departamento -->
+                        <div class="col-md-4">
+                            <label for="filterDepartamento" class="form-label">Departamento</label>
+                            <select id="filterDepartamento" class="form-select" v-model="filtros.departamento">
+                                <option value="">Todos</option>
+                                <option v-for="dept in departamentos" :key="dept.value" :value="dept.value">
+                                    {{ dept.text }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Filtro por Estado -->
+                        <div class="col-md-4">
+                            <label for="filterEstado" class="form-label">Estado</label>
+                            <select id="filterEstado" class="form-select" v-model="filtros.activo">
+                                <option value="">Todos</option>
+                                <option value="true">Activo</option>
+                                <option value="false">Inactivo</option>
+                            </select>
+                        </div>
+
+                        <!-- Botón Filtrar -->
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-filter me-1"></i> Filtrar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3) Tabla de Colaboradores -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-body">
+                    <!-- Estado "cargando" -->
+                    <div v-if="cargando" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Cargando colaboradores...</p>
+                    </div>
+
+                    <!-- Si no hay resultados -->
+                    <div v-else-if="colaboradoresFiltrados.length === 0" class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        No se encontraron colaboradores con los criterios seleccionados.
+                    </div>
+
+                    <!-- Tabla -->
+                    <div class="table-responsive" v-else>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Cédula</th>
+                                    <th>Departamento</th>
+                                    <th>Cargo</th>
+                                    <th>Contacto</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(col, index) in colaboradoresFiltrados" :key="col.id">
+                                    <td>{{ index + 1 }}</td>
+                                    <td>
+                                        <div>
+                                            <div class="fw-bold">{{ col.nombre }} {{ col.apellido }}</div>
+                                            <div class="text-muted small">{{ col.email }}</div>
+                                        </div>
+                                    </td>
+                                    <td>{{ col.cedula }}</td>
+                                    <td>{{ col.departamento || 'Sin departamento' }}</td>
+                                    <td>{{ col.cargo }}</td>
+                                    <td>
+                                        <div class="text-muted small">
+                                            <i class="bi bi-telephone me-1"></i> {{ col.telefono || 'N/A' }}<br>
+                                            <i class="bi bi-phone me-1"></i> {{ col.telefonoMovil || 'N/A' }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span :class="estadoClass(col.activo)">
+                                            {{ estadoTexto(col.activo) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <button class="btn btn-sm btn-outline-primary me-1"
+                                                    title="Detalles"
+                                                    @@click="mostrarDetalles(col)">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-warning me-1"
+                                                    title="Editar"
+                                                    @@click="mostrarModalEditar(col)">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger"
+                                                    title="Eliminar"
+                                                    @@click="eliminarColaborador(col.id)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4) Modal "Agregar / Editar Colaborador" -->
+    <div class="modal fade" id="addCollaboratorModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Encabezado -->
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title">
+                        {{ editando ? 'Editar Colaborador' : 'Agregar Nuevo Colaborador' }}
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" @@click="cerrarModal('addCollaboratorModal')"></button>
+                </div>
+                <!-- Cuerpo del Modal -->
+                <div class="modal-body">
+                    <form @@submit.prevent="guardarColaborador">
+                        <ul class="nav nav-tabs mb-3" role="tablist">
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#info" type="button">
+                                    Información Personal
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#laboral" type="button">
+                                    Datos Laborales
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#licencia" type="button">
+                                    Licencia
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <!-- Pestaña "Información" -->
+                            <div class="tab-pane fade show active" id="info">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nombre *</label>
+                                        <input type="text" class="form-control" v-model="colaboradorForm.nombre" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Apellido *</label>
+                                        <input type="text" class="form-control" v-model="colaboradorForm.apellido" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Cédula *</label>
+                                        <input type="text" class="form-control" v-model="colaboradorForm.cedula"
+                                               placeholder="000-0000000-0" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" v-model="colaboradorForm.email">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Teléfono</label>
+                                        <input type="tel" class="form-control" v-model="colaboradorForm.telefono">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Celular</label>
+                                        <input type="tel" class="form-control" v-model="colaboradorForm.telefonoMovil">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Dirección</label>
+                                        <textarea class="form-control" rows="2" v-model="colaboradorForm.direccionCompleta"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pestaña "Datos Laborales" -->
+                            <div class="tab-pane fade" id="laboral">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Departamento *</label>
+                                        <select class="form-select" v-model="colaboradorForm.departamento" required>
+                                            <option value="" disabled>Seleccione...</option>
+                                            <option v-for="dept in departamentos" :key="dept.value" :value="dept.value">
+                                                {{ dept.text }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Cargo *</label>
+                                        <input type="text" class="form-control" v-model="colaboradorForm.cargo" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">N° Carnet</label>
+                                        <input type="text" class="form-control" v-model="colaboradorForm.numeroCarnet">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Categoría</label>
+                                        <select class="form-select" v-model="colaboradorForm.categoria">
+                                            <option v-for="cat in categoriasColaborador" :key="cat.value" :value="cat.value">
+                                                {{ cat.text }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Observaciones</label>
+                                        <textarea class="form-control" rows="2" v-model="colaboradorForm.observaciones"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" v-model="colaboradorForm.activo">
+                                            <label class="form-check-label">
+                                                Colaborador Activo
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pestaña "Licencia" -->
+                            <div class="tab-pane fade" id="licencia">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">N° Licencia</label>
+                                        <input type="text" class="form-control" v-model="colaboradorForm.licenciaConducir">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Vencimiento Licencia</label>
+                                        <input type="date" class="form-control" v-model="colaboradorForm.fechaVencimientoLicencia">
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="alert alert-info">
+                                            <i class="bi bi-info-circle me-2"></i>
+                                            Esta información sirve para validar si puede asignársele vehículo.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- Pie del Modal -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @@click="cerrarModal('addCollaboratorModal')">
+                        <i class="fas fa-times me-1"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" @@click="guardarColaborador" :disabled="guardando">
+                        <span v-if="guardando">
+                            <span class="spinner-border spinner-border-sm" role="status"></span>
+                            Guardando...
+                        </span>
+                        <span v-else>
+                            <i class="fas fa-save me-1"></i> {{ editando ? 'Actualizar' : 'Guardar' }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5) Modal "Detalles del Colaborador" -->
+    <div class="modal fade" id="collaboratorDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Encabezado -->
+                <div class="modal-header text-white bg-primary">
+                    <h5 class="modal-title">
+                        <i class="bi bi-person-circle me-2"></i>
+                        Detalles de {{ colaboradorDetalle.nombre }} {{ colaboradorDetalle.apellido }}
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" @@click="cerrarModal('collaboratorDetailsModal')"></button>
+                </div>
+                <!-- Cuerpo -->
+                <div class="modal-body">
+                    <!-- Información Principal -->
+                    <div class="text-center mb-4">
+                        <h3 class="mb-1">{{ colaboradorDetalle.nombre }} {{ colaboradorDetalle.apellido }}</h3>
+                        <p class="text-muted fs-5 mb-2">{{ colaboradorDetalle.cargo }}</p>
+                        <span :class="estadoClass(colaboradorDetalle.activo)" class="fs-6">
+                            <i class="bi bi-circle-fill me-1"></i>
+                            {{ estadoTexto(colaboradorDetalle.activo) }}
+                        </span>
+                    </div>
+
+                    <!-- Información en Tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#info-personal" type="button">
+                                <i class="bi bi-person me-1"></i> Información Personal
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#info-laboral" type="button">
+                                <i class="bi bi-briefcase me-1"></i> Información Laboral
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#info-licencia" type="button">
+                                <i class="bi bi-card-text me-1"></i> Licencia
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content pt-3">
+                        <!-- Tab Información Personal -->
+                        <div class="tab-pane fade show active" id="info-personal">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-muted mb-1">Cédula</h6>
+                                        <p class="mb-0 fw-bold">{{ colaboradorDetalle.cedula || 'No especificada' }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-muted mb-1">Email</h6>
+                                        <p class="mb-0 fw-bold">
+                                            <a :href="'mailto:' + colaboradorDetalle.email" v-if="colaboradorDetalle.email">
+                                                {{ colaboradorDetalle.email }}
+                                            </a>
+                                            <span v-else>No especificado</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-muted mb-1">Teléfono</h6>
+                                        <p class="mb-0 fw-bold">{{ colaboradorDetalle.telefono || 'No especificado' }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-muted mb-1">Celular</h6>
+                                        <p class="mb-0 fw-bold">{{ colaboradorDetalle.telefonoMovil || 'No especificado' }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-muted mb-1">Dirección</h6>
+                                        <p class="mb-0 fw-bold">{{ colaboradorDetalle.direccionCompleta || 'No especificada' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Información Laboral -->
+                        <div class="tab-pane fade" id="info-laboral">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-muted mb-1">Departamento</h6>
+                                        <p class="mb-0 fw-bold">{{ colaboradorDetalle.departamento || 'Sin departamento' }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-muted mb-1">Cargo</h6>
+                                        <p class="mb-0 fw-bold">{{ colaboradorDetalle.cargo || 'Sin cargo' }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-muted mb-1">N° Carnet</h6>
+                                        <p class="mb-0 fw-bold">{{ colaboradorDetalle.numeroCarnet || 'No asignado' }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-muted mb-1">Categoría</h6>
+                                        <p class="mb-0 fw-bold">{{ obtenerTextoCategoria(colaboradorDetalle.categoria) }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-muted mb-1">Observaciones</h6>
+                                        <p class="mb-0">{{ colaboradorDetalle.observaciones || 'Sin observaciones' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Licencia -->
+                        <div class="tab-pane fade" id="info-licencia">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-muted mb-1">N° Licencia</h6>
+                                        <p class="mb-0 fw-bold">{{ colaboradorDetalle.licenciaConducir || 'No registrada' }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3">
+                                        <h6 class="text-muted mb-1">Fecha de Vencimiento</h6>
+                                        <p class="mb-0 fw-bold">{{ formatearFecha(colaboradorDetalle.fechaVencimientoLicencia) }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="border rounded p-3 text-center" v-if="colaboradorDetalle.fechaVencimientoLicencia">
+                                        <h6 class="text-muted mb-3">Estado de la Licencia</h6>
+                                        <div :class="obtenerClasseLicencia(colaboradorDetalle.fechaVencimientoLicencia)">
+                                            <i :class="obtenerIconoLicencia(colaboradorDetalle.fechaVencimientoLicencia)"
+                                               class="fs-1 mb-2 d-block"></i>
+                                            <h5 class="fw-bold text-uppercase">
+                                                {{ validarLicenciaVencimiento(colaboradorDetalle.fechaVencimientoLicencia) }}
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-warning text-center" v-else>
+                                        <i class="bi bi-exclamation-triangle fs-3 d-block mb-2"></i>
+                                        <p class="mb-0">Este colaborador no tiene licencia de conducir registrada</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pie del modal -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="mostrarModalEditar(colaboradorDetalle)">
+                        <i class="bi bi-pencil me-1"></i> Editar
+                    </button>
+                    <button type="button" class="btn btn-secondary" @@click="cerrarModal('collaboratorDetailsModal')">
+                        <i class="bi bi-x-lg me-1"></i> Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <!-- Dependencias CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/Colaboradores.js"></script>
+}

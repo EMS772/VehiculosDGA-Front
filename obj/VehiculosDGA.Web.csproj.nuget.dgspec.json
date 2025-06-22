@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj": {}
+    "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj": {
+    "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj",
+        "projectUniqueName": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj",
         "projectName": "VehiculosDGA.Web",
-        "projectPath": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj",
+        "projectPath": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj",
         "packagesPath": "C:\\Users\\Julio Cesar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web\\obj\\",
+        "outputPath": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
