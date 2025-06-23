@@ -79,11 +79,41 @@
                 this.verificarAutenticacion();
                 this.cargarHistorialReportes();
                 this.cargarEstadisticasReportes();
+
+                // Esperar a que Chart.js esté disponible y el DOM esté listo
                 this.$nextTick(() => {
-                    this.inicializarGraficos();
+                    setTimeout(() => {
+                        this.verificarChart();
+                        this.inicializarGraficos();
+                    }, 500);
                 });
             },
             methods: {
+                 verificarChart() {
+                    console.log('🔧 Verificando Chart.js...');
+                    console.log('Chart disponible:', typeof Chart !== 'undefined' ? '✅' : '❌');
+                    
+                    if (typeof Chart === 'undefined') {
+                        console.error('❌ Chart.js no está cargado. Cargando desde CDN...');
+                        this.cargarChartJS();
+                        return false;
+                    }
+                    
+                    console.log('Chart.js versión:', Chart.version || 'Desconocida');
+                    return true;
+                },
+
+                cargarChartJS() {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js';
+                    script.onload = () => {
+                        console.log('✅ Chart.js cargado dinámicamente');
+                        setTimeout(() => {
+                            this.inicializarGraficos();
+                        }, 100);
+                    };
+                    document.head.appendChild(script);
+                },
                 // ========== MÉTODOS PARA REPORTES RÁPIDOS CON NUEVOS ENDPOINTS ==========
                 async generarReporteRapido(tipo) {
                     console.log('🚀 Generando reporte rápido con nuevo endpoint:', tipo);
@@ -619,14 +649,39 @@
                 async inicializarGraficos() {
                     console.log('📊 Inicializando gráficos...');
                     
+                    if (!this.verificarChart()) {
+                        console.warn('⚠️ Chart.js no disponible, intentando cargar...');
+                        return;
+                    }
+                    
+                    // Verificar que los elementos canvas existan
+                    const vehicleCanvas = document.getElementById('vehicleStatusChart');
+                    const maintenanceCanvas = document.getElementById('maintenanceCostChart');
+                    
+                    console.log('Canvas vehicleStatusChart:', vehicleCanvas ? '✅' : '❌');
+                    console.log('Canvas maintenanceCostChart:', maintenanceCanvas ? '✅' : '❌');
+                    
+                    if (!vehicleCanvas || !maintenanceCanvas) {
+                        console.error('❌ Elementos canvas no encontrados');
+                        return;
+                    }
+                    
                     try {
-                        // Cargar datos para ambas gráficas
+                        // Inicializar con datos de ejemplo primero
+                        this.crearGraficoVehiculosEjemplo();
+                        this.crearGraficoMantenimientosEjemplo();
+                        
+                        // Luego cargar datos reales
                         await this.cargarGraficoVehiculos();
                         await this.cargarGraficoMantenimientos();
                         
                         console.log('✅ Gráficos inicializados correctamente');
+                        
                     } catch (error) {
                         console.error('❌ Error al inicializar gráficos:', error);
+                        // Fallback a datos de ejemplo
+                        this.crearGraficoVehiculosEjemplo();
+                        this.crearGraficoMantenimientosEjemplo();
                     }
                 },
 
@@ -634,9 +689,9 @@
                     try {
                         console.log('📊 Cargando datos de vehículos...');
                         
-                        // Llamar a la API de vehículos activos
-                        const response = await fetch(`${apiBase}/api/Reportes/vehiculosActivos`, {
+                        const response = await fetch(`${apiBase}/api/Vehiculos`, {
                             method: 'GET',
+                            credentials: 'include',
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
@@ -647,37 +702,64 @@
                             throw new Error(`Error ${response.status}: ${response.statusText}`);
                         }
                         
-                        const data = await response.json();
-                        console.log('📊 Datos de vehículos recibidos:', data);
+                        const vehiculos = await response.json();
+                        console.log('📊 Datos de vehículos recibidos:', vehiculos);
                         
-                        // Procesar datos para la gráfica
-                        const estadisticas = this.procesarEstadisticasVehiculos(data.datos);
+                        if (!Array.isArray(vehiculos)) {
+                            console.warn('⚠️ Datos de vehículos no son un array, usando datos de ejemplo');
+                            this.crearGraficoVehiculosEjemplo();
+                            return;
+                        }
                         
-                        // Crear/actualizar gráfica
+                        const estadisticas = this.procesarEstadisticasVehiculos(vehiculos);
                         this.crearGraficoVehiculos(estadisticas);
                         
                     } catch (error) {
                         console.error('❌ Error al cargar gráfico de vehículos:', error);
-                        // Mostrar datos de ejemplo si falla la API
                         this.crearGraficoVehiculosEjemplo();
                     }
                 },
 
                 procesarEstadisticasVehiculos(vehiculos) {
                     const estadisticas = {
-                        'Disponible': 0,
-                        'Asignado': 0,
-                        'EnTaller': 0,
-                        'NoDisponible': 0,
-                        'Otros': 0
+                        'Activos': 0,
+                        'En Mantenimiento': 0,
+                        'Asignados': 0,
+                        'No Asignados': 0,
+                        'Fuera de Servicio': 0
                     };
                     
+                    if (!Array.isArray(vehiculos)) {
+                        console.warn('⚠️ vehiculos no es un array:', vehiculos);
+                        return estadisticas;
+                    }
+                    
                     vehiculos.forEach(vehiculo => {
-                        const estado = vehiculo.Estado || 'Otros';
-                        if (estadisticas.hasOwnProperty(estado)) {
-                            estadisticas[estado]++;
-                        } else {
-                            estadisticas['Otros']++;
+                        // Obtener el estado del vehículo
+                        const estado = vehiculo.estado || vehiculo.Estado || 1;
+                        
+                        // Mapear estados según la lógica de tu sistema
+                        switch (parseInt(estado)) {
+                            case 1: // Disponible
+                                estadisticas['Activos']++;
+                                estadisticas['No Asignados']++;
+                                break;
+                            case 2: // Asignado
+                                estadisticas['Activos']++;
+                                estadisticas['Asignados']++;
+                                break;
+                            case 3: // En Taller
+                                estadisticas['En Mantenimiento']++;
+                                break;
+                            case 4: // No Disponible
+                                estadisticas['Fuera de Servicio']++;
+                                break;
+                            case 5: // De Baja
+                                estadisticas['Fuera de Servicio']++;
+                                break;
+                            default:
+                                estadisticas['Fuera de Servicio']++;
+                                break;
                         }
                     });
                     
@@ -695,6 +777,7 @@
                     // Destruir gráfica anterior si existe
                     if (this.vehicleStatusChart) {
                         this.vehicleStatusChart.destroy();
+                        this.vehicleStatusChart = null;
                     }
                     
                     const labels = [];
@@ -704,81 +787,92 @@
                     
                     // Configurar colores y datos
                     const colorMap = {
-                        'Disponible': { bg: '#28a745', border: '#1e7e34' },
-                        'Asignado': { bg: '#007bff', border: '#0056b3' },
-                        'EnTaller': { bg: '#ffc107', border: '#d39e00' },
-                        'NoDisponible': { bg: '#6c757d', border: '#545b62' },
-                        'Otros': { bg: '#dc3545', border: '#bd2130' }
+                        'Activos': { bg: '#28a745', border: '#1e7e34' },
+                        'En Mantenimiento': { bg: '#ffc107', border: '#d39e00' },
+                        'Asignados': { bg: '#007bff', border: '#0056b3' },
+                        'No Asignados': { bg: '#17a2b8', border: '#138496' },
+                        'Fuera de Servicio': { bg: '#dc3545', border: '#bd2130' }
                     };
                     
                     Object.keys(estadisticas).forEach(estado => {
                         if (estadisticas[estado] > 0) {
-                            labels.push(this.formatearEstadoVehiculo(estado));
+                            labels.push(estado);
                             data.push(estadisticas[estado]);
                             backgroundColor.push(colorMap[estado]?.bg || '#6c757d');
                             borderColor.push(colorMap[estado]?.border || '#545b62');
                         }
                     });
                     
-                    this.vehicleStatusChart = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                data: data,
-                                backgroundColor: backgroundColor,
-                                borderColor: borderColor,
-                                borderWidth: 2,
-                                hoverOffset: 4
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
-                                    }
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function(context) {
-                                            const label = context.label || '';
-                                            const value = context.parsed || 0;
-                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                            const percentage = ((value / total) * 100).toFixed(1);
-                                            return `${label}: ${value} (${percentage}%)`;
+                    // Si no hay datos, mostrar mensaje
+                    if (data.length === 0) {
+                        labels.push('Sin datos');
+                        data.push(1);
+                        backgroundColor.push('#e9ecef');
+                        borderColor.push('#dee2e6');
+                    }
+                    
+                    console.log('📊 Creando gráfico con datos:', { labels, data });
+                    
+                    try {
+                        this.vehicleStatusChart = new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    data: data,
+                                    backgroundColor: backgroundColor,
+                                    borderColor: borderColor,
+                                    borderWidth: 2,
+                                    hoverOffset: 4
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            usePointStyle: true,
+                                            padding: 20,
+                                            font: {
+                                                size: 12
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function(context) {
+                                                if (context.label === 'Sin datos') {
+                                                    return 'No hay datos disponibles';
+                                                }
+                                                const label = context.label || '';
+                                                const value = context.parsed || 0;
+                                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                                const percentage = ((value / total) * 100).toFixed(1);
+                                                return `${label}: ${value} vehículos (${percentage}%)`;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    });
-                    
-                    console.log('✅ Gráfico de vehículos creado');
-                },
-
-                formatearEstadoVehiculo(estado) {
-                    const estados = {
-                        'Disponible': 'Disponibles',
-                        'Asignado': 'Asignados',
-                        'EnTaller': 'En Mantenimiento',
-                        'NoDisponible': 'No Disponibles',
-                        'Otros': 'Otros'
-                    };
-                    return estados[estado] || estado;
+                        });
+                        
+                        console.log('✅ Gráfico de vehículos creado exitosamente');
+                        
+                    } catch (error) {
+                        console.error('❌ Error al crear gráfico de vehículos:', error);
+                    }
                 },
 
                 async cargarGraficoMantenimientos() {
                     try {
                         console.log('📊 Cargando datos de mantenimientos...');
                         
-                        // Llamar a la API de mantenimientos pendientes
-                        const response = await fetch(`${apiBase}/api/Reportes/mantenimientosPendientes`, {
+                        // Obtener mantenimientos con costos
+                        const response = await fetch(`${apiBase}/api/Mantenimientos`, {
                             method: 'GET',
+                            credentials: 'include',
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
@@ -789,52 +883,86 @@
                             throw new Error(`Error ${response.status}: ${response.statusText}`);
                         }
                         
-                        const data = await response.json();
-                        console.log('📊 Datos de mantenimientos recibidos:', data);
+                        const mantenimientos = await response.json();
+                        console.log('📊 Datos de mantenimientos recibidos:', mantenimientos);
                         
-                        // Procesar datos para la gráfica
-                        const costosPorMes = this.procesarCostosMantenimiento(data.datos);
+                        if (!Array.isArray(mantenimientos)) {
+                            console.warn('⚠️ Datos de mantenimientos no son un array, usando datos de ejemplo');
+                            this.crearGraficoMantenimientosEjemplo();
+                            return;
+                        }
                         
-                        // Crear/actualizar gráfica
-                        this.crearGraficoMantenimientos(costosPorMes);
+                        const costosPorAnoMes = this.procesarCostosMantenimiento(mantenimientos);
+                        this.crearGraficoMantenimientos(costosPorAnoMes);
                         
                     } catch (error) {
                         console.error('❌ Error al cargar gráfico de mantenimientos:', error);
-                        // Mostrar datos de ejemplo si falla la API
                         this.crearGraficoMantenimientosEjemplo();
                     }
                 },
 
                 procesarCostosMantenimiento(mantenimientos) {
-                    const costosPorMes = {};
+                    const fechaActual = new Date();
+                    const anoActual = fechaActual.getFullYear();
+                    const anoAnterior = anoActual - 1;
+                    
                     const mesesDelAno = [
                         'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
                         'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
                     ];
                     
-                    // Inicializar todos los meses en 0
-                    mesesDelAno.forEach(mes => {
-                        costosPorMes[mes] = 0;
+                    // Estructura para almacenar costos por año y mes
+                    const costosPorAno = {
+                        [anoAnterior]: {},
+                        [anoActual]: {}
+                    };
+                    
+                    // Inicializar todos los meses en 0 para ambos años
+                    [anoAnterior, anoActual].forEach(ano => {
+                        mesesDelAno.forEach(mes => {
+                            costosPorAno[ano][mes] = 0;
+                        });
                     });
+                    
+                    if (!Array.isArray(mantenimientos)) {
+                        console.warn('⚠️ mantenimientos no es un array:', mantenimientos);
+                        return costosPorAno;
+                    }
                     
                     // Procesar mantenimientos
                     mantenimientos.forEach(mantenimiento => {
-                        if (mantenimiento.FechaInicio) {
-                            const fecha = new Date(mantenimiento.FechaInicio);
-                            const mes = mesesDelAno[fecha.getMonth()];
-                            
-                            // Por ahora usamos un costo estimado aleatorio ya que no viene en la API
-                            // En tu caso real, deberías tener un campo de costo
-                            const costoEstimado = Math.random() * 50000 + 10000; // Entre 10k y 60k
-                            costosPorMes[mes] += costoEstimado;
+                        // Obtener la fecha del mantenimiento
+                        const fechaInicio = mantenimiento.fechaInicio || mantenimiento.FechaInicio || mantenimiento.fecha;
+                        
+                        if (fechaInicio) {
+                            try {
+                                const fecha = new Date(fechaInicio);
+                                const ano = fecha.getFullYear();
+                                const mes = mesesDelAno[fecha.getMonth()];
+                                
+                                // Solo procesar si es del año actual o anterior
+                                if (ano === anoActual || ano === anoAnterior) {
+                                    // Obtener el costo (priorizar costo real sobre estimado)
+                                    const costoReal = mantenimiento.costo || mantenimiento.Costo || 0;
+                                    const costoEstimado = mantenimiento.costoEstimado || mantenimiento.CostoEstimado || 0;
+                                    
+                                    const costoFinal = costoReal > 0 ? costoReal : costoEstimado;
+                                    
+                                    if (costoFinal > 0) {
+                                        costosPorAno[ano][mes] += costoFinal;
+                                    }
+                                }
+                            } catch (error) {
+                                console.warn('⚠️ Error al procesar fecha:', fechaInicio, error);
+                            }
                         }
                     });
                     
-                    console.log('📊 Costos por mes procesados:', costosPorMes);
-                    return costosPorMes;
+                    console.log('📊 Costos por año y mes procesados:', costosPorAno);
+                    return costosPorAno;
                 },
 
-                crearGraficoMantenimientos(costosPorMes) {
+                crearGraficoMantenimientos(costosPorAnoMes) {
                     const ctx = document.getElementById('maintenanceCostChart');
                     if (!ctx) {
                         console.error('❌ No se encontró el canvas maintenanceCostChart');
@@ -844,73 +972,123 @@
                     // Destruir gráfica anterior si existe
                     if (this.maintenanceCostChart) {
                         this.maintenanceCostChart.destroy();
+                        this.maintenanceCostChart = null;
                     }
                     
-                    const labels = Object.keys(costosPorMes);
-                    const data = Object.values(costosPorMes);
+                    const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+                    const anos = Object.keys(costosPorAnoMes).sort();
                     
-                    this.maintenanceCostChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Costos de Mantenimiento (RD$)',
-                                data: data,
-                                backgroundColor: '#007bff',
-                                borderColor: '#0056b3',
-                                borderWidth: 1,
-                                borderRadius: 4,
-                                borderSkipped: false,
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
+                    // Preparar datasets para cada año
+                    const datasets = anos.map((ano, index) => {
+                        const datos = meses.map(mes => costosPorAnoMes[ano][mes] || 0);
+                        
+                        // Colores diferentes para cada año
+                        const colores = [
+                            { bg: 'rgba(0, 123, 255, 0.8)', border: 'rgba(0, 123, 255, 1)' }, // Azul
+                            { bg: 'rgba(40, 167, 69, 0.8)', border: 'rgba(40, 167, 69, 1)' }, // Verde
+                            { bg: 'rgba(255, 193, 7, 0.8)', border: 'rgba(255, 193, 7, 1)' }  // Amarillo
+                        ];
+                        
+                        const color = colores[index % colores.length];
+                        
+                        return {
+                            label: `Costos ${ano}`,
+                            data: datos,
+                            backgroundColor: color.bg,
+                            borderColor: color.border,
+                            borderWidth: 2,
+                            borderRadius: 4,
+                            borderSkipped: false,
+                            tension: 0.1
+                        };
+                    });
+                    
+                    console.log('📊 Creando gráfico de mantenimientos con datasets:', datasets);
+                    
+                    try {
+                        this.maintenanceCostChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: meses,
+                                datasets: datasets
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                interaction: {
+                                    mode: 'index',
+                                    intersect: false,
                                 },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function(context) {
-                                            const value = context.parsed.y;
-                                            return `${context.dataset.label}: RD$ ${value.toLocaleString('es-DO', {
-                                                minimumFractionDigits: 2,
-                                                maximumFractionDigits: 2
-                                            })}`;
+                                plugins: {
+                                    legend: {
+                                        position: 'top',
+                                        labels: {
+                                            font: {
+                                                size: 12
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function(context) {
+                                                const value = context.parsed.y;
+                                                return `${context.dataset.label}: RD$ ${value.toLocaleString('es-DO', {
+                                                    minimumFractionDigits: 0,
+                                                    maximumFractionDigits: 0
+                                                })}`;
+                                            },
+                                            footer: function(tooltipItems) {
+                                                let total = 0;
+                                                tooltipItems.forEach(item => {
+                                                    total += item.parsed.y;
+                                                });
+                                                return `Total: RD$ ${total.toLocaleString('es-DO')}`;
+                                            }
                                         }
                                     }
-                                }
-                            },
-                            scales: {
-                                x: {
-                                    grid: {
-                                        display: false
-                                    }
                                 },
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        callback: function(value) {
-                                            return 'RD$ ' + value.toLocaleString('es-DO');
+                                scales: {
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        },
+                                        ticks: {
+                                            font: {
+                                                size: 11
+                                            }
+                                        }
+                                    },
+                                    y: {
+                                        beginAtZero: true,
+                                        ticks: {
+                                            callback: function(value) {
+                                                return 'RD$ ' + value.toLocaleString('es-DO');
+                                            },
+                                            font: {
+                                                size: 11
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    });
-                    
-                    console.log('✅ Gráfico de mantenimientos creado');
+                        });
+                        
+                        console.log('✅ Gráfico de mantenimientos creado exitosamente');
+                        
+                    } catch (error) {
+                        console.error('❌ Error al crear gráfico de mantenimientos:', error);
+                    }
                 },
 
                 crearGraficoVehiculosEjemplo() {
                     console.log('📊 Creando gráfico de vehículos con datos de ejemplo');
                     
                     const estadisticasEjemplo = {
-                        'Disponible': 15,
-                        'Asignado': 8,
-                        'EnTaller': 3,
-                        'NoDisponible': 2
+                        'Activos': 20,
+                        'En Mantenimiento': 3,
+                        'Asignados': 15,
+                        'No Asignados': 5,
+                        'Fuera de Servicio': 2
                     };
                     
                     this.crearGraficoVehiculos(estadisticasEjemplo);
@@ -919,24 +1097,37 @@
                 crearGraficoMantenimientosEjemplo() {
                     console.log('📊 Creando gráfico de mantenimientos con datos de ejemplo');
                     
+                    const fechaActual = new Date();
+                    const anoActual = fechaActual.getFullYear();
+                    const anoAnterior = anoActual - 1;
+                    const mesActual = fechaActual.getMonth();
+                    
                     const costosEjemplo = {
-                        'Ene': 125000,
-                        'Feb': 98000,
-                        'Mar': 145000,
-                        'Abr': 110000,
-                        'May': 155000,
-                        'Jun': 135000,
-                        'Jul': 148000,
-                        'Ago': 0,
-                        'Sep': 0,
-                        'Oct': 0,
-                        'Nov': 0,
-                        'Dic': 0
+                        [anoAnterior]: {
+                            'Ene': 125000, 'Feb': 98000, 'Mar': 145000, 'Abr': 110000,
+                            'May': 155000, 'Jun': 135000, 'Jul': 148000, 'Ago': 132000,
+                            'Sep': 119000, 'Oct': 165000, 'Nov': 142000, 'Dic': 158000
+                        },
+                        [anoActual]: {
+                            'Ene': mesActual >= 0 ? 135000 : 0,
+                            'Feb': mesActual >= 1 ? 108000 : 0,
+                            'Mar': mesActual >= 2 ? 155000 : 0,
+                            'Abr': mesActual >= 3 ? 120000 : 0,
+                            'May': mesActual >= 4 ? 165000 : 0,
+                            'Jun': mesActual >= 5 ? 145000 : 0,
+                            'Jul': mesActual >= 6 ? 158000 : 0,
+                            'Ago': mesActual >= 7 ? 142000 : 0,
+                            'Sep': mesActual >= 8 ? 129000 : 0,
+                            'Oct': mesActual >= 9 ? 175000 : 0,
+                            'Nov': mesActual >= 10 ? 152000 : 0,
+                            'Dic': mesActual >= 11 ? 168000 : 0
+                        }
                     };
                     
                     this.crearGraficoMantenimientos(costosEjemplo);
                 },
 
+                // ========== MÉTODOS MEJORADOS PARA CONTROLES DE GRÁFICOS ==========
                 cambiarPeriodoGrafico(periodo) {
                     console.log('📊 Cambiando período gráfico a:', periodo);
                     this.filtroGrafico.periodo = periodo;
@@ -963,13 +1154,16 @@
                         
                         this.ultimaActualizacionGraficos = new Date();
                         this.mostrarNotificacion('success', 'Gráficos actualizados correctamente');
+                        
                     } catch (error) {
                         console.error('❌ Error al actualizar gráficos:', error);
                         this.mostrarNotificacion('error', 'Error al actualizar los gráficos');
+                        
                     } finally {
                         this.actualizandoGraficos = false;
                     }
                 },
+                // ========== MÉTODOS DE ESTADÍSTICAS DE REPORTES ==========
                 mostrarEstadisticas() {
                     if (!this.estadisticasReportes) {
                         this.mostrarNotificacion('error', 'No hay estadísticas disponibles');

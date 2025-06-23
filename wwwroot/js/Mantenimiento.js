@@ -23,6 +23,9 @@
                     estado: 1, 
                     usuarioRegistroId: '',
                     // Campos adicionales para editar
+                    mantenimientos: [],
+                    todosLosMantenimientos: [], // Agregar esta línea si no existe
+                    filtros: { busqueda: '', estado: '', tipo: '', taller: '' },
                     fechaFinalizacion: '',
                     descripcionFinal: '',
                     costo: '',
@@ -112,7 +115,7 @@
             methods: {
                 // ========== MÉTODOS DE CARGA Y FILTROS MEJORADOS ==========
                 async cargarMantenimientos() {
-                    console.log('📊 Cargando mantenimientos...');
+                   console.log('📊 Cargando mantenimientos...');
                     try {
                         const response = await fetch(apiBase, {
                             method: 'GET',
@@ -138,7 +141,7 @@
                         console.log('📋 Datos recibidos:', data);
                         
                         this.todosLosMantenimientos = data; // Guardar todos los datos originales
-                        this.aplicarFiltros(); // Aplicar filtros actuales
+                        this.aplicarFiltros(); // Aplicar filtros actuales y calcular paginación
                         
                     } catch (error) {
                         console.error('❌ Error al cargar mantenimientos:', error);
@@ -148,6 +151,7 @@
                 cambiarPagina(pagina) {
                     if (pagina >= 1 && pagina <= this.paginacion.totalPaginas) {
                         this.paginacion.paginaActual = pagina;
+                        console.log('📄 Cambiando a página:', pagina, 'de', this.paginacion.totalPaginas);
                     }
                 },
                 
@@ -158,18 +162,29 @@
                     if (this.paginacion.paginaActual > this.paginacion.totalPaginas) {
                         this.paginacion.paginaActual = 1;
                     }
+
+                    console.log('📊 Paginación calculada:', {
+                        totalElementos: this.mantenimientos.length,
+                        elementosPorPagina: this.paginacion.elementosPorPagina,
+                        totalPaginas: this.paginacion.totalPaginas,
+                        paginaActual: this.paginacion.paginaActual
+                    });
                 },
                 
                 // Actualizar el método filtrarMantenimientos para recalcular paginación
-                filtrarMantenimientos() {
-                    // ...lógica de filtrado existente...
-                    this.calcularPaginacion();
-                    this.paginacion.paginaActual = 1; // Resetear a primera página después de filtrar
+                filtrarMantenimientos(event) {
+                    if (event) {
+                        event.preventDefault();
+                    }
+                    
+                    console.log('🔍 Filtrando mantenimientos con:', this.filtros);
+                    this.paginacion.paginaActual = 1; // Resetear a primera página al filtrar
+                    this.aplicarFiltros();
                 },
 
                 // Nuevo método para aplicar filtros localmente
                 aplicarFiltros() {
-                    console.log('🔍 Aplicando filtros:', this.filtros);
+           console.log('🔍 Aplicando filtros:', this.filtros);
                     
                     let resultado = [...this.todosLosMantenimientos];
                     
@@ -224,6 +239,10 @@
                     }
                     
                     this.mantenimientos = resultado;
+                    
+                    // IMPORTANTE: Recalcular paginación después de filtrar
+                    this.calcularPaginacion();
+                    
                     console.log('📋 Mantenimientos filtrados:', resultado.length, 'de', this.todosLosMantenimientos.length);
                 },
 
@@ -241,7 +260,27 @@
                 limpiarFiltros() {
                     console.log('🧹 Limpiando filtros...');
                     this.filtros = { busqueda: '', estado: '', tipo: '', taller: '' };
+                    this.paginacion.paginaActual = 1; // Resetear a primera página
                     this.aplicarFiltros();
+                },
+                                irAPrimeraPagina() {
+                    this.cambiarPagina(1);
+                },
+                
+                irAUltimaPagina() {
+                    this.cambiarPagina(this.paginacion.totalPaginas);
+                },
+                
+                paginaAnterior() {
+                    if (this.paginacion.paginaActual > 1) {
+                        this.cambiarPagina(this.paginacion.paginaActual - 1);
+                    }
+                },
+                
+                paginaSiguiente() {
+                    if (this.paginacion.paginaActual < this.paginacion.totalPaginas) {
+                        this.cambiarPagina(this.paginacion.paginaActual + 1);
+                    }
                 },
 
                 // Watcher para aplicar filtros automáticamente cuando cambien
@@ -1307,6 +1346,28 @@
                         case 'PendientePago': return 85;
                         default: return 0;
                     }
+                }
+            },
+            watch: {
+                'filtros.busqueda': function(newVal, oldVal) {
+                    // Aplicar filtro automáticamente después de una pausa
+                    clearTimeout(this.searchTimeout);
+                    this.searchTimeout = setTimeout(() => {
+                        this.paginacion.paginaActual = 1; // Resetear página
+                        this.aplicarFiltros();
+                    }, 500);
+                },
+                'filtros.estado': function() {
+                    this.paginacion.paginaActual = 1; // Resetear página
+                    this.aplicarFiltros();
+                },
+                'filtros.tipo': function() {
+                    this.paginacion.paginaActual = 1; // Resetear página
+                    this.aplicarFiltros();
+                },
+                'filtros.taller': function() {
+                    this.paginacion.paginaActual = 1; // Resetear página
+                    this.aplicarFiltros();
                 }
             },
             mounted() {
