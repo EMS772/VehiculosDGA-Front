@@ -2,106 +2,588 @@
     ViewData["Title"] = "Reportes";
     ViewData["NavbarTitle"] = "Reportes";
     ViewData["ActivePage"] = "Reportes";
-    ViewData["ActiveMenu"] = "Reportes"; // o "Vehiculos", "Colaboradores", etc.
-
+    ViewData["ActiveMenu"] = "Reportes";
 }
 
+<style>
+    /* Estilos adicionales para la paginación */
+    .pagination .page-link {
+        color: #0d6efd;
+        border-color: #dee2e6;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .pagination .page-link:hover {
+        color: #0a58ca;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        color: white;
+    }
+    
+    .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
+    
+    .pagination .page-link:focus {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    
+    /* Estilo para el selector de elementos por página */
+    .form-select-sm {
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    /* Animación suave para cambios de página */
+    .table-responsive {
+        transition: opacity 0.2s ease-in-out;
+    }
+    
+    .table-responsive.loading {
+        opacity: 0.6;
+    }
+    .chart-container {
+        position: relative;
+        height: 300px;
+    }
+    .report-card:hover {
+        transform: translateY(-2px);
+        transition: all 0.2s;
+    }
+    .report-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+    }
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .bg-gradient-success {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    .bg-gradient-warning {
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    }
+    .bg-gradient-danger {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    }
+</style>
+
 <div id="reportes-app">
-    <div class="row my-4">
-        <div class="col-lg-12">
-            <h2 class="fw-bold mb-4">Reportes</h2>
-            
-            <!-- Report Filters -->
-            <div class="card mb-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h4 class="fw-bold">Generación de Reportes</h4>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Reportes</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Reportes Rápidos -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h6 class="m-0 fw-bold">Reportes Rápidos</h6>
+                </div>
                 <div class="card-body">
-                    <form id="reportFilterForm" @@submit.prevent="generarReporte">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="reportType" class="form-label">Tipo de Reporte</label>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="card card-lift h-100 report-card">
+                                <div class="card-body text-center">
+                                    <div class="report-icon bg-gradient-primary text-white">
+                                        <i class="bi bi-car-front fs-2"></i>
+                                    </div>
+                                    <h5 class="card-title">Vehículos Activos</h5>
+                                    <p class="card-text">Listado completo de vehículos en flotilla</p>
+                                    <button class="btn btn-sm btn-outline-primary" @@click="generarReporteRapido('vehicles')">
+                                        <i class="bi bi-download me-1"></i> Generar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card card-lift h-100 report-card">
+                                <div class="card-body text-center">
+                                    <div class="report-icon bg-gradient-success text-white">
+                                        <i class="bi bi-clipboard-check fs-2"></i>
+                                    </div>
+                                    <h5 class="card-title">Asignaciones Activas</h5>
+                                    <p class="card-text">Vehículos asignados actualmente</p>
+                                    <button class="btn btn-sm btn-outline-success" @@click="generarReporteRapido('assignments')">
+                                        <i class="bi bi-download me-1"></i> Generar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card card-lift h-100 report-card">
+                                <div class="card-body text-center">
+                                    <div class="report-icon bg-gradient-warning text-white">
+                                        <i class="bi bi-tools fs-2"></i>
+                                    </div>
+                                    <h5 class="card-title">Mantenimientos Pendientes</h5>
+                                    <p class="card-text">Próximos mantenimientos programados</p>
+                                    <button class="btn btn-sm btn-outline-warning" @@click="generarReporteRapido('maintenance')">
+                                        <i class="bi bi-download me-1"></i> Generar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card card-lift h-100 report-card">
+                                <div class="card-body text-center">
+                                    <div class="report-icon bg-gradient-danger text-white">
+                                        <i class="bi bi-shield-exclamation fs-2"></i>
+                                    </div>
+                                    <h5 class="card-title">Seguros por Vencer</h5>
+                                    <p class="card-text">Pólizas con vencimiento próximo</p>
+                                    <button class="btn btn-sm btn-outline-danger" @@click="generarReporteRapido('insurance')">
+                                        <i class="bi bi-download me-1"></i> Generar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Gráficos y Estadísticas -->
+<div class="row mb-4">
+    <!-- Header de la sección -->
+    <div class="col-12 mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="fw-bold mb-0">Gráficos y Estadísticas</h5>
+                <small class="text-muted" v-if="ultimaActualizacionGraficos">
+                    Última actualización: {{ formatearFecha(ultimaActualizacionGraficos) }}
+                </small>
+            </div>
+            <button class="btn btn-sm btn-outline-primary" @@click="actualizarGraficos" :disabled="actualizandoGraficos">
+                <span v-if="actualizandoGraficos" class="spinner-border spinner-border-sm me-1"></span>
+                <i v-else class="bi bi-arrow-clockwise me-1"></i>
+                {{ actualizandoGraficos ? 'Actualizando...' : 'Actualizar Gráficos' }}
+            </button>
+        </div>
+    </div>
+    
+    <!-- Primera gráfica - Vehículos por Estado -->
+    <div class="col-lg-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="m-0 fw-bold">Distribución de Vehículos por Estado</h6>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" 
+                            id="vehicleStatusFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ filtroGrafico.periodo }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="vehicleStatusFilter">
+                        <li><a class="dropdown-item" href="#" @@click="cambiarPeriodoGrafico('Último mes')">Último mes</a></li>
+                        <li><a class="dropdown-item" href="#" @@click="cambiarPeriodoGrafico('Últimos 6 meses')">Últimos 6 meses</a></li>
+                        <li><a class="dropdown-item" href="#" @@click="cambiarPeriodoGrafico('Último año')">Último año</a></li>
+                        <li><a class="dropdown-item" href="#" @@click="cambiarPeriodoGrafico('Todo el período')">Todo el período</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="vehicleStatusChart" ref="vehicleStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Segunda gráfica - Costos de Mantenimiento -->
+    <div class="col-lg-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="m-0 fw-bold">Costos de Mantenimiento por Mes</h6>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" 
+                            id="maintenanceCostFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ filtroGrafico.año }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="maintenanceCostFilter">
+                        <li><a class="dropdown-item" href="#" @@click="cambiarAñoGrafico('2022')">2022</a></li>
+                        <li><a class="dropdown-item" href="#" @@click="cambiarAñoGrafico('2023')">2023</a></li>
+                        <li><a class="dropdown-item" href="#" @@click="cambiarAñoGrafico('2024')">2024</a></li>
+                        <li><a class="dropdown-item" href="#" @@click="cambiarAñoGrafico('Comparar años')">Comparar años</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="maintenanceCostChart" ref="maintenanceCostChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*     <!-- Reportes Personalizados -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 fw-bold">Generar Reporte Personalizado</h6>
+                    <button class="btn btn-sm btn-primary" @@click="generarReporte" :disabled="cargandoReporte">
+                        <span v-if="cargandoReporte" class="spinner-border spinner-border-sm me-1" role="status"></span>
+                        <i v-else class="bi bi-file-earmark-arrow-down me-1"></i>
+                        {{ cargandoReporte ? 'Generando...' : 'Generar Reporte' }}
+                    </button>
+                </div>
+                <div class="card-body">
+                    <form @@submit.prevent="generarReporte">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="reportType" class="form-label">Tipo de Reporte <span class="text-danger">*</span></label>
                                 <select class="form-select" id="reportType" v-model="reporteForm.tipo" required>
-                                    <option value="" selected disabled>Seleccione...</option>
-                                    <option value="inventory">Inventario General</option>
-                                    <option value="assignments">Asignaciones Activas</option>
-                                    <option value="maintenance">Vehículos en Taller</option>
-                                    <option value="insurance">Pólizas de Seguro</option>
+                                    <option value="" disabled>Seleccionar tipo...</option>
+                                    <option value="vehicles">Vehículos</option>
+                                    <option value="assignments">Asignaciones</option>
+                                    <option value="maintenances">Mantenimientos</option>
+                                    <option value="insurances">Seguros</option>
+                                    <option value="documents">Documentos</option>
                                     <option value="custom">Personalizado</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="reportDateFrom" class="form-label">Desde</label>
-                                <input type="date" class="form-control" id="reportDateFrom" v-model="reporteForm.fechaDesde">
+                            <div class="col-md-4">
+                                <label for="reportFormat" class="form-label">Formato <span class="text-danger">*</span></label>
+                                <select class="form-select" id="reportFormat" v-model="reporteForm.formatoSalida" required>
+                                    <option value="pdf">PDF</option>
+                                    <option value="excel">Excel</option>
+                                    <option value="csv">CSV</option>
+                                    <option value="html">HTML</option>
+                                </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="reportDateTo" class="form-label">Hasta</label>
-                                <input type="date" class="form-control" id="reportDateTo" v-model="reporteForm.fechaHasta">
-                            </div>
-                            <div class="col-md-3 d-flex align-items-end">
-                                <button type="submit" class="btn btn-primary w-100">
-                                    <i class="fas fa-file-alt me-1"></i> Generar
-                                </button>
+                            <div class="col-md-4">
+                                <label for="reportPeriod" class="form-label">Período</label>
+                                <select class="form-select" id="reportPeriod" v-model="reporteForm.periodo" @@change="manejarCambioPeriodo">
+                                    <option value="all">Todos los registros</option>
+                                    <option value="today">Hoy</option>
+                                    <option value="week">Esta semana</option>
+                                    <option value="month">Este mes</option>
+                                    <option value="quarter">Este trimestre</option>
+                                    <option value="year">Este año</option>
+                                    <option value="custom">Personalizado</option>
+                                </select>
                             </div>
                         </div>
-                        <div v-if="reporteForm.tipo === 'custom'" class="row mt-3">
-                            <div class="col-md-4">
-                                <label for="customField1" class="form-label">Estado</label>
-                                <select class="form-select" id="customField1" v-model="reporteForm.estado">
-                                    <option value="">Todos</option>
-                                    <option value="Disponible">Disponible</option>
-                                    <option value="Asignado">Asignado</option>
-                                    <option value="EnTaller">En Taller</option>
-                                    <option value="NoDisponible">No Disponible</option>
-                                </select>
+
+                        <!-- Rango de fechas personalizado -->
+                        <div class="row mb-3" v-show="reporteForm.periodo === 'custom'">
+                            <div class="col-md-6">
+                                <label for="fechaDesde" class="form-label">Fecha Desde</label>
+                                <input type="date" class="form-control" id="fechaDesde" v-model="reporteForm.fechaDesde">
                             </div>
-                            <div class="col-md-4">
-                                <label for="customField2" class="form-label">Tipo de Vehículo</label>
-                                <select class="form-select" id="customField2" v-model="reporteForm.tipoVehiculo">
-                                    <option value="">Todos</option>
-                                    <option value="Sedan">Sedán</option>
-                                    <option value="SUV">SUV</option>
-                                    <option value="Pickup">Pickup</option>
-                                    <option value="Camioneta">Camioneta</option>
-                                </select>
+                            <div class="col-md-6">
+                                <label for="fechaHasta" class="form-label">Fecha Hasta</label>
+                                <input type="date" class="form-control" id="fechaHasta" v-model="reporteForm.fechaHasta">
                             </div>
-                            <div class="col-md-4">
-                                <label for="customField3" class="form-label">Formato de Salida</label>
-                                <select class="form-select" id="customField3" v-model="reporteForm.formatoSalida" required>
-                                    <option value="Excel">Excel</option>
-                                    <option value="PDF">PDF</option>
-                                </select>
+                        </div>
+
+                        <!-- Filtros personalizados -->
+                        <div class="row mb-3" v-show="reporteForm.tipo">
+                            <div class="col-12">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="fw-bold mb-3">Filtros Avanzados</h6>
+                                        <div class="row g-3">
+                                            <!-- Filtros para vehículos -->
+                                            <div class="col-md-4" v-show="reporteForm.tipo === 'vehicles' || reporteForm.tipo === 'custom'">
+                                                <label for="vehicleStatus" class="form-label">Estado del Vehículo</label>
+                                                <select class="form-select" id="vehicleStatus" v-model="reporteForm.estadoVehiculo" multiple>
+                                                    <option value="Disponible">Disponible</option>
+                                                    <option value="Asignado">Asignado</option>
+                                                    <option value="EnTaller">En Taller</option>
+                                                    <option value="NoDisponible">No Disponible</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <!-- Filtros para asignaciones -->
+                                            <div class="col-md-4" v-show="reporteForm.tipo === 'assignments' || reporteForm.tipo === 'custom'">
+                                                <label for="assignmentStatus" class="form-label">Estado de Asignación</label>
+                                                <select class="form-select" id="assignmentStatus" v-model="reporteForm.estadoAsignacion" multiple>
+                                                    <option value="Activa">Activa</option>
+                                                    <option value="Pendiente">Pendiente</option>
+                                                    <option value="Completada">Completada</option>
+                                                    <option value="Vencida">Vencida</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Filtro de departamento -->
+                                            <div class="col-md-4" v-show="reporteForm.tipo === 'assignments' || reporteForm.tipo === 'vehicles' || reporteForm.tipo === 'custom'">
+                                                <label for="department" class="form-label">Departamento/Institución</label>
+                                                <select class="form-select" id="department" v-model="reporteForm.departamento" multiple>
+                                                    <option value="agriculture">Ministerio de Agricultura</option>
+                                                    <option value="health">Ministerio de Salud</option>
+                                                    <option value="education">Ministerio de Educación</option>
+                                                    <option value="police">Policía Nacional</option>
+                                                    <option value="other">Otra institución</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Tipo de vehículo -->
+                                            <div class="col-md-4" v-show="reporteForm.tipo === 'vehicles' || reporteForm.tipo === 'custom'">
+                                                <label for="vehicleType" class="form-label">Tipo de Vehículo</label>
+                                                <select class="form-select" id="vehicleType" v-model="reporteForm.tipoVehiculo" multiple>
+                                                    <option value="Sedan">Sedán</option>  
+                                                    <option value="SUV">SUV</option>
+                                                    <option value="Pickup">Pickup</option>
+                                                    <option value="Camioneta">Camioneta</option>
+                                                    <option value="Motocicleta">Motocicleta</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="reportNotes" class="form-label">Notas Adicionales</label>
+                                <textarea class="form-control" id="reportNotes" v-model="reporteForm.notas" rows="2" 
+                                          placeholder="Agregar comentarios o instrucciones especiales para el reporte"></textarea>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-
-            <!-- Report Results -->
-            <div class="card shadow" v-if="mostrarResultados">
-                <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-primary">Resultados del Reporte</h6>
-                    <div>
-                        <button class="btn btn-sm btn-success me-2" @@click="exportarExcel">
-                            <i class="fas fa-file-excel me-1"></i> Excel
-                        </button>
-                        <button class="btn btn-sm btn-danger" @@click="exportarPDF">
-                            <i class="fas fa-file-pdf me-1"></i> PDF
-                        </button>
+        </div>
+    </div> *@
+    
+<!-- Historial de Reportes Generados -->
+<div class="row">
+    <div class="col-12">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="m-0 fw-bold">Historial de Reportes</h6>
+                <div class="d-flex gap-2">
+                    <!-- Botón para mostrar estadísticas -->
+                    <button class="btn btn-sm btn-outline-info" @@click="mostrarEstadisticas" v-if="estadisticasReportes">
+                        <i class="bi bi-graph-up"></i> Estadísticas
+                    </button>
+                    <!-- Botón actualizar -->
+                    <button class="btn btn-sm btn-outline-secondary" @@click="actualizarHistorial" :disabled="cargandoHistorial">
+                        <span v-if="cargandoHistorial" class="spinner-border spinner-border-sm me-1"></span>
+                        <i v-else class="bi bi-arrow-clockwise"></i> 
+                        {{ cargandoHistorial ? 'Cargando...' : 'Actualizar' }}
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Filtros del historial -->
+            <div class="card-body border-bottom">
+                <div class="row g-3 mb-0">
+                    <div class="col-md-3">
+                        <label for="filtroFechaDesde" class="form-label small">Desde:</label>
+                        <input type="date" class="form-control form-control-sm" 
+                               id="filtroFechaDesde" v-model="filtroHistorial.fechaDesde">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="filtroFechaHasta" class="form-label small">Hasta:</label>
+                        <input type="date" class="form-control form-control-sm" 
+                               id="filtroFechaHasta" v-model="filtroHistorial.fechaHasta">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small">Opciones:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" 
+                                   id="soloMisReportes" v-model="filtroHistorial.soloMisReportes">
+                            <label class="form-check-label small" for="soloMisReportes">
+                                Solo mis reportes
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <div class="btn-group w-100">
+                            <button class="btn btn-sm btn-primary" @@click="aplicarFiltrosHistorial">
+                                <i class="bi bi-funnel"></i> Filtrar
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" @@click="limpiarFiltrosHistorial">
+                                <i class="bi bi-x"></i> Limpiar
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="reportResultsTable">
-                            <thead>
-                                <tr>
-                                    <th v-for="columna in columnasReporte" :key="columna">{{ columna }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(fila, index) in datosReporte" :key="index">
-                                    <td v-for="columna in columnasReporte" :key="columna">{{ fila[columna] }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+            </div>
+            
+            <div class="card-body">
+                <!-- Mensaje de carga -->
+                <div v-if="cargandoHistorial" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
                     </div>
+                    <p class="mt-2 text-muted">Cargando historial de reportes...</p>
+                </div>
+
+                <!-- Tabla de reportes -->
+                <div v-else-if="historialReportes.length > 0" class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nombre del Reporte</th>
+                                <th>Tipo</th>
+                                <th>Generado por</th>
+                                <th>Fecha</th>
+                                <th>Tamaño</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="reporte in historialPaginado" :key="reporte.id">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-excel text-success me-2"></i>
+                                        <div>
+                                            <div class="fw-medium">{{ reporte.nombre }}</div>
+                                            <small class="text-muted">ID: {{ reporte.id }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span :class="tipoReporteClass(obtenerTipoReporte(reporte.tipoReporte))" class="badge">
+                                        {{ reporte.tipoReporte }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-person-circle text-muted me-1"></i>
+                                        {{ reporte.usuarioGenerador }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div class="fw-medium">{{ formatearFecha(reporte.fechaGeneracion) }}</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark">
+                                        <i class="bi bi-hdd me-1"></i>{{ reporte.tamanoMB }} MB
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary" title="Descargar"
+                                                @@click="descargarReporte(reporte)">
+                                            <i class="bi bi-download"></i>
+                                        </button>
+                                        <button class="btn btn-outline-info" title="Ver detalles"
+                                                @@click="verDetallesReporte(reporte)">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger" title="Eliminar"
+                                                @@click="eliminarReporte(reporte)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mensaje cuando no hay reportes -->
+                <div v-else class="text-center py-5">
+                    <i class="bi bi-file-earmark-excel fs-1 text-muted"></i>
+                    <h5 class="mt-3 text-muted">No hay reportes generados</h5>
+                    <p class="text-muted">Genera tu primer reporte usando los botones de arriba</p>
+                </div>
+                
+                <!-- Paginación -->
+                <nav aria-label="Paginación de reportes" v-if="totalPaginasHistorial > 1" class="mt-3">
+                    <ul class="pagination justify-content-center mb-0">
+                        <!-- Botón Anterior -->
+                        <li class="page-item" :class="{ 'disabled': paginaActualHistorial === 1 }">
+                            <button class="page-link" @@click="cambiarPaginaHistorial(paginaActualHistorial - 1)" :disabled="paginaActualHistorial === 1">
+                                <i class="bi bi-chevron-left"></i> Anterior
+                            </button>
+                        </li>
+                        
+                        <!-- Primera página -->
+                        <li class="page-item" :class="{ 'active': paginaActualHistorial === 1 }" v-if="totalPaginasHistorial > 0">
+                            <button class="page-link" @@click="cambiarPaginaHistorial(1)">1</button>
+                        </li>
+                        
+                        <!-- Puntos suspensivos izquierda -->
+                        <li class="page-item disabled" v-if="paginaActualHistorial > 3">
+                            <span class="page-link">...</span>
+                        </li>
+                        
+                        <!-- Páginas intermedias -->
+                        <li class="page-item" 
+                            :class="{ 'active': pagina === paginaActualHistorial }"
+                            v-for="pagina in paginasVisiblesHistorial" 
+                            :key="pagina"
+                            v-if="pagina !== 1 && pagina !== totalPaginasHistorial">
+                            <button class="page-link" @@click="cambiarPaginaHistorial(pagina)">{{ pagina }}</button>
+                        </li>
+                        
+                        <!-- Puntos suspensivos derecha -->
+                        <li class="page-item disabled" v-if="paginaActualHistorial < totalPaginasHistorial - 2">
+                            <span class="page-link">...</span>
+                        </li>
+                        
+                        <!-- Última página -->
+                        <li class="page-item" 
+                            :class="{ 'active': paginaActualHistorial === totalPaginasHistorial }" 
+                            v-if="totalPaginasHistorial > 1">
+                            <button class="page-link" @@click="cambiarPaginaHistorial(totalPaginasHistorial)">{{ totalPaginasHistorial }}</button>
+                        </li>
+                        
+                        <!-- Botón Siguiente -->
+                        <li class="page-item" :class="{ 'disabled': paginaActualHistorial === totalPaginasHistorial }">
+                            <button class="page-link" @@click="cambiarPaginaHistorial(paginaActualHistorial + 1)" :disabled="paginaActualHistorial === totalPaginasHistorial">
+                                Siguiente <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Información de la paginación mejorada -->
+                <div v-if="historialReportes.length > 0" class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="text-muted small">
+                        Mostrando {{ (paginaActualHistorial - 1) * itemsPorPaginaHistorial + 1 }} - 
+                        {{ Math.min(paginaActualHistorial * itemsPorPaginaHistorial, historialReportes.length) }} 
+                        de {{ historialReportes.length }} reportes
+                    </div>
+                    
+                    <!-- Selector de elementos por página -->
+                    <div class="d-flex align-items-center">
+                        <small class="text-muted me-2">Mostrar:</small>
+                        <select class="form-select form-select-sm" style="width: auto;" v-model="itemsPorPaginaHistorial" @@change="cambiarItemsPorPagina">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                        <small class="text-muted ms-2">por página</small>
+                    </div>
+                </div>
+
+                <!-- Información de la paginación -->
+                <div v-if="historialReportes.length > 0" class="text-center text-muted small mt-2">
+                    Mostrando {{ (paginaActualHistorial - 1) * itemsPorPaginaHistorial + 1 }} - 
+                    {{ Math.min(paginaActualHistorial * itemsPorPaginaHistorial, historialReportes.length) }} 
+                    de {{ historialReportes.length }} reportes
                 </div>
             </div>
         </div>
@@ -109,137 +591,8 @@
 </div>
 
 @section Scripts {
-    <script>
-        const { createApp } = Vue;
-        
-        createApp({
-            data() {
-                return {
-                    reporteForm: {
-                        tipo: '',
-                        fechaDesde: '',
-                        fechaHasta: '',
-                        estado: '',
-                        tipoVehiculo: '',
-                        formatoSalida: 'Excel'
-                    },
-                    mostrarResultados: false,
-                    columnasReporte: [],
-                    datosReporte: []
-                }
-            },
-            methods: {
-                async generarReporte() {
-                    try {
-                        // Validar fechas si se ha seleccionado una
-                        if ((this.reporteForm.fechaDesde && !this.reporteForm.fechaHasta) || 
-                            (!this.reporteForm.fechaDesde && this.reporteForm.fechaHasta)) {
-                            alert('Debe seleccionar ambas fechas o ninguna');
-                            return;
-                        }
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-                        // Construir la URL base según el tipo de reporte
-                        let url = '';
-                        switch (this.reporteForm.tipo) {
-                            case 'inventory':
-                                url = '/api/Reporte/vehiculos';
-                                break;
-                            case 'assignments':
-                                url = '/api/Reporte/asignaciones';
-                                break;
-                            case 'maintenance':
-                                url = '/api/Reporte/mantenimientos';
-                                break;
-                            case 'insurance':
-                                url = '/api/Reporte/seguros';
-                                break;
-                            case 'custom':
-                                url = '/api/Reporte/General';
-                                break;
-                            default:
-                                alert('Seleccione un tipo de reporte válido');
-                                return;
-                        }
-
-                        // Construir el objeto de parámetros
-                        const params = {
-                            tipoReporte: this.reporteForm.tipo,
-                            fechaDesde: this.reporteForm.fechaDesde || null,
-                            fechaHasta: this.reporteForm.fechaHasta || null,
-                            formatoSalida: this.reporteForm.formatoSalida
-                        };
-
-                        // Agregar parámetros adicionales para reportes personalizados
-                        if (this.reporteForm.tipo === 'custom') {
-                            params.estado = this.reporteForm.estado || null;
-                            params.tipoVehiculo = this.reporteForm.tipoVehiculo || null;
-                        }
-
-                        // Realizar la solicitud para obtener la vista previa
-                        const response = await axios.post('/api/Reporte/previsualizacion', params);
-                        
-                        // Actualizar los resultados
-                        this.columnasReporte = response.data.columnas;
-                        this.datosReporte = response.data.datos;
-                        this.mostrarResultados = true;
-                    } catch (error) {
-                        console.error('Error al generar reporte:', error);
-                        alert('Error al generar reporte');
-                    }
-                },
-                exportarExcel() {
-                    this.exportarReporte('Excel');
-                },
-                exportarPDF() {
-                    this.exportarReporte('PDF');
-                },
-                async exportarReporte(formato) {
-                    try {
-                        // Configurar los parámetros del reporte
-                        const params = {
-                            tipoReporte: this.reporteForm.tipo,
-                            fechaDesde: this.reporteForm.fechaDesde || null,
-                            fechaHasta: this.reporteForm.fechaHasta || null,
-                            formatoSalida: formato
-                        };
-
-                        // Agregar parámetros adicionales para reportes personalizados
-                        if (this.reporteForm.tipo === 'custom') {
-                            params.estado = this.reporteForm.estado || null;
-                            params.tipoVehiculo = this.reporteForm.tipoVehiculo || null;
-                        }
-
-                        // Realizar la solicitud para obtener el archivo
-                        const response = await axios.post('/api/Reporte/descargar', params, {
-                            responseType: 'blob'
-                        });
-
-                        // Crear un blob con la respuesta
-                        const blob = new Blob([response.data], {
-                            type: formato === 'Excel'
-                                ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                                : 'application/pdf'
-                        });
-
-                        // Crear un objeto URL para el blob
-                        const url = window.URL.createObjectURL(blob);
-
-                        // Crear un enlace para descargar el archivo
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = `Reporte_${this.reporteForm.tipo}_${new Date().toISOString().slice(0, 10)}.${formato === 'Excel' ? 'xlsx' : 'pdf'}`;
-                        document.body.appendChild(a);
-                        a.click();
-
-                        // Limpiar
-                        window.URL.revokeObjectURL(url);
-                        document.body.removeChild(a);
-                    } catch (error) {
-                        console.error(`Error al exportar reporte a ${formato}:`, error);
-                        alert(`Error al exportar reporte a ${formato}`);
-                    }
-                }
-            }
-        }).mount('#reportes-app');
-    </script>
+    <script src="~/js/Reporte.js"></script>
 }

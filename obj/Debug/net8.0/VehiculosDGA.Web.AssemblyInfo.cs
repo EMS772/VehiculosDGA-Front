@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VehiculosDGA.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+64071b163e62ba872a2634162dd71b69cdd3cf83")]
 [assembly: System.Reflection.AssemblyProductAttribute("VehiculosDGA.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VehiculosDGA.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

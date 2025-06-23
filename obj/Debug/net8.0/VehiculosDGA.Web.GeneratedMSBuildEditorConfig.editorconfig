@@ -17,81 +17,81 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = VehiculosDGA.Web
 build_property.RootNamespace = VehiculosDGA.Web
-build_property.ProjectDir = C:\Users\Julio Cesar\source\repos\VehiculosDGA.Web VF\VehiculosDGA.Web\
+build_property.ProjectDir = C:\Users\alber\source\repos\VehiculosDGA-Front\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\Julio Cesar\source\repos\VehiculosDGA.Web VF\VehiculosDGA.Web
+build_property.MSBuildProjectDirectory = C:\Users\alber\source\repos\VehiculosDGA-Front
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Asignaciones/Index.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Asignaciones/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNpZ25hY2lvbmVzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Colaboradores/Index.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Colaboradores/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29sYWJvcmFkb3Jlc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Cuenta/Login.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Cuenta/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VlbnRhXExvZ2luLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Cuenta/Registro.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Cuenta/Registro.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VlbnRhXFJlZ2lzdHJvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Home/Index.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Home/Privacy.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Mantenimientos/Index.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Mantenimientos/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFudGVuaW1pZW50b3NcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Reportes/Index.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Reportes/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0ZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Seguros/Index.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Seguros/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VndXJvc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Shared/Error.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Shared/Navigation.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Shared/Navigation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE5hdmlnYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Shared/_LayoutEmpty.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Shared/_LayoutEmpty.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRFbXB0eS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Vehiculos/Index.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Vehiculos/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWN1bG9zXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/_ViewImports.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/_ViewStart.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Julio Cesar/source/repos/VehiculosDGA.Web VF/VehiculosDGA.Web/Views/Shared/_Layout.cshtml]
+[C:/Users/alber/source/repos/VehiculosDGA-Front/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-r3427lab95

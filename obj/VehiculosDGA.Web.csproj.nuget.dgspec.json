@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj": {}
+    "C:\\Users\\alber\\source\\repos\\VehiculosDGA-Front\\VehiculosDGA.Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj": {
+    "C:\\Users\\alber\\source\\repos\\VehiculosDGA-Front\\VehiculosDGA.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj",
+        "projectUniqueName": "C:\\Users\\alber\\source\\repos\\VehiculosDGA-Front\\VehiculosDGA.Web.csproj",
         "projectName": "VehiculosDGA.Web",
-        "projectPath": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\VehiculosDGA.Web.csproj",
-        "packagesPath": "C:\\Users\\Julio Cesar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Julio Cesar\\source\\repos\\VehiculosDGA.Web VF\\VehiculosDGA.Web\\obj\\",
+        "projectPath": "C:\\Users\\alber\\source\\repos\\VehiculosDGA-Front\\VehiculosDGA.Web.csproj",
+        "packagesPath": "C:\\Users\\alber\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\alber\\source\\repos\\VehiculosDGA-Front\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Julio Cesar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\alber\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -82,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -10,7 +10,9 @@ wwwroot\js\auth-manager.js
 wwwroot\js\Colaboradores.js
 wwwroot\js\Dahsboard.js
 wwwroot\js\login.js
+wwwroot\js\Mantenimiento.js
 wwwroot\js\register.js
+wwwroot\js\Reporte.js
 wwwroot\js\seguros.js
 wwwroot\js\vehiculos.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css

@@ -1,354 +1,1033 @@
 ﻿@{
-    ViewData["Title"] = "Mantenimiento de Vehículos";
-    ViewData["NavbarTitle"] = "Mantenimiento de Vehículos";
+    ViewData["Title"] = "Gestión de Mantenimientos";
+    ViewData["NavbarTitle"] = "Mantenimiento";
     ViewData["ActivePage"] = "Mantenimiento";
-    ViewData["ActiveMenu"] = "Mantenimiento"; // o "Vehiculos", "Colaboradores", etc.
-
+    ViewData["ActiveMenu"] = "Mantenimiento";
 }
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+        /* Estilos para el área de documentos */
+        .document-upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .document-upload-area:hover {
+            border-color: #0d6efd;
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        
+        .document-item {
+            transition: all 0.2s ease;
+        }
+        
+        .document-item:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+        
+        .file-icon {
+            font-size: 1.2rem;
+        }
+        
+        .document-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        /* Estilos para las tarjetas de estadísticas */
+        .card {
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+        }
+        
+        .border-left-primary {
+            border-left: 0.25rem solid #4e73df !important;
+        }
+        
+        .border-left-success {
+            border-left: 0.25rem solid #1cc88a !important;
+        }
+        
+        .border-left-info {
+            border-left: 0.25rem solid #36b9cc !important;
+        }
+        
+        .border-left-warning {
+            border-left: 0.25rem solid #f6c23e !important;
+        }
+        
+        .text-xs {
+            font-size: 0.7rem;
+        }
+        
+        .text-gray-800 {
+            color: #5a5c69 !important;
+        }
+        
+        .font-weight-bold {
+            font-weight: 700 !important;
+        }
+        
+        .no-gutters {
+            margin-right: 0;
+            margin-left: 0;
+        }
+        
+        .no-gutters > .col,
+        .no-gutters > [class*="col-"] {
+            padding-right: 0;
+            padding-left: 0;
+        }
 
-<div id="mantenimientos-app">
-    <div class="row my-4">
-        <div class="col-lg-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold">Mantenimiento de Vehículos</h2>
-                <button class="btn btn-primary" @@click="mostrarModalCrear">
-                    <i class="fas fa-plus me-1"></i> Registrar Mantenimiento
-                </button>
+        .badge-estado { 
+            font-size: 0.8rem; 
+            padding: 0.35rem 0.6rem; 
+        }
+        
+        /* Estados personalizados con mejor contraste */
+        .badge-sin-especificar {
+            background-color: #6c757d !important;
+            color: white !important;
+        }
+        
+        .badge-programado {
+            background-color: #0d6efd !important;
+            color: white !important;
+        }
+        
+        .badge-en-proceso {
+            background-color: #ffc107 !important;
+            color: #000 !important;
+        }
+        
+        .badge-completado {
+            background-color: #198754 !important;
+            color: white !important;
+        }
+        
+        .badge-cancelado {
+            background-color: #6c757d !important;
+            color: white !important;
+        }
+        
+        .badge-pendiente-pago {
+            background-color: #dc3545 !important;
+            color: white !important;
+        }
+        .badge-estado { font-size: 0.8rem; padding: 0.35rem 0.6rem; }
+        .progress-thin { height: 6px; }
+        .document-badge { cursor: pointer; transition: all 0.2s; }
+        .document-badge:hover { transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .maintenance-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin-right: 12px; }
+        .maintenance-icon.primary { background-color: rgba(10, 46, 90, 0.1); color: var(--primary-color); }
+        .maintenance-icon.warning { background-color: rgba(255, 107, 53, 0.1); color: var(--highlight-color); }
+        .maintenance-icon.success { background-color: rgba(107, 189, 74, 0.1); color: var(--success-color); }
+    </style>
+}
+<div id="app">
+    <!-- Filtros y Búsqueda MEJORADO -->
+    <div class="container-fluid content-section">
+        <div class="row mb-4">
+            <div class="col-12">
+                <form class="row g-3" v-on:submit.prevent="filtrarMantenimientos">
+                    <div class="col-md-3">
+                        <label class="form-label">Buscar por Placa/Vehículo</label>
+                        <input type="text" class="form-control" v-model="filtros.busqueda" placeholder="Ej: P123456 o Toyota Hilux">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Estado</label>
+                        <select class="form-select" v-model="filtros.estado">
+                            <option value="">Todos</option>
+                            <option value="SinEspecificar">Sin Especificar</option>
+                            <option value="Programado">Programado</option>
+                            <option value="EnProceso">En Proceso</option>
+                            <option value="Completado">Completado</option>
+                            <option value="Cancelado">Cancelado</option>
+                            <option value="PendientePago">Pendiente de Pago</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Tipo</label>
+                        <select class="form-select" v-model="filtros.tipo">
+                            <option value="">Todos</option>
+                            <option value="preventivo">Preventivo</option>
+                            <option value="correctivo">Correctivo</option>
+                            <option value="reparacion">Reparación</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Taller</label>
+                        <select class="form-select" v-model="filtros.taller">
+                            <option value="">Todos</option>
+                            <option value="taller-dga">Taller DGA</option>
+                            <option value="taller-externo">Taller Externo</option>
+                            <option value="concesionario">Concesionario</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <div class="btn-group w-100">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-funnel me-1"></i> Filtrar
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" @@click="limpiarFiltros">
+                                <i class="bi bi-x-circle me-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                <!-- Indicador de filtros activos -->
+                <div v-if="filtros.busqueda || filtros.estado || filtros.tipo || filtros.taller" class="row mt-2">
+                    <div class="col-12">
+                        <div class="alert alert-info py-2 mb-0 d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="bi bi-funnel me-2"></i>
+                                <small>
+                                    Mostrando {{ mantenimientos.length }} de {{ todosLosMantenimientos.length }} mantenimientos
+                                    <span v-if="filtros.busqueda"> | Búsqueda: "{{ filtros.busqueda }}"</span>
+                                    <span v-if="filtros.estado"> | Estado: {{ filtros.estado }}</span>
+                                    <span v-if="filtros.tipo"> | Tipo: {{ filtros.tipo }}</span>
+                                    <span v-if="filtros.taller"> | Taller: {{ filtros.taller }}</span>
+                                </small>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-primary" @@click="limpiarFiltros">
+                                <i class="bi bi-x"></i> Limpiar filtros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjetas de Estadísticas -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    PROGRAMADOS
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ estadisticas.programados }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-calendar-check fs-2 text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Maintenance Table -->
-            <div class="card shadow">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="maintenanceTable">
-                            <thead>
-                                <tr>
-                                    <th>Vehículo</th>
-                                    <th>Tipo</th>
-                                    <th>Fecha Ingreso</th>
-                                    <th>Fecha Salida</th>
-                                    <th>Taller</th>
-                                    <th>Costo</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="mantenimiento in mantenimientos" :key="mantenimiento.id">
-                                    <td>{{ mantenimiento.vehiculoInfo }}</td>
-                                    <td>{{ mantenimiento.tipo }}</td>
-                                    <td>{{ formatDate(mantenimiento.fechaIngreso) }}</td>
-                                    <td>{{ mantenimiento.fechaFinalizacion ? formatDate(mantenimiento.fechaFinalizacion) : '-' }}</td>
-                                    <td>{{ mantenimiento.taller }}</td>
-                                    <td>${{ mantenimiento.costo.toFixed(2) }}</td>
-                                    <td>
-                                        <span :class="estadoClass(mantenimiento.estado)">{{ mantenimiento.estado }}</span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary" 
-                                                @@click="verDetalles(mantenimiento)"
-                                                title="Ver Detalles">
-                                            <i class="fas fa-eye"></i>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    EN PROCESO
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ estadisticas.enProceso }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-tools fs-2 text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    COMPLETADOS
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ estadisticas.completados }}</div>
+                                <div class="text-xs text-muted">(MES)</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-check-circle fs-2 text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    COSTO TOTAL
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">RD$ {{ estadisticas.costoTotal | currency }}</div>
+                                <div class="text-xs text-muted">(MES)</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-currency-dollar fs-2 text-info"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Listado de Mantenimientos -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 fw-bold">Historial de Mantenimientos</h6>
+                        <button class="btn btn-primary" @@click="abrirNuevoMantenimiento">
+                            <i class="bi bi-plus-lg me-1"></i> Nuevo Mantenimiento
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Vehículo</th>
+                                        <th>Tipo</th>
+                                        <th>Taller</th>
+                                        <th>Fechas</th>
+                                        <th>Estado</th>
+                                        <th>Costo</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(mnt, idx) in mantenimientosPaginados" :key="mnt.id">
+                                        <td>{{ (paginacion.paginaActual - 1) * paginacion.elementosPorPagina + idx + 1 }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-car-front-fill me-2 text-primary"></i>
+                                                <div>
+                                                    <div class="fw-bold">{{ mnt.vehiculoMarca }} {{ mnt.vehiculoModelo }}</div>
+                                                    <div class="text-muted small">{{ mnt.vehiculoPlaca }} - {{ mnt.kilometrajeActual }} km</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ mnt.tipoMantenimiento }}</td>
+                                        <td>{{ mnt.taller }}</td>
+                                        <td>
+                                            <div class="fw-bold">{{ mnt.fechaInicio | fecha }}</div>
+                                            <div class="text-muted small" v-if="mnt.tieneFechaEstimadaFinalizacion">Est. finalización: {{ mnt.fechaEstimadaFinalizacion | fecha }}</div>
+                                            <div class="text-muted small" v-if="mnt.tieneFechaFinalizacion">Completado: {{ mnt.fechaFinalizacion | fecha }}</div>
+                                        </td>
+                                        <td>
+                                            <span :class="['badge', estadoBadge(mnt.estado), 'badge-estado']">{{ estadoTexto(mnt.estadoTexto) }}</span>
+                                            <div class="progress progress-thin mt-1">
+                                                <div class="progress-bar" :class="estadoProgress(mnt.estadoTexto)" role="progressbar" :style="{width: progreso(mnt.estadoTexto) + '%'}"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="fw-bold">RD$ {{ mnt.costo > 0 ? mnt.costo : mnt.costoEstimado }}</div>
+                                            <div class="text-muted small" v-if="mnt.costoEstimado && mnt.costo > 0">Estimado: RD$ {{ mnt.costoEstimado }}</div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <button class="btn btn-sm btn-outline-primary me-1" title="Detalles" @@click ="verDetalle(mnt.id)">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning me-1" title="Editar" @@click ="editarMantenimiento(mnt)">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success me-1" title="Completar" v-if="mnt.estadoTexto !== 'Completado'" @@click ="abrirCompletar(mnt)">
+                                                    <i class="bi bi-check-circle"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" title="Eliminar" @@click="eliminarMantenimiento(mnt.id)">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr v-if="mantenimientos.length === 0">
+                                        <td colspan="8" class="text-center">No hay mantenimientos registrados.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Paginación -->
+                        <div class="d-flex justify-content-between align-items-center mt-3" v-if="mantenimientos.length > 0">
+                            <div class="text-muted">
+                                Mostrando {{ (paginacion.paginaActual - 1) * paginacion.elementosPorPagina + 1 }} 
+                                a {{ Math.min(paginacion.paginaActual * paginacion.elementosPorPagina, mantenimientos.length) }} 
+                                de {{ mantenimientos.length }} registros
+                            </div>
+                            
+                            <nav aria-label="Paginación de mantenimientos">
+                                <ul class="pagination pagination-sm mb-0">
+                                    <!-- Botón Anterior -->
+                                    <li class="page-item" :class="{ 'disabled': paginacion.paginaActual === 1 }">
+                                        <button class="page-link" @@click="cambiarPagina(paginacion.paginaActual - 1)" :disabled="paginacion.paginaActual === 1">
+                                            <i class="bi bi-chevron-left"></i> Anterior
                                         </button>
-                                        <button v-if="mantenimiento.estado === 'En Proceso'" 
-                                                class="btn btn-sm btn-outline-success" 
-                                                @@click="mostrarModalFinalizar(mantenimiento)"
-                                                title="Finalizar">
-                                            <i class="fas fa-check"></i>
+                                    </li>
+                                    
+                                    <!-- Primera página -->
+                                    <li class="page-item" :class="{ 'active': paginacion.paginaActual === 1 }" v-if="paginacion.totalPaginas > 0">
+                                        <button class="page-link" @@click="cambiarPagina(1)">1</button>
+                                    </li>
+                                    
+                                    <!-- Puntos suspensivos izquierda -->
+                                    <li class="page-item disabled" v-if="paginacion.paginaActual > 3">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                    
+                                    <!-- Páginas intermedias -->
+                                    <li class="page-item" 
+                                        :class="{ 'active': pagina === paginacion.paginaActual }"
+                                        v-for="pagina in paginasVisibles" 
+                                        :key="pagina"
+                                        v-if="pagina !== 1 && pagina !== paginacion.totalPaginas">
+                                        <button class="page-link" @@click="cambiarPagina(pagina)">{{ pagina }}</button>
+                                    </li>
+                                    
+                                    <!-- Puntos suspensivos derecha -->
+                                    <li class="page-item disabled" v-if="paginacion.paginaActual < paginacion.totalPaginas - 2">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                    
+                                    <!-- Última página -->
+                                    <li class="page-item" 
+                                        :class="{ 'active': paginacion.paginaActual === paginacion.totalPaginas }" 
+                                        v-if="paginacion.totalPaginas > 1">
+                                        <button class="page-link" @@click="cambiarPagina(paginacion.totalPaginas)">{{ paginacion.totalPaginas }}</button>
+                                    </li>
+                                    
+                                    <!-- Botón Siguiente -->
+                                    <li class="page-item" :class="{ 'disabled': paginacion.paginaActual === paginacion.totalPaginas }">
+                                        <button class="page-link" @@click="cambiarPagina(paginacion.paginaActual + 1)" :disabled="paginacion.paginaActual === paginacion.totalPaginas">
+                                            Siguiente <i class="bi bi-chevron-right"></i>
                                         </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Maintenance Modal -->
-    <div class="modal fade" id="maintenanceModal" tabindex="-1" aria-labelledby="maintenanceModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header text-white bg-primary">
-                    <h5 class="modal-title" id="maintenanceModalLabel">Registrar Mantenimiento</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Modal NUEVO Mantenimiento -->
+<div class="modal fade" id="nuevoMantenimientoModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form v-on:submit.prevent="guardarNuevoMantenimiento">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo Mantenimiento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="maintenanceForm" @@submit.prevent="guardarMantenimiento">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="maintenanceVehicle" class="form-label">Vehículo</label>
-                                <select class="form-select" id="maintenanceVehicle" v-model="mantenimientoForm.vehiculoId" required>
-                                    <option value="" selected disabled>Seleccione...</option>
-                                    <option v-for="vehiculo in vehiculos" :key="vehiculo.id" :value="vehiculo.id">
-                                        {{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.placa }})
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="maintenanceType" class="form-label">Tipo de Mantenimiento</label>
-                                <select class="form-select" id="maintenanceType" v-model="mantenimientoForm.tipo" required>
-                                    <option value="" selected disabled>Seleccione...</option>
-                                    <option value="Preventivo">Preventivo</option>
-                                    <option value="Correctivo">Correctivo</option>
-                                    <option value="Reparacion">Reparación</option>
-                                </select>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Vehículo ID <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" v-model.number="form.vehiculoId" required placeholder="ID del vehículo" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Tipo de Mantenimiento <span class="text-danger">*</span></label>
+                            <input class="form-control" v-model="form.tipoMantenimiento" required placeholder="Ej: Preventivo, Correctivo" />
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Taller <span class="text-danger">*</span></label>
+                            <input class="form-control" v-model="form.taller" required placeholder="Nombre del taller" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Inicio <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" v-model="form.fechaInicio" required>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha Estimada de Finalización</label>
+                            <input type="date" class="form-control" v-model="form.fechaEstimadaFinalizacion">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Kilometraje Actual <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" v-model.number="form.kilometrajeActual" required>
+                                <span class="input-group-text">km</span>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="maintenanceDateIn" class="form-label">Fecha de Ingreso</label>
-                                <input type="date" class="form-control" id="maintenanceDateIn" v-model="mantenimientoForm.fechaIngreso" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="maintenanceDateOut" class="form-label">Fecha Estimada de Salida</label>
-                                <input type="date" class="form-control" id="maintenanceDateOut" v-model="mantenimientoForm.fechaEstimadaSalida">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="maintenanceWorkshop" class="form-label">Taller</label>
-                                <select class="form-select" id="maintenanceWorkshop" v-model="mantenimientoForm.taller" required>
-                                    <option value="" selected disabled>Seleccione...</option>
-                                    <option value="Taller DGA">Taller DGA</option>
-                                    <option value="Taller Autorizado">Taller Autorizado</option>
-                                    <option value="Concesionario">Concesionario</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="maintenanceCost" class="form-label">Costo Estimado ($)</label>
-                                <input type="number" class="form-control" id="maintenanceCost" v-model="mantenimientoForm.costo" min="0" step="0.01">
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Costo Estimado <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">RD$</span>
+                                <input type="number" class="form-control" v-model.number="form.costoEstimado" step="0.01" required>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="maintenanceDescription" class="form-label">Descripción del Trabajo</label>
-                            <textarea class="form-control" id="maintenanceDescription" v-model="mantenimientoForm.descripcion" rows="3" required></textarea>
+                        <div class="col-md-6">
+                            <label class="form-label">Estado <span class="text-danger">*</span></label>
+                            <select class="form-select" v-model.number="form.estado" required>
+                                <option value="0">Sin Especificar</option>
+                                <option value="1">Programado</option>
+                                <option value="2">En Proceso</option>
+                                <option value="3">Completado</option>
+                                <option value="4">Cancelado</option>
+                                <option value="5">Pendiente de Pago</option>
+                            </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="maintenanceDocuments" class="form-label">Diagnóstico Técnico (emitido por el taller) - (Formato PDF, máximo 5MB)</label>
-                            <input class="form-control" type="file" id="maintenanceDocuments" @@change="onFileSelected" accept=".pdf">
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Usuario Registro ID <span class="text-danger">*</span></label>
+                            <input class="form-control" v-model="form.usuarioRegistroId" required placeholder="ID del usuario" />
                         </div>
-                    </form>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label class="form-label">Descripción <span class="text-danger">*</span></label>
+                            <textarea class="form-control" v-model="form.descripcion" rows="3" required placeholder="Describe el mantenimiento..."></textarea>
+                        </div>
+                    </div>
+                    <!-- Campo de Documentos -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label class="form-label">Documentos</label>
+                            <div class="border rounded p-3 bg-light">
+                                <div class="mb-3">
+                                    <input type="file" 
+                                           class="form-control" 
+                                           ref="documentInput"
+                                           @@change="handleFileUpload"
+                                           accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt"
+                                           multiple>
+                                    <div class="form-text">
+                                        Formatos permitidos: PDF, DOC, DOCX, JPG, PNG, TXT (Máximo 5MB por archivo)
+                                    </div>
+                                </div>
+                                
+                                <!-- Lista de archivos seleccionados -->
+                                <div v-if="form.documentos.length > 0">
+                                    <h6 class="fw-bold mb-2">Archivos seleccionados:</h6>
+                                    <div class="list-group list-group-flush">
+                                        <div v-for="(doc, index) in form.documentos" :key="index" 
+                                             class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-file-earmark me-2 text-primary"></i>
+                                                <div>
+                                                    <div class="fw-medium">{{ doc.name }}</div>
+                                                    <small class="text-muted">{{ formatFileSize(doc.size) }}</small>
+                                                </div>
+                                            </div>
+                                            <button type="button" 
+                                                    class="btn btn-sm btn-outline-danger" 
+                                                    @@click="removeDocument(index)"
+                                                    title="Eliminar archivo">
+                                                <i class="bi bi-x"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mensaje cuando no hay archivos -->
+                                <div v-if="form.documentos.length === 0" class="text-center text-muted py-3">
+                                    <i class="bi bi-cloud-upload fs-1 d-block mb-2"></i>
+                                    <p class="mb-0">No se han seleccionado documentos</p>
+                                    <small>Los documentos son opcionales</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" @@click="guardarMantenimiento">Guardar Mantenimiento</button>
+                    <button type="submit" class="btn btn-primary" :disabled="guardando">
+                        <span v-if="guardando" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        <i v-if="!guardando" class="bi bi-save me-2"></i>
+                        {{ guardando ? 'Guardando...' : 'Guardar' }}
+                    </button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- Finalize Maintenance Modal -->
-    <div class="modal fade" id="finalizeMaintenanceModal" tabindex="-1" aria-labelledby="finalizeMaintenanceModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header text-white bg-primary">
-                    <h5 class="modal-title" id="finalizeMaintenanceModalLabel">Finalizar Mantenimiento</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Modal EDITAR Mantenimiento -->
+<div class="modal fade" id="editarMantenimientoModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form v-on:submit.prevent="guardarEdicionMantenimiento">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Mantenimiento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="finalizeMaintenanceForm" @@submit.prevent="finalizarMantenimiento">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Vehículo</label>
-                                <input type="text" class="form-control" :value="finalizarForm.vehiculoInfo" readonly>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Tipo de Mantenimiento</label>
-                                <input type="text" class="form-control" :value="finalizarForm.tipo" readonly>
+                    <!-- Campos básicos actualizables -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Inicio <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" v-model="form.fechaInicio" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha Estimada de Finalización</label>
+                            <input type="date" class="form-control" v-model="form.fechaEstimadaFinalizacion">
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Tipo de Mantenimiento <span class="text-danger">*</span></label>
+                            <input class="form-control" v-model="form.tipoMantenimiento" required placeholder="Ej: Preventivo, Correctivo" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Taller <span class="text-danger">*</span></label>
+                            <input class="form-control" v-model="form.taller" required placeholder="Nombre del taller" />
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Kilometraje Actual <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" v-model.number="form.kilometrajeActual" required>
+                                <span class="input-group-text">km</span>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="finalizeDate" class="form-label">Fecha de Finalización</label>
-                                <input type="date" class="form-control" id="finalizeDate" v-model="finalizarForm.fechaFinalizacion" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="finalizeCost" class="form-label">Costo Final ($)</label>
-                                <input type="number" class="form-control" id="finalizeCost" v-model="finalizarForm.costoFinal" min="0" step="0.01" required>
+                        <div class="col-md-6">
+                            <label class="form-label">Costo Estimado <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">RD$</span>
+                                <input type="number" class="form-control" v-model.number="form.costoEstimado" step="0.01" required>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="finalizeDescription" class="form-label">Descripción Final del Trabajo</label>
-                            <textarea class="form-control" id="finalizeDescription" v-model="finalizarForm.descripcionFinal" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Estado</label>
+                            <select class="form-select" v-model.number="form.estado">
+                                <option value="0">Sin Especificar</option>
+                                <option value="1">Programado</option>
+                                <option value="2">En Proceso</option>
+                                <option value="3">Completado</option>
+                                <option value="4">Cancelado</option>
+                                <option value="5">Pendiente de Pago</option>
+                            </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="finalizeDocuments" class="form-label">Documentos de Finalización (Factura/Comprobante) - (Formato PDF, máximo 5MB)</label>
-                            <input class="form-control" type="file" id="finalizeDocuments" @@change="onFinalizeFileSelected" accept=".pdf,.jpg,.png" multiple>
+                        <div class="col-md-6">
+                            <label class="form-label">Usuario Registro ID</label>
+                            <input class="form-control" v-model="form.usuarioRegistroId" placeholder="ID del usuario de registro" />
                         </div>
-                    </form>
+                    </div>
+                    
+                    <!-- Campos adicionales actualizables -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Finalización</label>
+                            <input type="date" class="form-control" v-model="form.fechaFinalizacion">
+                            <div class="form-text">Solo si el mantenimiento está completado</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Costo Final</label>
+                            <div class="input-group">
+                                <span class="input-group-text">RD$</span>
+                                <input type="number" class="form-control" v-model.number="form.costo" step="0.01">
+                            </div>
+                            <div class="form-text">Costo real del mantenimiento completado</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Usuario Finalización ID</label>
+                            <input class="form-control" v-model="form.usuarioFinalizacionId" placeholder="ID del usuario que finalizó">
+                            <div class="form-text">Solo si el mantenimiento está completado</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label class="form-label">Descripción <span class="text-danger">*</span></label>
+                            <textarea class="form-control" v-model="form.descripcion" rows="3" required placeholder="Describe el mantenimiento..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label class="form-label">Descripción Final</label>
+                            <textarea class="form-control" v-model="form.descripcionFinal" rows="3" placeholder="Descripción del trabajo completado..."></textarea>
+                            <div class="form-text">Solo si el mantenimiento está completado</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo de Documentos con soporte para existentes -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label class="form-label">Documentos</label>
+                            
+                            <!-- Documentos existentes -->
+                            <div v-if="form.documentosExistentes && form.documentosExistentes.length > 0" class="mb-3">
+                                <h6 class="fw-bold text-primary mb-2">
+                                    <i class="bi bi-archive me-2"></i>Documentos Existentes
+                                </h6>
+                                <div class="border rounded p-2 bg-light">
+                                    <div class="list-group list-group-flush">
+                                        <div v-for="(doc, index) in form.documentosExistentes" :key="`existing-${doc.id || index}`" 
+                                             class="list-group-item d-flex justify-content-between align-items-center px-2 py-2 border-0">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-file-earmark-check me-2 text-success fs-5"></i>
+                                                <div>
+                                                    <div class="fw-medium">{{ doc.nombre }}</div>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-calendar3 me-1"></i>
+                                                        {{ doc.fechaSubida ? new Date(doc.fechaSubida).toLocaleDateString('es-DO') : 'Fecha no disponible' }}
+                                                        <span v-if="doc.tamaño" class="ms-2">
+                                                            <i class="bi bi-hdd me-1"></i>{{ formatFileSize(doc.tamaño) }}
+                                                        </span>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="btn-group btn-group-sm">
+                                                <button type="button" 
+                                                        class="btn btn-outline-primary" 
+                                                        @@click="descargarDocumento(doc)"
+                                                        title="Descargar documento">
+                                                    <i class="bi bi-download"></i>
+                                                </button>
+                                                <button type="button" 
+                                                        class="btn btn-outline-danger" 
+                                                        @@click="eliminarDocumentoExistente(doc.id, index)"
+                                                        title="Eliminar documento">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sección para agregar nuevos documentos -->
+                            <div class="border rounded p-3" :class="form.documentosExistentes && form.documentosExistentes.length > 0 ? 'bg-white border-primary' : 'bg-light'">
+                                <h6 class="fw-bold text-secondary mb-2">
+                                    <i class="bi bi-plus-circle me-2"></i>Agregar Nuevos Documentos
+                                </h6>
+                                <div class="mb-3">
+                                    <input type="file" 
+                                           class="form-control" 
+                                           ref="editDocumentInput"
+                                           @@change="handleEditFileUpload"
+                                           accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt"
+                                           multiple>
+                                    <div class="form-text">
+                                        Formatos permitidos: PDF, DOC, DOCX, JPG, PNG, TXT (Máximo 5MB por archivo)
+                                    </div>
+                                </div>
+                                
+                                <!-- Lista de archivos nuevos seleccionados -->
+                                <div v-if="form.documentos && form.documentos.length > 0">
+                                    <h6 class="fw-bold mb-2 text-info">
+                                        <i class="bi bi-file-plus me-2"></i>Archivos Nuevos Seleccionados:
+                                    </h6>
+                                    <div class="list-group list-group-flush">
+                                        <div v-for="(doc, index) in form.documentos" :key="`new-${index}`" 
+                                             class="list-group-item d-flex justify-content-between align-items-center px-0 border-0 bg-info bg-opacity-10">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-file-earmark-plus me-2 text-info"></i>
+                                                <div>
+                                                    <div class="fw-medium">{{ doc.name }}</div>
+                                                    <small class="text-muted">{{ formatFileSize(doc.size) }} - <span class="text-info">Nuevo</span></small>
+                                                </div>
+                                            </div>
+                                            <button type="button" 
+                                                    class="btn btn-sm btn-outline-danger" 
+                                                    @@click="removeEditDocument(index)"
+                                                    title="Eliminar archivo">
+                                                <i class="bi bi-x"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mensaje cuando no hay archivos nuevos -->
+                                <div v-if="!form.documentos || form.documentos.length === 0" class="text-center text-muted py-2">
+                                    <i class="bi bi-cloud-upload fs-3 d-block mb-2"></i>
+                                    <p class="mb-0">No se han seleccionado documentos nuevos</p>
+                                    <small>Los documentos adicionales son opcionales</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" @@click ="finalizarMantenimiento">Finalizar Mantenimiento</button>
+                    <button type="submit" class="btn btn-warning" :disabled="editando">
+                        <span v-if="editando" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        <i v-if="!editando" class="bi bi-pencil me-2"></i>
+                        {{ editando ? 'Actualizando...' : 'Actualizar' }}
+                    </button>
                 </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Detalles Mantenimiento -->
+<div class="modal fade" id="mantenimientoDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" v-if="detalle">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalles de Mantenimiento</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="m-0 fw-bold">Información del Mantenimiento</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="maintenance-icon warning">
+                                        <i class="bi bi-tools fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">{{ detalle.tipoMantenimiento }}</h5>
+                                        <p class="mb-0">
+                                            <span class="badge" :class="estadoBadge(detalle.estado)">{{ estadoTexto(detalle.estadoTexto) }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-4 fw-bold">Taller:</div>
+                                    <div class="col-sm-8">{{ detalle.taller }}</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-4 fw-bold">Fecha Inicio:</div>
+                                    <div class="col-sm-8">{{ detalle.fechaInicio | fecha }}</div>
+                                </div>
+                                <div class="row mb-3" v-if="detalle.tieneFechaEstimadaFinalizacion">
+                                    <div class="col-sm-4 fw-bold">Fecha Estimada Fin:</div>
+                                    <div class="col-sm-8">{{ detalle.fechaEstimadaFinalizacion | fecha }}</div>
+                                </div>
+                                <div class="row mb-3" v-if="detalle.tieneFechaFinalizacion">
+                                    <div class="col-sm-4 fw-bold">Fecha Finalización:</div>
+                                    <div class="col-sm-8">{{ detalle.fechaFinalizacion | fecha }}</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-4 fw-bold">Kilometraje:</div>
+                                    <div class="col-sm-8">{{ detalle.kilometrajeActual }} km</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-4 fw-bold">Costo Estimado:</div>
+                                    <div class="col-sm-8">RD$ {{ detalle.costoEstimado }}</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-4 fw-bold">Costo Real:</div>
+                                    <div class="col-sm-8">RD$ {{ detalle.costo > 0 ? detalle.costo : '-' }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 fw-bold">Progreso:</div>
+                                    <div class="col-sm-8">
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar" :class="estadoProgress(detalle.estadoTexto)" role="progressbar" :style="{width: progreso(detalle.estadoTexto) + '%'}"></div>
+                                        </div>
+                                        <small class="text-muted">{{ progreso(detalle.estadoTexto) }}% completado</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="m-0 fw-bold">Vehículo</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-car-front-fill me-3 fs-2 text-primary"></i>
+                                    <div>
+                                        <h5 class="mb-1">{{ detalle.vehiculoMarca }} {{ detalle.vehiculoModelo }}</h5>
+                                        <p class="mb-1"><span class="badge bg-primary">{{ detalle.vehiculoPlaca }}</span> - {{ detalle.kilometrajeActual }} km</p>
+                                        <p class="mb-0">{{ detalle.vehiculoInfo }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="m-0 fw-bold">Descripción y Servicios</h6>
+                            </div>
+                            <div class="card-body">
+                                <h6>Descripción</h6>
+                                <p class="mb-4">{{ detalle.descripcion }}</p>
+                                <h6>Descripción Final</h6>
+                                <p class="mb-4" v-if="detalle.tieneDescripcionFinal">{{ detalle.descripcionFinal }}</p>
+                                <div class="alert alert-info" v-if="detalle.estadoTexto === 'EnProceso'">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    Este mantenimiento está actualmente en proceso.
+                                    <span v-if="detalle.tieneFechaEstimadaFinalizacion"> Se espera finalizar el {{ detalle.fechaEstimadaFinalizacion | fecha }}.</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sección de documentos en detalles -->
+                        <div class="card mb-4" v-if="detalle.documentos && detalle.documentos.length > 0">
+                            <div class="card-header bg-light">
+                                <h6 class="m-0 fw-bold">
+                                    <i class="bi bi-files me-2"></i>Documentos Adjuntos
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group list-group-flush">
+                                    <div v-for="(doc, index) in detalle.documentos" :key="doc.id || index" 
+                                         class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-file-earmark me-2 text-primary"></i>
+                                            <div>
+                                                <div class="fw-medium">{{ doc.nombre }}</div>
+                                                <small class="text-muted">
+                                                    {{ doc.fechaSubida ? new Date(doc.fechaSubida).toLocaleDateString('es-DO') : '' }}
+                                                    <span v-if="doc.tamaño"> - {{ formatFileSize(doc.tamaño) }}</span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-outline-primary" 
+                                                @@click="descargarDocumento(doc)"
+                                                title="Descargar documento">
+                                            <i class="bi bi-download"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Mensaje si no hay documentos -->
+                        <div class="card mb-4" v-if="!detalle.documentos || detalle.documentos.length === 0">
+                            <div class="card-header bg-light">
+                                <h6 class="m-0 fw-bold">
+                                    <i class="bi bi-files me-2"></i>Documentos Adjuntos
+                                </h6>
+                            </div>
+                            <div class="card-body text-center text-muted">
+                                <i class="bi bi-file-earmark-x fs-1 d-block mb-2"></i>
+                                <p class="mb-0">No hay documentos adjuntos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Modal Completar Mantenimiento -->
+<div class="modal fade" id="completarMantenimientoModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form v-on:submit.prevent="finalizarMantenimiento">
+                <div class="modal-header">
+                    <h5 class="modal-title">Completar Mantenimiento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Finalización <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" v-model="finalizar.fechaFinalizacion" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Costo Final <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">RD$</span>
+                                <input type="number" class="form-control" v-model.number="finalizar.costoFinal" step="0.01" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Usuario Finalización ID</label>
+                            <input type="text" class="form-control" v-model="finalizar.usuarioFinalizacionId" placeholder="ID del usuario que finaliza">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Descripción Final</label>
+                        <textarea class="form-control" v-model="finalizar.descripcionFinal" rows="4" placeholder="Descripción detallada del trabajo realizado..."></textarea>
+                    </div>
+                    
+                    <!-- Campo de Documentos -->
+                    <div class="mb-3">
+                        <label class="form-label">Documentos de Finalización</label>
+                        <div class="border rounded p-3 bg-light">
+                            <div class="mb-3">
+                                <input type="file" 
+                                       class="form-control" 
+                                       ref="finalizacionDocumentInput"
+                                       @@change="handleFinalizacionFileUpload"
+                                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt"
+                                       multiple>
+                                <div class="form-text">
+                                    Documentos opcionales: facturas, reportes, fotos del trabajo completado (Máximo 5MB por archivo)
+                                </div>
+                            </div>
+                            
+                            <!-- Lista de archivos seleccionados -->
+                            <div v-if="finalizar.documentos.length > 0">
+                                <h6 class="fw-bold mb-2">Documentos seleccionados:</h6>
+                                <div class="list-group list-group-flush">
+                                    <div v-for="(doc, index) in finalizar.documentos" :key="index" 
+                                         class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-file-earmark me-2 text-success"></i>
+                                            <div>
+                                                <div class="fw-medium">{{ doc.name }}</div>
+                                                <small class="text-muted">{{ formatFileSize(doc.size) }}</small>
+                                            </div>
+                                        </div>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-outline-danger" 
+                                                @@click="removeFinalizacionDocument(index)"
+                                                title="Eliminar archivo">
+                                            <i class="bi bi-x"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Mensaje cuando no hay archivos -->
+                            <div v-if="finalizar.documentos.length === 0" class="text-center text-muted py-2">
+                                <i class="bi bi-cloud-upload fs-3 d-block mb-2"></i>
+                                <p class="mb-0">No se han seleccionado documentos</p>
+                                <small>Los documentos son opcionales</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success" :disabled="finalizando">
+                        <span v-if="finalizando" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        <i v-if="!finalizando" class="bi bi-check-circle me-2"></i>
+                        {{ finalizando ? 'Completando...' : 'Completar Mantenimiento' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
-    <script>
-        const { createApp } = Vue;
-
-        createApp({
-            data() {
-                return {
-                    mantenimientos: [],
-                    vehiculos: [],
-                    mantenimientoForm: {
-                        id: 0,
-                        vehiculoId: '',
-                        tipo: '',
-                        fechaIngreso: new Date().toISOString().slice(0, 10),
-                        fechaEstimadaSalida: '',
-                        taller: '',
-                        costo: 0,
-                        descripcion: '',
-                        diagnostico: null
-                    },
-                    finalizarForm: {
-                        id: 0,
-                        vehiculoInfo: '',
-                        tipo: '',
-                        fechaFinalizacion: new Date().toISOString().slice(0, 10),
-                        costoFinal: 0,
-                        descripcionFinal: '',
-                        documentos: []
-                    },
-                    modalMantenimiento: null,
-                    modalFinalizar: null
-                }
-            },
-            mounted() {
-                this.cargarMantenimientos();
-                this.cargarVehiculos();
-                this.modalMantenimiento = new bootstrap.Modal(document.getElementById('maintenanceModal'));
-                this.modalFinalizar = new bootstrap.Modal(document.getElementById('finalizeMaintenanceModal'));
-            },
-            methods: {
-                async cargarMantenimientos() {
-                    try {
-                        const response = await axios.get('/api/Mantenimientos');
-                        this.mantenimientos = response.data;
-                    } catch (error) {
-                        console.error('Error al cargar mantenimientos:', error);
-                    }
-                },
-                async cargarVehiculos() {
-                    try {
-                        const response = await axios.get('/api/Vehiculos');
-                        this.vehiculos = response.data;
-                    } catch (error) {
-                        console.error('Error al cargar vehículos:', error);
-                    }
-                },
-                mostrarModalCrear() {
-                    this.mantenimientoForm = {
-                        id: 0,
-                        vehiculoId: '',
-                        tipo: '',
-                        fechaIngreso: new Date().toISOString().slice(0, 10),
-                        fechaEstimadaSalida: '',
-                        taller: '',
-                        costo: 0,
-                        descripcion: '',
-                        diagnostico: null
-                    };
-                    this.modalMantenimiento.show();
-                },
-                mostrarModalFinalizar(mantenimiento) {
-                    this.finalizarForm = {
-                        id: mantenimiento.id,
-                        vehiculoInfo: mantenimiento.vehiculoInfo,
-                        tipo: mantenimiento.tipo,
-                        fechaFinalizacion: new Date().toISOString().slice(0, 10),
-                        costoFinal: mantenimiento.costo,
-                        descripcionFinal: mantenimiento.descripcion,
-                        documentos: []
-                    };
-                    this.modalFinalizar.show();
-                },
-                onFileSelected(event) {
-                    this.mantenimientoForm.diagnostico = event.target.files[0];
-                },
-                onFinalizeFileSelected(event) {
-                    this.finalizarForm.documentos = event.target.files;
-                },
-                async guardarMantenimiento() {
-                    try {
-                        const formData = new FormData();
-                        formData.append('vehiculoId', this.mantenimientoForm.vehiculoId);
-                        formData.append('tipo', this.mantenimientoForm.tipo);
-                        formData.append('fechaIngreso', this.mantenimientoForm.fechaIngreso);
-                        formData.append('fechaEstimadaSalida', this.mantenimientoForm.fechaEstimadaSalida);
-                        formData.append('taller', this.mantenimientoForm.taller);
-                        formData.append('costo', this.mantenimientoForm.costo);
-                        formData.append('descripcion', this.mantenimientoForm.descripcion);
-                        if (this.mantenimientoForm.diagnostico) {
-                            formData.append('diagnostico', this.mantenimientoForm.diagnostico);
-                        }
-
-                        await axios.post('/api/Mantenimientos', formData, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            }
-                        });
-
-                        await this.cargarMantenimientos();
-                        this.modalMantenimiento.hide();
-                        alert('Mantenimiento registrado con éxito');
-                    } catch (error) {
-                        console.error('Error al registrar mantenimiento:', error);
-                        alert('Error al registrar mantenimiento');
-                    }
-                },
-                async finalizarMantenimiento() {
-                    try {
-                        const formData = new FormData();
-                        formData.append('id', this.finalizarForm.id);
-                        formData.append('fechaFinalizacion', this.finalizarForm.fechaFinalizacion);
-                        formData.append('costoFinal', this.finalizarForm.costoFinal);
-                        formData.append('descripcionFinal', this.finalizarForm.descripcionFinal);
-
-                        if (this.finalizarForm.documentos.length > 0) {
-                            for (let i = 0; i < this.finalizarForm.documentos.length; i++) {
-                                formData.append('documentos', this.finalizarForm.documentos[i]);
-                            }
-                        }
-
-                        await axios.put(`/api/Mantenimientos/${this.finalizarForm.id}/finalizar`, formData, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            }
-                        });
-
-                        await this.cargarMantenimientos();
-                        this.modalFinalizar.hide();
-                        alert('Mantenimiento finalizado con éxito');
-                    } catch (error) {
-                        console.error('Error al finalizar mantenimiento:', error);
-                        alert('Error al finalizar mantenimiento');
-                    }
-                },
-                verDetalles(mantenimiento) {
-                    alert(`Ver detalles de mantenimiento ${mantenimiento.id} (Funcionalidad en desarrollo)`);
-                    // Aquí implementarías la lógica para mostrar los detalles en un modal
-                },
-                formatDate(dateString) {
-                    if (!dateString) return '-';
-                    const date = new Date(dateString);
-                    return date.toLocaleDateString('es-ES');
-                },
-                estadoClass(estado) {
-                    const classes = {
-                        'En Proceso': 'badge bg-warning',
-                        'Completado': 'badge bg-success'
-                    };
-                    return classes[estado] || 'badge bg-secondary';
-                }
-            }
-        }).mount('#mantenimientos-app');
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/Mantenimiento.js"></script>
 }
