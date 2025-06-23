@@ -126,28 +126,26 @@
     </style>
 }
 <div id="app">
-    <!-- Sidebar y cabecera igual que tu HTML original, puedes incluirlo con un partial si lo deseas -->
-
-    <!-- Filtros y Búsqueda -->
+    <!-- Filtros y Búsqueda MEJORADO -->
     <div class="container-fluid content-section">
         <div class="row mb-4">
             <div class="col-12">
-                <form class="row g-3" @@submit.prevent="filtrarMantenimientos">
+                <form class="row g-3" v-on:submit.prevent="filtrarMantenimientos">
                     <div class="col-md-3">
                         <label class="form-label">Buscar por Placa/Vehículo</label>
                         <input type="text" class="form-control" v-model="filtros.busqueda" placeholder="Ej: P123456 o Toyota Hilux">
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Estado</label>
-                    <select class="form-select" v-model="filtros.estado">
-                        <option value="">Todos</option>
-                        <option value="SinEspecificar">Sin Especificar</option>
-                        <option value="Programado">Programado</option>
-                        <option value="EnProceso">En Proceso</option>
-                        <option value="Completado">Completado</option>
-                        <option value="Cancelado">Cancelado</option>
-                        <option value="PendientePago">Pendiente de Pago</option>
-                    </select>
+                        <select class="form-select" v-model="filtros.estado">
+                            <option value="">Todos</option>
+                            <option value="SinEspecificar">Sin Especificar</option>
+                            <option value="Programado">Programado</option>
+                            <option value="EnProceso">En Proceso</option>
+                            <option value="Completado">Completado</option>
+                            <option value="Cancelado">Cancelado</option>
+                            <option value="PendientePago">Pendiente de Pago</option>
+                        </select>
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Tipo</label>
@@ -168,14 +166,39 @@
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="bi bi-funnel me-1"></i> Filtrar
-                        </button>
+                        <div class="btn-group w-100">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-funnel me-1"></i> Filtrar
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" @@click="limpiarFiltros">
+                                <i class="bi bi-x-circle me-1"></i>
+                            </button>
+                        </div>
                     </div>
                 </form>
+                
+                <!-- Indicador de filtros activos -->
+                <div v-if="filtros.busqueda || filtros.estado || filtros.tipo || filtros.taller" class="row mt-2">
+                    <div class="col-12">
+                        <div class="alert alert-info py-2 mb-0 d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="bi bi-funnel me-2"></i>
+                                <small>
+                                    Mostrando {{ mantenimientos.length }} de {{ todosLosMantenimientos.length }} mantenimientos
+                                    <span v-if="filtros.busqueda"> | Búsqueda: "{{ filtros.busqueda }}"</span>
+                                    <span v-if="filtros.estado"> | Estado: {{ filtros.estado }}</span>
+                                    <span v-if="filtros.tipo"> | Tipo: {{ filtros.tipo }}</span>
+                                    <span v-if="filtros.taller"> | Taller: {{ filtros.taller }}</span>
+                                </small>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-primary" @@click="limpiarFiltros">
+                                <i class="bi bi-x"></i> Limpiar filtros
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
 
         <!-- Tarjetas de Estadísticas -->
         <div class="row mb-4">
@@ -254,7 +277,6 @@
             </div>
         </div>
 
-
         <!-- Listado de Mantenimientos -->
         <div class="row">
             <div class="col-12">
@@ -332,7 +354,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!-- Paginación si lo necesitas -->
                     </div>
                 </div>
             </div>
@@ -414,7 +435,7 @@
                             <textarea class="form-control" v-model="form.descripcion" rows="3" required placeholder="Describe el mantenimiento..."></textarea>
                         </div>
                     </div>
-                    <!-- NUEVO CAMPO DE DOCUMENTOS -->
+                    <!-- Campo de Documentos -->
                     <div class="row mb-4">
                         <div class="col-12">
                             <label class="form-label">Documentos</label>
@@ -440,8 +461,8 @@
                                             <div class="d-flex align-items-center">
                                                 <i class="bi bi-file-earmark me-2 text-primary"></i>
                                                 <div>
-                                                    <div class="fw-medium">{{ doc.nombre }}</div>
-                                                    <small class="text-muted">{{ formatFileSize(doc.tamaño) }}</small>
+                                                    <div class="fw-medium">{{ doc.name }}</div>
+                                                    <small class="text-muted">{{ formatFileSize(doc.size) }}</small>
                                                 </div>
                                             </div>
                                             <button type="button" 
@@ -466,7 +487,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" >Guardar</button>
+                    <button type="submit" class="btn btn-primary" :disabled="guardando">
+                        <span v-if="guardando" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        <i v-if="!guardando" class="bi bi-save me-2"></i>
+                        {{ guardando ? 'Guardando...' : 'Guardar' }}
+                    </button>
                 </div>
             </form>
         </div>
@@ -475,58 +500,58 @@
 
 <!-- Modal EDITAR Mantenimiento -->
 <div class="modal fade" id="editarMantenimientoModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
-                <form v-on:submit.prevent="guardarEdicionMantenimiento">
+            <form v-on:submit.prevent="guardarEdicionMantenimiento">
                 <div class="modal-header">
                     <h5 class="modal-title">Editar Mantenimiento</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- Campos básicos actualizables -->
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <label class="form-label">Vehículo ID</label>
-                            <input type="number" class="form-control" v-model="form.vehiculoId" required placeholder="ID del vehículo" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Tipo de Mantenimiento</label>
-                            <input class="form-control" v-model="form.tipoMantenimiento" required placeholder="Ej: Preventivo, Correctivo" />
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <label class="form-label">Taller</label>
-                            <input class="form-control" v-model="form.taller" required placeholder="Nombre del taller" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha de Inicio</label>
+                            <label class="form-label">Fecha de Inicio <span class="text-danger">*</span></label>
                             <input type="date" class="form-control" v-model="form.fechaInicio" required>
                         </div>
-                    </div>
-                    <div class="row mb-4">
                         <div class="col-md-6">
                             <label class="form-label">Fecha Estimada de Finalización</label>
                             <input type="date" class="form-control" v-model="form.fechaEstimadaFinalizacion">
                         </div>
+                    </div>
+                    
+                    <div class="row mb-4">
                         <div class="col-md-6">
-                            <label class="form-label">Kilometraje Actual</label>
+                            <label class="form-label">Tipo de Mantenimiento <span class="text-danger">*</span></label>
+                            <input class="form-control" v-model="form.tipoMantenimiento" required placeholder="Ej: Preventivo, Correctivo" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Taller <span class="text-danger">*</span></label>
+                            <input class="form-control" v-model="form.taller" required placeholder="Nombre del taller" />
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Kilometraje Actual <span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <input type="number" class="form-control" v-model="form.kilometrajeActual" required>
+                                <input type="number" class="form-control" v-model.number="form.kilometrajeActual" required>
                                 <span class="input-group-text">km</span>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mb-4">
                         <div class="col-md-6">
-                            <label class="form-label">Costo Estimado</label>
+                            <label class="form-label">Costo Estimado <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text">RD$</span>
-                                <input type="number" class="form-control" v-model="form.costoEstimado" step="0.01" required>
+                                <input type="number" class="form-control" v-model.number="form.costoEstimado" step="0.01" required>
                             </div>
                         </div>
+                    </div>
+                    
+                    <div class="row mb-4">
                         <div class="col-md-6">
                             <label class="form-label">Estado</label>
-                            <select class="form-select" v-model="form.estado" required>
+                            <select class="form-select" v-model.number="form.estado">
                                 <option value="0">Sin Especificar</option>
                                 <option value="1">Programado</option>
                                 <option value="2">En Proceso</option>
@@ -535,752 +560,416 @@
                                 <option value="5">Pendiente de Pago</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="row mb-4">
                         <div class="col-md-6">
                             <label class="form-label">Usuario Registro ID</label>
-                            <input class="form-control" v-model="form.usuarioRegistroId" required placeholder="ID del usuario" />
+                            <input class="form-control" v-model="form.usuarioRegistroId" placeholder="ID del usuario de registro" />
                         </div>
                     </div>
+                    
+                    <!-- Campos adicionales actualizables -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Finalización</label>
+                            <input type="date" class="form-control" v-model="form.fechaFinalizacion">
+                            <div class="form-text">Solo si el mantenimiento está completado</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Costo Final</label>
+                            <div class="input-group">
+                                <span class="input-group-text">RD$</span>
+                                <input type="number" class="form-control" v-model.number="form.costo" step="0.01">
+                            </div>
+                            <div class="form-text">Costo real del mantenimiento completado</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Usuario Finalización ID</label>
+                            <input class="form-control" v-model="form.usuarioFinalizacionId" placeholder="ID del usuario que finalizó">
+                            <div class="form-text">Solo si el mantenimiento está completado</div>
+                        </div>
+                    </div>
+                    
                     <div class="row mb-4">
                         <div class="col-12">
-                            <label class="form-label">Descripción</label>
-                            <textarea class="form-control" v-model="form.descripcion" rows="3" required></textarea>
+                            <label class="form-label">Descripción <span class="text-danger">*</span></label>
+                            <textarea class="form-control" v-model="form.descripcion" rows="3" required placeholder="Describe el mantenimiento..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label class="form-label">Descripción Final</label>
+                            <textarea class="form-control" v-model="form.descripcionFinal" rows="3" placeholder="Descripción del trabajo completado..."></textarea>
+                            <div class="form-text">Solo si el mantenimiento está completado</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo de Documentos con soporte para existentes -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label class="form-label">Documentos</label>
+                            
+                            <!-- Documentos existentes -->
+                            <div v-if="form.documentosExistentes && form.documentosExistentes.length > 0" class="mb-3">
+                                <h6 class="fw-bold text-primary mb-2">
+                                    <i class="bi bi-archive me-2"></i>Documentos Existentes
+                                </h6>
+                                <div class="border rounded p-2 bg-light">
+                                    <div class="list-group list-group-flush">
+                                        <div v-for="(doc, index) in form.documentosExistentes" :key="`existing-${doc.id || index}`" 
+                                             class="list-group-item d-flex justify-content-between align-items-center px-2 py-2 border-0">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-file-earmark-check me-2 text-success fs-5"></i>
+                                                <div>
+                                                    <div class="fw-medium">{{ doc.nombre }}</div>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-calendar3 me-1"></i>
+                                                        {{ doc.fechaSubida ? new Date(doc.fechaSubida).toLocaleDateString('es-DO') : 'Fecha no disponible' }}
+                                                        <span v-if="doc.tamaño" class="ms-2">
+                                                            <i class="bi bi-hdd me-1"></i>{{ formatFileSize(doc.tamaño) }}
+                                                        </span>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="btn-group btn-group-sm">
+                                                <button type="button" 
+                                                        class="btn btn-outline-primary" 
+                                                        @@click="descargarDocumento(doc)"
+                                                        title="Descargar documento">
+                                                    <i class="bi bi-download"></i>
+                                                </button>
+                                                <button type="button" 
+                                                        class="btn btn-outline-danger" 
+                                                        @@click="eliminarDocumentoExistente(doc.id, index)"
+                                                        title="Eliminar documento">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sección para agregar nuevos documentos -->
+                            <div class="border rounded p-3" :class="form.documentosExistentes && form.documentosExistentes.length > 0 ? 'bg-white border-primary' : 'bg-light'">
+                                <h6 class="fw-bold text-secondary mb-2">
+                                    <i class="bi bi-plus-circle me-2"></i>Agregar Nuevos Documentos
+                                </h6>
+                                <div class="mb-3">
+                                    <input type="file" 
+                                           class="form-control" 
+                                           ref="editDocumentInput"
+                                           @@change="handleEditFileUpload"
+                                           accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt"
+                                           multiple>
+                                    <div class="form-text">
+                                        Formatos permitidos: PDF, DOC, DOCX, JPG, PNG, TXT (Máximo 5MB por archivo)
+                                    </div>
+                                </div>
+                                
+                                <!-- Lista de archivos nuevos seleccionados -->
+                                <div v-if="form.documentos && form.documentos.length > 0">
+                                    <h6 class="fw-bold mb-2 text-info">
+                                        <i class="bi bi-file-plus me-2"></i>Archivos Nuevos Seleccionados:
+                                    </h6>
+                                    <div class="list-group list-group-flush">
+                                        <div v-for="(doc, index) in form.documentos" :key="`new-${index}`" 
+                                             class="list-group-item d-flex justify-content-between align-items-center px-0 border-0 bg-info bg-opacity-10">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-file-earmark-plus me-2 text-info"></i>
+                                                <div>
+                                                    <div class="fw-medium">{{ doc.name }}</div>
+                                                    <small class="text-muted">{{ formatFileSize(doc.size) }} - <span class="text-info">Nuevo</span></small>
+                                                </div>
+                                            </div>
+                                            <button type="button" 
+                                                    class="btn btn-sm btn-outline-danger" 
+                                                    @@click="removeEditDocument(index)"
+                                                    title="Eliminar archivo">
+                                                <i class="bi bi-x"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mensaje cuando no hay archivos nuevos -->
+                                <div v-if="!form.documentos || form.documentos.length === 0" class="text-center text-muted py-2">
+                                    <i class="bi bi-cloud-upload fs-3 d-block mb-2"></i>
+                                    <p class="mb-0">No se han seleccionado documentos nuevos</p>
+                                    <small>Los documentos adicionales son opcionales</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-warning">Actualizar</button>
+                    <button type="submit" class="btn btn-warning" :disabled="editando">
+                        <span v-if="editando" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        <i v-if="!editando" class="bi bi-pencil me-2"></i>
+                        {{ editando ? 'Actualizando...' : 'Actualizar' }}
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-    <!-- Modal Detalles Mantenimiento -->
-    <div class="modal fade" id="mantenimientoDetailsModal" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content" v-if="detalle">
-                <div class="modal-header">
-                    <h5 class="modal-title">Detalles de Mantenimiento</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="m-0 fw-bold">Información del Mantenimiento</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="maintenance-icon warning">
-                                            <i class="bi bi-tools fs-4"></i>
-                                        </div>
-                                        <div>
-                                            <h5 class="mb-1">{{ detalle.tipoMantenimiento }}</h5>
-                                            <p class="mb-0">
-                                                <span class="badge" class="estadoBadge(detalle.estado)">{{ estadoTexto(detalle.estadoTexto) }}</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-4 fw-bold">Taller:</div>
-                                        <div class="col-sm-8">{{ detalle.taller }}</div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-4 fw-bold">Fecha Inicio:</div>
-                                        <div class="col-sm-8">{{ detalle.fechaInicio | fecha }}</div>
-                                    </div>
-                                    <div class="row mb-3" v-if="detalle.tieneFechaEstimadaFinalizacion">
-                                        <div class="col-sm-4 fw-bold">Fecha Estimada Fin:</div>
-                                        <div class="col-sm-8">{{ detalle.fechaEstimadaFinalizacion | fecha }}</div>
-                                    </div>
-                                    <div class="row mb-3" v-if="detalle.tieneFechaFinalizacion">
-                                        <div class="col-sm-4 fw-bold">Fecha Finalización:</div>
-                                        <div class="col-sm-8">{{ detalle.fechaFinalizacion | fecha }}</div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-4 fw-bold">Kilometraje:</div>
-                                        <div class="col-sm-8">{{ detalle.kilometrajeActual }} km</div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-4 fw-bold">Costo Estimado:</div>
-                                        <div class="col-sm-8">RD$ {{ detalle.costoEstimado }}</div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-4 fw-bold">Costo Real:</div>
-                                        <div class="col-sm-8">RD$ {{ detalle.costo > 0 ? detalle.costo : '-' }}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-4 fw-bold">Progreso:</div>
-                                        <div class="col-sm-8">
-                                            <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar" :class="estadoProgress(detalle.estadoTexto)" role="progressbar" :style="{width: progreso(detalle.estadoTexto) + '%'}"></div>
-                                            </div>
-                                            <small class="text-muted">{{ progreso(detalle.estadoTexto) }}% completado</small>
-                                        </div>
-                                    </div>
-                                </div>
+<!-- Modal Detalles Mantenimiento -->
+<div class="modal fade" id="mantenimientoDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" v-if="detalle">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalles de Mantenimiento</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="m-0 fw-bold">Información del Mantenimiento</h6>
                             </div>
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="m-0 fw-bold">Vehículo</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <i class="bi bi-car-front-fill me-3 fs-2 text-primary"></i>
-                                        <div>
-                                            <h5 class="mb-1">{{ detalle.vehiculoMarca }} {{ detalle.vehiculoModelo }}</h5>
-                                            <p class="mb-1"><span class="badge bg-primary">{{ detalle.vehiculoPlaca }}</span> - {{ detalle.kilometrajeActual }} km</p>
-                                            <p class="mb-0">{{ detalle.vehiculoInfo }}</p>
-                                        </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="maintenance-icon warning">
+                                        <i class="bi bi-tools fs-4"></i>
                                     </div>
-                                    <!-- Si tienes info de último mantenimiento, puedes mostrarla aquí -->
+                                    <div>
+                                        <h5 class="mb-1">{{ detalle.tipoMantenimiento }}</h5>
+                                        <p class="mb-0">
+                                            <span class="badge" :class="estadoBadge(detalle.estado)">{{ estadoTexto(detalle.estadoTexto) }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-4 fw-bold">Taller:</div>
+                                    <div class="col-sm-8">{{ detalle.taller }}</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-4 fw-bold">Fecha Inicio:</div>
+                                    <div class="col-sm-8">{{ detalle.fechaInicio | fecha }}</div>
+                                </div>
+                                <div class="row mb-3" v-if="detalle.tieneFechaEstimadaFinalizacion">
+                                    <div class="col-sm-4 fw-bold">Fecha Estimada Fin:</div>
+                                    <div class="col-sm-8">{{ detalle.fechaEstimadaFinalizacion | fecha }}</div>
+                                </div>
+                                <div class="row mb-3" v-if="detalle.tieneFechaFinalizacion">
+                                    <div class="col-sm-4 fw-bold">Fecha Finalización:</div>
+                                    <div class="col-sm-8">{{ detalle.fechaFinalizacion | fecha }}</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-4 fw-bold">Kilometraje:</div>
+                                    <div class="col-sm-8">{{ detalle.kilometrajeActual }} km</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-4 fw-bold">Costo Estimado:</div>
+                                    <div class="col-sm-8">RD$ {{ detalle.costoEstimado }}</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-4 fw-bold">Costo Real:</div>
+                                    <div class="col-sm-8">RD$ {{ detalle.costo > 0 ? detalle.costo : '-' }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 fw-bold">Progreso:</div>
+                                    <div class="col-sm-8">
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar" :class="estadoProgress(detalle.estadoTexto)" role="progressbar" :style="{width: progreso(detalle.estadoTexto) + '%'}"></div>
+                                        </div>
+                                        <small class="text-muted">{{ progreso(detalle.estadoTexto) }}% completado</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="m-0 fw-bold">Descripción y Servicios</h6>
-                                </div>
-                                <div class="card-body">
-                                    <h6>Descripción</h6>
-                                    <p class="mb-4">{{ detalle.descripcion }}</p>
-                                    <h6>Descripción Final</h6>
-                                    <p class="mb-4" v-if="detalle.tieneDescripcionFinal">{{ detalle.descripcionFinal }}</p>
-                                    <div class="alert alert-info" v-if="detalle.estadoTexto === 'EnProceso'">
-                                        <i class="bi bi-info-circle me-2"></i>
-                                        Este mantenimiento está actualmente en proceso.
-                                        <span v-if="detalle.tieneFechaEstimadaFinalizacion"> Se espera finalizar el {{ detalle.fechaEstimadaFinalizacion | fecha }}.</span>
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="m-0 fw-bold">Vehículo</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-car-front-fill me-3 fs-2 text-primary"></i>
+                                    <div>
+                                        <h5 class="mb-1">{{ detalle.vehiculoMarca }} {{ detalle.vehiculoModelo }}</h5>
+                                        <p class="mb-1"><span class="badge bg-primary">{{ detalle.vehiculoPlaca }}</span> - {{ detalle.kilometrajeActual }} km</p>
+                                        <p class="mb-0">{{ detalle.vehiculoInfo }}</p>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Documentos y registros si tu API los provee -->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="m-0 fw-bold">Descripción y Servicios</h6>
+                            </div>
+                            <div class="card-body">
+                                <h6>Descripción</h6>
+                                <p class="mb-4">{{ detalle.descripcion }}</p>
+                                <h6>Descripción Final</h6>
+                                <p class="mb-4" v-if="detalle.tieneDescripcionFinal">{{ detalle.descripcionFinal }}</p>
+                                <div class="alert alert-info" v-if="detalle.estadoTexto === 'EnProceso'">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    Este mantenimiento está actualmente en proceso.
+                                    <span v-if="detalle.tieneFechaEstimadaFinalizacion"> Se espera finalizar el {{ detalle.fechaEstimadaFinalizacion | fecha }}.</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sección de documentos en detalles -->
+                        <div class="card mb-4" v-if="detalle.documentos && detalle.documentos.length > 0">
+                            <div class="card-header bg-light">
+                                <h6 class="m-0 fw-bold">
+                                    <i class="bi bi-files me-2"></i>Documentos Adjuntos
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group list-group-flush">
+                                    <div v-for="(doc, index) in detalle.documentos" :key="doc.id || index" 
+                                         class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-file-earmark me-2 text-primary"></i>
+                                            <div>
+                                                <div class="fw-medium">{{ doc.nombre }}</div>
+                                                <small class="text-muted">
+                                                    {{ doc.fechaSubida ? new Date(doc.fechaSubida).toLocaleDateString('es-DO') : '' }}
+                                                    <span v-if="doc.tamaño"> - {{ formatFileSize(doc.tamaño) }}</span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-outline-primary" 
+                                                @@click="descargarDocumento(doc)"
+                                                title="Descargar documento">
+                                            <i class="bi bi-download"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Mensaje si no hay documentos -->
+                        <div class="card mb-4" v-if="!detalle.documentos || detalle.documentos.length === 0">
+                            <div class="card-header bg-light">
+                                <h6 class="m-0 fw-bold">
+                                    <i class="bi bi-files me-2"></i>Documentos Adjuntos
+                                </h6>
+                            </div>
+                            <div class="card-body text-center text-muted">
+                                <i class="bi bi-file-earmark-x fs-1 d-block mb-2"></i>
+                                <p class="mb-0">No hay documentos adjuntos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Completar Mantenimiento -->
+<div class="modal fade" id="completarMantenimientoModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form v-on:submit.prevent="finalizarMantenimiento">
+                <div class="modal-header">
+                    <h5 class="modal-title">Completar Mantenimiento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Finalización <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" v-model="finalizar.fechaFinalizacion" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Costo Final <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">RD$</span>
+                                <input type="number" class="form-control" v-model.number="finalizar.costoFinal" step="0.01" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Usuario Finalización ID</label>
+                            <input type="text" class="form-control" v-model="finalizar.usuarioFinalizacionId" placeholder="ID del usuario que finaliza">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Descripción Final</label>
+                        <textarea class="form-control" v-model="finalizar.descripcionFinal" rows="4" placeholder="Descripción detallada del trabajo realizado..."></textarea>
+                    </div>
+                    
+                    <!-- Campo de Documentos -->
+                    <div class="mb-3">
+                        <label class="form-label">Documentos de Finalización</label>
+                        <div class="border rounded p-3 bg-light">
+                            <div class="mb-3">
+                                <input type="file" 
+                                       class="form-control" 
+                                       ref="finalizacionDocumentInput"
+                                       @@change="handleFinalizacionFileUpload"
+                                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt"
+                                       multiple>
+                                <div class="form-text">
+                                    Documentos opcionales: facturas, reportes, fotos del trabajo completado (Máximo 5MB por archivo)
+                                </div>
+                            </div>
+                            
+                            <!-- Lista de archivos seleccionados -->
+                            <div v-if="finalizar.documentos.length > 0">
+                                <h6 class="fw-bold mb-2">Documentos seleccionados:</h6>
+                                <div class="list-group list-group-flush">
+                                    <div v-for="(doc, index) in finalizar.documentos" :key="index" 
+                                         class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-file-earmark me-2 text-success"></i>
+                                            <div>
+                                                <div class="fw-medium">{{ doc.name }}</div>
+                                                <small class="text-muted">{{ formatFileSize(doc.size) }}</small>
+                                            </div>
+                                        </div>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-outline-danger" 
+                                                @@click="removeFinalizacionDocument(index)"
+                                                title="Eliminar archivo">
+                                            <i class="bi bi-x"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Mensaje cuando no hay archivos -->
+                            <div v-if="finalizar.documentos.length === 0" class="text-center text-muted py-2">
+                                <i class="bi bi-cloud-upload fs-3 d-block mb-2"></i>
+                                <p class="mb-0">No se han seleccionado documentos</p>
+                                <small>Los documentos son opcionales</small>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success" :disabled="finalizando">
+                        <span v-if="finalizando" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        <i v-if="!finalizando" class="bi bi-check-circle me-2"></i>
+                        {{ finalizando ? 'Completando...' : 'Completar Mantenimiento' }}
+                    </button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Completar Mantenimiento -->
-    <div class="modal fade" id="completarMantenimientoModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form v-on:submit.prevent="finalizarMantenimiento">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Completar Mantenimiento</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">Fecha de Finalización</label>
-                            <input type="date" class="form-control" v-model="finalizar.fechaFinalizacion" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Costo Final</label>
-                            <div class="input-group">
-                                <span class="input-group-text">RD$</span>
-                                <input type="number" class="form-control" v-model="finalizar.costoFinal" step="0.01" required>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Descripción Final</label>
-                            <textarea class="form-control" v-model="finalizar.descripcionFinal" rows="3" required></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Completar Mantenimiento</button>
-                    </div>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
 </div>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script>
-        console.log('Iniciando aplicación...');
-        console.log('Vue version:', Vue.version);
-
-        const apiBase = "https://localhost:7037/api/Mantenimientos";
-        new Vue({
-            el: '#app',
-            data: {
-                mantenimientos: [],
-                filtros: { busqueda: '', estado: '', tipo: '', taller: '' },
-                form: { 
-                    id: null, 
-                    vehiculoId: '', 
-                    fechaInicio: '', 
-                    fechaEstimadaFinalizacion: '', 
-                    tipoMantenimiento: '', 
-                    descripcion: '', 
-                    taller: '', 
-                    kilometrajeActual: '', 
-                    costoEstimado: '', 
-                    estado: 1, 
-                    usuarioRegistroId: '' ,
-                    documentos: [] 
-                },
-                editando: false,
-                detalle: null,
-                finalizar: { id: null, fechaFinalizacion: '', costoFinal: '', descripcionFinal: '' },
-                guardando: false
-            },
-            computed: {
-                estadisticas() {
-                    const ahora = new Date();
-                    const mesActual = ahora.getMonth();
-                    const anioActual = ahora.getFullYear();
-                    
-                    const mantenimientosDelMes = this.mantenimientos.filter(m => {
-                        if (m.fechaInicio) {
-                            const fechaInicio = new Date(m.fechaInicio);
-                            return fechaInicio.getMonth() === mesActual && fechaInicio.getFullYear() === anioActual;
-                        }
-                        return false;
-                    });
-                    
-                    return {
-                        programados: this.mantenimientos.filter(m => m.estadoTexto === 'Programado').length,
-                        enProceso: this.mantenimientos.filter(m => m.estadoTexto === 'EnProceso').length,
-                        completados: mantenimientosDelMes.filter(m => m.estadoTexto === 'Completado').length,
-                        costoTotal: mantenimientosDelMes.reduce((total, m) => {
-                            const costo = m.costo > 0 ? m.costo : m.costoEstimado;
-                            return total + (costo || 0);
-                        }, 0)
-                    };
-                }
-            },
-            filters: {
-                fecha(val) {
-                    if (!val) return '';
-                    return new Date(val).toLocaleDateString('es-DO');
-                },
-                currency(val) {
-                    if (!val) return '0.00';
-                    return parseFloat(val).toLocaleString('es-DO', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    });
-                }
-            },
-            methods: {
-                // Método de validación que estaba faltando
-                validarFormulario() {
-                    const errores = [];
-                    
-                    if (!this.form.vehiculoId || this.form.vehiculoId <= 0) {
-                        errores.push('• El ID del vehículo es requerido y debe ser mayor a 0');
-                    }
-                    
-                    if (!this.form.tipoMantenimiento || this.form.tipoMantenimiento.trim() === '') {
-                        errores.push('• El tipo de mantenimiento es requerido');
-                    }
-                    
-                    if (!this.form.taller || this.form.taller.trim() === '') {
-                        errores.push('• El taller es requerido');
-                    }
-                    
-                    if (!this.form.fechaInicio) {
-                        errores.push('• La fecha de inicio es requerida');
-                    }
-                    
-                    if (!this.form.kilometrajeActual || this.form.kilometrajeActual <= 0) {
-                        errores.push('• El kilometraje actual es requerido y debe ser mayor a 0');
-                    }
-                    
-                    if (!this.form.costoEstimado || this.form.costoEstimado <= 0) {
-                        errores.push('• El costo estimado es requerido y debe ser mayor a 0');
-                    }
-                    
-                    if (!this.form.usuarioRegistroId || this.form.usuarioRegistroId.trim() === '') {
-                        errores.push('• El ID del usuario de registro es requerido');
-                    }
-                    
-                    if (!this.form.descripcion || this.form.descripcion.trim() === '') {
-                        errores.push('• La descripción es requerida');
-                    }
-
-                    if (errores.length > 0) {
-                        console.error('❌ Errores de validación:', errores);
-                        alert('Errores de validación:\n\n' + errores.join('\n'));
-                        return false;
-                    }
-                    
-                    return true;
-                },
-
-                // Método adicional para validación en tiempo real (opcional)
-                validarFormularioCompleto() {
-                    return this.form.vehiculoId && 
-                           this.form.tipoMantenimiento && 
-                           this.form.taller && 
-                           this.form.fechaInicio && 
-                           this.form.kilometrajeActual && 
-                           this.form.costoEstimado && 
-                           this.form.usuarioRegistroId && 
-                           this.form.descripcion;
-                },
-
-                async cargarMantenimientos() {
-                    console.log('📊 Cargando mantenimientos...');
-                    try {
-                        const response = await fetch(apiBase);
-                        console.log('📡 Response status:', response.status);
-                        
-                        if (!response.ok) {
-                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                        }
-                        
-                        const data = await response.json();
-                        console.log('📋 Datos recibidos:', data);
-                        this.mantenimientos = data;
-                        
-                    } catch (error) {
-                        console.error('❌ Error al cargar mantenimientos:', error);
-                        alert('Error al cargar los mantenimientos: ' + error.message);
-                    }
-                },
-                filtrarMantenimientos() {
-                    this.cargarMantenimientos();
-                },
-                resetForm() {
-                    this.form = { 
-                        id: null, 
-                        vehiculoId: '', 
-                        fechaInicio: '', 
-                        fechaEstimadaFinalizacion: '', 
-                        tipoMantenimiento: '', 
-                        descripcion: '', 
-                        taller: '', 
-                        kilometrajeActual: '', 
-                        costoEstimado: '', 
-                        estado: 1, 
-                        usuarioRegistroId: '' 
-                    };
-                    this.editando = false;
-                },
-                abrirNuevoMantenimiento() {
-                    console.log('🔧 Abriendo formulario nuevo mantenimiento...');
-                    this.resetForm();
-                    this.editando = false;
-                    
-                    // Asegurar que el modal se abra correctamente
-                    this.$nextTick(() => {
-                        const modalElement = document.getElementById('nuevoMantenimientoModal');
-                        if (modalElement) {
-                            const modal = new bootstrap.Modal(modalElement);
-                            modal.show();
-                        } else {
-                            console.error('❌ Modal element not found');
-                        }
-                    });
-                },
-
-                async guardarNuevoMantenimiento(event) {
-                    if (event) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    
-                    this.guardando = true;
-                    console.log('🚀 Guardando nuevo mantenimiento...');
-                    console.log('📝 Form data:', JSON.stringify(this.form, null, 2));
-                    
-                    try {
-                        if (!this.validarFormulario()) {
-                            return;
-                        }
-
-                        // Tu API usa [FromForm], así que SIEMPRE usar FormData
-                        console.log('📎 Enviando con FormData (requerido por [FromForm])');
-                        
-                        const formData = new FormData();
-                        
-                        // Agregar todos los campos como FormData
-                        formData.append('VehiculoId', this.form.vehiculoId.toString());
-                        formData.append('FechaInicio', this.form.fechaInicio);
-                        
-                        // Solo agregar fecha estimada si existe
-                        if (this.form.fechaEstimadaFinalizacion) {
-                            formData.append('FechaEstimadaFinalizacion', this.form.fechaEstimadaFinalizacion);
-                        }
-                        
-                        formData.append('TipoMantenimiento', this.form.tipoMantenimiento.trim());
-                        formData.append('Descripcion', this.form.descripcion.trim());
-                        formData.append('Taller', this.form.taller.trim());
-                        formData.append('KilometrajeActual', this.form.kilometrajeActual.toString());
-                        formData.append('CostoEstimado', this.form.costoEstimado.toString());
-                        formData.append('Estado', this.form.estado.toString());
-                        formData.append('UsuarioRegistroId', this.form.usuarioRegistroId.trim());
-                        
-                        // SOLUCIÓN SIMPLIFICADA: Los archivos ya son objetos File
-                        if (this.form.documentos && this.form.documentos.length > 0) {
-                            console.log('📄 Agregando archivos:', this.form.documentos.length);
-                            this.form.documentos.forEach((file) => {
-                                // Verificar que sea un objeto File válido
-                                if (file instanceof File) {
-                                    formData.append('Documentos', file);
-                                    console.log(`  - ${file.name} (${file.size} bytes)`);
-                                } else {
-                                    console.warn('⚠️ Elemento no es un File:', file);
-                                }
-                            });
-                        }   
-
-                        // Debug: Mostrar todo lo que se va a enviar
-                        console.log('📦 Datos que se envían:');
-                        for (let [key, value] of formData.entries()) {
-                            if (value instanceof File) {
-                                console.log(`  ${key}: File(${value.name}, ${value.size} bytes)`);
-                            } else {
-                                console.log(`  ${key}: ${value}`);
-                            }
-                        }
-
-                        const response = await fetch(apiBase, {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'application/json'
-                            },
-                            body: formData
-                        });
-
-                        console.log('📡 Response status:', response.status);
-                        
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            console.error('❌ Error response:', errorText);
-                            
-                            let errorMessage = `Error ${response.status}: ${response.statusText}`;
-                            try {
-                                const errorJson = JSON.parse(errorText);
-                                if (errorJson.message) {
-                                    errorMessage = errorJson.message;
-                                } else if (errorJson.errors) {
-                                    errorMessage = Object.values(errorJson.errors).flat().join('\n');
-                                } else if (errorJson.title) {
-                                    errorMessage = errorJson.title;
-                                }
-                            } catch (e) {
-                                errorMessage = errorText || errorMessage;
-                            }
-                            
-                            throw new Error(errorMessage);
-                        }
-
-                        const result = await response.json();
-                        console.log('✅ Mantenimiento creado:', result);
-                        
-                        this.cerrarModal('nuevoMantenimientoModal');
-                        await this.cargarMantenimientos();
-                        this.resetForm();
-                        
-                        alert('✅ Mantenimiento creado exitosamente');
-                        
-                    } catch (error) {
-                        console.error('💥 Error al crear mantenimiento:', error);
-                        alert(`❌ Error al crear el mantenimiento:\n${error.message}`);
-                    } finally {
-                        this.guardando = false;
-                    }
-                },
-
-
-                
-                // Métodos auxiliares para conversión de tipos
-                convertToInt(value) {
-                    const num = parseInt(value);
-                    return isNaN(num) ? 0 : num;
-                },
-                
-                convertToFloat(value) {
-                    const num = parseFloat(value);
-                    return isNaN(num) ? 0 : num;
-                },
-                
-                // Método auxiliar para cerrar modales
-                cerrarModal(modalId) {
-                    const modalElement = document.getElementById(modalId);
-                    if (modalElement) {
-                        const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                        if (modalInstance) {
-                            modalInstance.hide();
-                        }
-                    }
-                },
-
-                editarMantenimiento(mnt) {
-                    this.form = Object.assign({}, mnt);
-                    this.editando = true;
-                    const modal = new bootstrap.Modal(document.getElementById('editarMantenimientoModal'));
-                    modal.show();
-                },
-
-                async guardarEdicionMantenimiento() {
-                    if (!this.validarFormulario()) {
-                        return;
-                    }
-
-                    const formData = new FormData();
-                    formData.append("id", this.form.id);
-                    formData.append("vehiculoId", this.convertToInt(this.form.vehiculoId));
-                    formData.append("fechaInicio", this.form.fechaInicio);
-                    formData.append("fechaEstimadaFinalizacion", this.form.fechaEstimadaFinalizacion || "");
-                    formData.append("tipoMantenimiento", this.form.tipoMantenimiento.trim());
-                    formData.append("descripcion", this.form.descripcion.trim());
-                    formData.append("taller", this.form.taller.trim());
-                    formData.append("kilometrajeActual", this.convertToInt(this.form.kilometrajeActual));
-                    formData.append("costoEstimado", this.convertToFloat(this.form.costoEstimado));
-                    formData.append("estado", this.convertToInt(this.form.estado));
-                    formData.append("usuarioRegistroId", this.form.usuarioRegistroId.trim());
-
-                    // Archivos (documentos)
-                    if (this.form.documentos && this.form.documentos.length > 0) {
-                        this.form.documentos.forEach((archivo, index) => {
-                            formData.append("documentos", archivo.file); // archivo debe tener un `.file` tipo File
-                        });
-                    }
-
-                    try {
-                        const response = await fetch(`${apiBase}/${this.form.id}`, {
-                            method: 'PUT',
-                            body: formData
-                            // ❌ NO pongas headers de tipo Content-Type, el navegador lo hace solo con FormData
-                        });
-
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            throw new Error(`Error ${response.status}: ${errorText}`);
-                        }
-
-                        await this.cargarMantenimientos();
-                        this.cerrarModal('editarMantenimientoModal');
-                        this.resetForm();
-                        alert('✅ Mantenimiento actualizado exitosamente');
-
-                    } catch (error) {
-                        console.error('Error al actualizar:', error);
-                        alert(`❌ Error al actualizar el mantenimiento:\n${error.message}`);
-                    }
-                },
-
-                eliminarMantenimiento(id) {
-                    if (confirm('¿Seguro que desea eliminar este mantenimiento?')) {
-                        fetch(`${apiBase}/${id}`, { method: 'DELETE' })
-                            .then(response => {
-                                if (response.ok) {
-                                    this.cargarMantenimientos();
-                                    alert('✅ Mantenimiento eliminado exitosamente');
-                                } else {
-                                    throw new Error(`Error ${response.status}`);
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error al eliminar:', error);
-                                alert('❌ Error al eliminar el mantenimiento');
-                            });
-                    }
-                },
-
-                verDetalle(id) {
-                    const mantenimiento = this.mantenimientos.find(m => m.id === id);
-                    if (mantenimiento) {
-                        this.detalle = mantenimiento;
-                        const modal = new bootstrap.Modal(document.getElementById('mantenimientoDetailsModal'));
-                        modal.show();
-                    }
-                },
-                abrirCompletar(mnt) {
-                    this.finalizar = { id: mnt.id, fechaFinalizacion: '', costoFinal: '', descripcionFinal: '' };
-                    const modal = new bootstrap.Modal(document.getElementById('completarMantenimientoModal'));
-                    modal.show();
-                },
-                async finalizarMantenimiento() {
-                    try {
-                        const response = await fetch(`${apiBase}/${this.finalizar.id}/finalizar`, {
-                            method: 'POST',
-                            headers: { 
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json'
-                            },
-                            body: JSON.stringify(this.finalizar)
-                        });
-
-                        if (!response.ok) {
-                            throw new Error(`Error ${response.status}`);
-                        }
-
-                        await this.cargarMantenimientos();
-                        this.cerrarModal('completarMantenimientoModal');
-                        alert('✅ Mantenimiento completado exitosamente');
-
-                    } catch (error) {
-                        console.error('Error al completar:', error);
-                        alert('❌ Error al completar el mantenimiento');
-                    }
-                },
-
-                // Métodos para manejo de documentos
-                handleFileUpload(event) {
-                    const files = event.target.files;
-                    if (!files || files.length === 0) return;
-                    
-                    console.log('📁 Archivos seleccionados:', files.length);
-                    
-                    for (let i = 0; i < files.length; i++) {
-                        const file = files[i];
-                        
-                        // Validar tamaño (5MB máximo)
-                        if (file.size > 5 * 1024 * 1024) {
-                            alert(`El archivo "${file.name}" es demasiado grande. Máximo 5MB.`);
-                            continue;
-                        }
-                        
-                        // Validar tipo de archivo
-                        const allowedTypes = [
-                            'application/pdf',
-                            'application/msword',
-                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                            'image/jpeg',
-                            'image/jpg', 
-                            'image/png',
-                            'text/plain'
-                        ];
-                        
-                        if (!allowedTypes.includes(file.type)) {
-                            alert(`El archivo "${file.name}" no es un formato válido.`);
-                            continue;
-                        }
-                        
-                        // SOLUCIÓN: Guardar directamente el File object
-                        // No convertir a base64, mantener el objeto File original
-                        this.form.documentos.push(file);
-                        console.log('📄 Archivo agregado:', file.name);
-                    }
-                    
-                    event.target.value = '';
-                },
-                
-                convertToBase64(file) {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        const documento = {
-                            nombre: file.name,
-                            tipo: file.type,
-                            tamaño: file.size,
-                            contenido: reader.result.split(',')[1], // Remover el prefijo data:type;base64,
-                            fechaSubida: new Date().toISOString()
-                        };
-                        
-                        this.form.documentos.push(documento);
-                        console.log('📄 Documento agregado:', documento.nombre);
-                    };
-                    
-                    reader.onerror = () => {
-                        alert(`Error al leer el archivo "${file.name}"`);
-                    };
-                    
-                    reader.readAsDataURL(file);
-                },
-                
-                removeDocument(index) {
-                    const documento = this.form.documentos[index];
-                    const fileName = documento.name || documento.nombre || 'documento';
-                    if (confirm(`¿Eliminar el archivo "${fileName}"?`)) {
-                        this.form.documentos.splice(index, 1);
-                        console.log('🗑️ Archivo eliminado:', fileName);
-                    }
-                },
-                
-                formatFileSize(bytes) {
-                    if (bytes === 0) return '0 Bytes';
-                    const k = 1024;
-                    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-                    const i = Math.floor(Math.log(bytes) / Math.log(k));
-                    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-                },
-                
-                resetForm() {
-                    this.form = { 
-                        id: null, 
-                        vehiculoId: '', 
-                        fechaInicio: '', 
-                        fechaEstimadaFinalizacion: '', 
-                        tipoMantenimiento: '', 
-                        descripcion: '', 
-                        taller: '', 
-                        kilometrajeActual: '', 
-                        costoEstimado: '', 
-                        estado: 1, 
-                        usuarioRegistroId: '',
-                        documentos: [] // Limpiar documentos también
-                    };
-                    this.editando = false;
-                },
-
-                // Métodos para estilos y visualización
-                estadoBadge(estado) {
-                    switch (estado) {
-                        case 'SinEspecificar': return 'badge-sin-especificar';
-                        case 'Programado': return 'badge-programado';
-                        case 'EnProceso': return 'badge-en-proceso';
-                        case 'Completado': return 'badge-completado';
-                        case 'Cancelado': return 'badge-cancelado';
-                        case 'PendientePago': return 'badge-pendiente-pago';
-                        default: return 'badge-sin-especificar';
-                    }
-                },
-                estadoTexto(estado) {
-                    switch (estado) {
-                        case 'SinEspecificar': return 'Sin Especificar';
-                        case 'Programado': return 'Programado';
-                        case 'EnProceso': return 'En Proceso';
-                        case 'Completado': return 'Completado';
-                        case 'Cancelado': return 'Cancelado';
-                        case 'PendientePago': return 'Pendiente de Pago';
-                        default: return estado;
-                    }
-                },
-                estadoProgress(estado) {
-                    switch (estado) {
-                        case 'SinEspecificar': return 'bg-light';
-                        case 'Programado': return 'bg-info';
-                        case 'EnProceso': return 'bg-warning';
-                        case 'Completado': return 'bg-success';
-                        case 'Cancelado': return 'bg-secondary';
-                        case 'PendientePago': return 'bg-danger';
-                        default: return 'bg-light';
-                    }
-                },
-                progreso(estado) {
-                    switch (estado) {
-                        case 'SinEspecificar': return 0;
-                        case 'Programado': return 0;
-                        case 'EnProceso': return 65;
-                        case 'Completado': return 100;
-                        case 'Cancelado': return 30;
-                        case 'PendientePago': return 85;
-                        default: return 0;
-                    }
-                }
-            },
-        mounted() {
-                console.log(' Vue mounted - Iniciando carga de datos...');
-                this.cargarMantenimientos();
-            },
-        });
-        console.log('✅ Vue app inicializada:', app);
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/Mantenimiento.js"></script>
 }
